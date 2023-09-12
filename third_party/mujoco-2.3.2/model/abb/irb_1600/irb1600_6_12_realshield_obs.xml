@@ -38,6 +38,8 @@
         <!-- Floor -->
         <geom name="floor" pos="0 0 0" size="5 5 .125" type="plane" material="BeigeMaterial" condim="3"  contype="0" conaffinity="0"/>
 
+        <include file="realshield_obstacles.xml"/>
+
         <!-- <site name="world"/> -->
         <body name="obstacle" pos="0.0 0.0 0.4041">
 
