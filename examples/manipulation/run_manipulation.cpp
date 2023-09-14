@@ -706,6 +706,14 @@ MatDf sampleTrajectory(const drake::trajectories::BsplineTrajectory<double>& tra
 int main(int argc, char* argv[])
 {
     int num_threads;
+    int num_lines = 4090;
+    int path_id = 0;
+    std::string root_dir = "/home/shield/code/shield_obs_ws/src/parallel_search";
+    std::unordered_map<int, bool> ppid_to_done;
+    std::unordered_map<int, double> ppid_to_duration;
+    std::unordered_map<int, MatDf> ppid_to_traj;
+    std::unordered_map<int, int> line_segment_to_path_id;
+
 
     if (!strcmp(argv[1], "insat") || !strcmp(argv[1], "wastar"))
     {
@@ -726,7 +734,7 @@ int main(int argc, char* argv[])
 
 
     /// Load MuJoCo model
-    std::string modelpath = "../third_party/mujoco-2.3.2/model/abb/irb_1600/irb1600_6_12_shield.xml";
+    std::string modelpath = root_dir + "/third_party/mujoco-2.3.2/model/abb/irb_1600/irb1600_6_12_realshield_obs.xml";
     mjModel *m = nullptr;
     mjData *d = nullptr;
 
@@ -748,30 +756,31 @@ int main(int argc, char* argv[])
     ParamsType planner_params;
     planner_params["num_threads"] = num_threads;
     planner_params["heuristic_weight"] = 10;
-    planner_params["timeout"] = 20;
+    planner_params["timeout"] = 10;
     planner_params["adaptive_opt"] = 0;
     planner_params["smart_opt"] = 1;
-    planner_params["min_exec_duration"] = 0.5;
-    planner_params["max_exec_duration"] = 0.9;
+    planner_params["min_exec_duration"] = 0.1;
+    planner_params["max_exec_duration"] = 1.0;
+    planner_params["preferred_exec_duration"] = 0.25;
     planner_params["num_ctrl_points"] = 7;
     planner_params["min_ctrl_points"] = 4;
     planner_params["max_ctrl_points"] = 7;
     planner_params["spline_order"] = 4;
-    planner_params["sampling_dt"] = 5e-3;
+    planner_params["sampling_dt"] = 4e-3;
 
     ofstream log_file;
 
     if ((planner_params["smart_opt"] == 1) && ((planner_name == "insat") || (planner_name == "pinsat")))
     {
-        log_file.open("../logs/" + planner_name + "_smart_" + to_string(num_threads) + ".txt");
+        log_file.open(root_dir + "/logs/" + planner_name + "_smart_" + to_string(num_threads) + ".txt");
     }
     else if ((planner_params["adaptive_opt"] == 1) && ((planner_name == "insat") || (planner_name == "pinsat")))
     {
-       log_file.open("../logs/" + planner_name + "_adaptive_" + to_string(num_threads) + ".txt"); 
+       log_file.open(root_dir + "/logs/" + planner_name + "_adaptive_" + to_string(num_threads) + ".txt"); 
     }
     else
     {
-        log_file.open("../logs/" + planner_name + "_" + to_string(num_threads) + ".txt");    
+        log_file.open(root_dir + "/logs/" + planner_name + "_" + to_string(num_threads) + ".txt");    
     }
 
     if ((planner_name == "rrt") || (planner_name == "rrtconnect"))
@@ -783,11 +792,20 @@ int main(int argc, char* argv[])
 
     // Generate random starts and goals
     std::vector<vector<double>> starts, goals;
+    VecDi ppid;
     if (load_starts_goals_from_file)
     {
-        std::string starts_path = "../examples/manipulation/resources/shield/starts.txt";
-        std::string goals_path = "../examples/manipulation/resources/shield/goals.txt";
+        std::string starts_path = root_dir + "/examples/manipulation/resources/realshield/starts.txt";
+        std::string goals_path = root_dir + "/examples/manipulation/resources/realshield/goals.txt";
         loadStartsAndGoalsFromFile(starts, goals, starts_path, goals_path);
+        std::string ppid_file = root_dir + "/examples/manipulation/resources/realshield/ppid.txt";
+        MatDf ppid_dump = loadEigenFromFile<MatDf>(ppid_file);
+        ppid = ppid_dump.cast<int>();
+        ppid = ppid.reshaped();
+
+        for (int i=0; i<num_lines; ++i) {
+          line_segment_to_path_id[i] = -1;
+        }
     }
     else
     {
@@ -819,10 +837,10 @@ int main(int argc, char* argv[])
 
     /// save logs
     MatDf start_log, goal_log, traj_log, ctrl_pt_log;
-    std::string traj_path ="../logs/" + planner_name +"_abb_traj.txt";
-    std::string ctrl_pt_path ="../logs/" + planner_name +"_abb_ctrlpt.txt";
-    std::string starts_path ="../logs/" + planner_name + "_abb_starts.txt";
-    std::string goals_path ="../logs/" + planner_name +"_abb_goals.txt";
+    std::string traj_path =root_dir + "/logs/" + planner_name +"_abb_traj.txt";
+    std::string ctrl_pt_path =root_dir + "/logs/" + planner_name +"_abb_ctrlpt.txt";
+    std::string starts_path =root_dir + "/logs/" + planner_name + "_abb_starts.txt";
+    std::string goals_path =root_dir + "/logs/" + planner_name +"_abb_goals.txt";
 
     // create opt
     auto opt = BSplineOpt(insat_params, robot_params, spline_params, planner_params);
@@ -832,7 +850,7 @@ int main(int argc, char* argv[])
     // Construct actions
     ParamsType action_params;
     action_params["planner_type"] = planner_name=="insat" || planner_name=="pinsat"? 1: -1;
-    std::string mprimpath = "../examples/manipulation/resources/shield/irb1600_6_12.mprim";
+    std::string mprimpath = root_dir + "/examples/manipulation/resources/shield/irb1600_6_12.mprim";
     vector<shared_ptr<Action>> action_ptrs;
     constructActions(action_ptrs, action_params,
                      modelpath,
@@ -840,9 +858,9 @@ int main(int argc, char* argv[])
                      opt_vec_ptr, num_threads);
 
     // Construct BFS actions
-    std::string bfsmodelpath = "../third_party/mujoco-2.3.2/model/abb/irb_1600/shield_bfs_heuristic.xml";
+    std::string bfsmodelpath = root_dir + "/third_party/mujoco-2.3.2/model/abb/irb_1600/realshield_obs_bfs_heuristic.xml";
     setupMujoco(&rm::global_bfs_m, &rm::global_bfs_d, bfsmodelpath);
-    std::string bfsmprimpath = "../examples/manipulation/resources/shield/bfs3d.mprim";
+    std::string bfsmprimpath = root_dir + "/examples/manipulation/resources/shield/bfs3d.mprim";
     vector<shared_ptr<Action>> bfs_action_ptrs;
     // constructBFSActions(bfs_action_ptrs, action_params,
     //                    bfsmodelpath, bfsmprimpath, num_threads);
@@ -866,9 +884,14 @@ int main(int argc, char* argv[])
 
     int run_offset = 0;
     num_runs = starts.size();
-    num_runs = 500;
+    // num_runs = 500;
     for (int run = run_offset; run < run_offset+num_runs; ++run)
     {
+      if (ppid_to_done.find(ppid(run)) != ppid_to_done.end()) {
+        continue;
+      }
+
+
         // Set goal conditions
         rm::goal = goals[run];
         rm::goal_ee_pos = getEEPosition(rm::goal);
@@ -1048,6 +1071,58 @@ int main(int argc, char* argv[])
 
                 auto plan = planner_ptr->GetPlan();
                 plan_vec.emplace_back(plan);
+
+                //////////////////////////////////////////////////////////////////////
+                if (line_segment_to_path_id[ppid(run)] == -1) {line_segment_to_path_id[ppid(run)] = path_id++;}
+
+                if (soln_traj.traj_.end_time() < planner_params["preferred_exec_duration"]) {
+                  std::cout << "soln_traj.traj_.end_time() < planner_params[preferred_exec_duration]" << std::endl;
+
+                  ppid_to_traj[ppid(run)] = samp_traj.transpose();
+                  ppid_to_done[ppid(run)] = true;
+                  ppid_to_duration[ppid(run)] = soln_traj.traj_.end_time();
+                } else if (ppid_to_traj.find(ppid(run)) == ppid_to_traj.end()) {
+                  std::cout << "ppid_to_traj.find(ppid(run)) == ppid_to_traj.end()" << std::endl;
+
+                  ppid_to_traj[ppid(run)] = samp_traj.transpose();
+                  ppid_to_duration[ppid(run)] = soln_traj.traj_.end_time();
+                } else if (soln_traj.traj_.end_time() < ppid_to_duration[ppid(run)]) {
+                  std::cout << "soln_traj.traj_.end_time() < ppid_to_duration[ppid(run)]" << std::endl;
+
+                  ppid_to_traj[ppid(run)] = samp_traj.transpose();
+                  ppid_to_duration[ppid(run)] = soln_traj.traj_.end_time();
+                }
+
+                /// Write paths_library as generated
+                /// path_<path_id> file
+                int max_path_size = 0;
+                for (auto& it : ppid_to_traj) {
+                  auto paths_file = root_dir + "/logs/paths_library/" + "path_" + std::to_string(line_segment_to_path_id[it.first]);
+                  std::cout << "Writing to " << paths_file << std::endl;
+
+                  writeEigenToFile(paths_file, it.second);
+                  max_path_size = std::max(max_path_size, static_cast<int>(it.second.rows()));
+                }
+                /// path_execution_times file
+                ofstream duration_fout(root_dir + "/logs/paths_library/" + "path_execution_times.txt");
+                for (int i=0; i<ppid.tail(1).value(); ++i) {
+                  if (ppid_to_duration.find(i) != ppid_to_duration.end()) {
+                    duration_fout << ppid_to_duration[i] << std::endl;
+                  }
+                }
+                duration_fout.close();
+                /// line_segment_to_path_id file
+                ofstream lstpi_fout(root_dir + "/logs/paths_library/" + "line_segment_to_path_id_map.txt");
+                lstpi_fout << line_segment_to_path_id.size() << std::endl;
+                lstpi_fout << max_path_size << std::endl;
+                for (int i=0; i<num_lines; ++i) {
+                  if (line_segment_to_path_id.find(i) != line_segment_to_path_id.end()) {
+                    lstpi_fout << line_segment_to_path_id[i] << std::endl;
+                  } else {
+                    lstpi_fout << -1 << std::endl;
+                  }
+                }
+                lstpi_fout.close();
             }
             else
             {
@@ -1089,7 +1164,7 @@ int main(int argc, char* argv[])
         ctrl_pt_log.transposeInPlace();
         writeEigenToFile(ctrl_pt_path, ctrl_pt_log);
 
-        ofstream traj_fout("../logs/" + planner_name + "_abb_path.txt");
+        ofstream traj_fout(root_dir + "/logs/" + planner_name + "_abb_path.txt");
 
         for (auto& p : plan_vec)
         {
@@ -1110,10 +1185,41 @@ int main(int argc, char* argv[])
         }
 
         traj_fout.close();
+
+        /// Write paths_library
+        /// path_<path_id> file
+        int max_path_size = 0;
+        for (auto& it : ppid_to_traj) {
+          auto paths_file = root_dir + "/logs/paths_library/" + "path_" + std::to_string(line_segment_to_path_id[it.first]);
+          std::cout << "Writing to " << paths_file << std::endl;
+
+          writeEigenToFile(paths_file, it.second);
+          max_path_size = std::max(max_path_size, static_cast<int>(it.second.rows()));
+        }
+        /// path_execution_times file
+        ofstream duration_fout(root_dir + "/logs/paths_library/" + "path_execution_times.txt");
+        for (int i=0; i<ppid.tail(1).value(); ++i) {
+          if (ppid_to_duration.find(i) != ppid_to_duration.end()) {
+            duration_fout << ppid_to_duration[i] << std::endl;
+          }
+        }
+        duration_fout.close();
+        /// line_segment_to_path_id file
+        ofstream lstpi_fout(root_dir + "/logs/paths_library/" + "line_segment_to_path_id_map.txt");
+        lstpi_fout << line_segment_to_path_id.size() << std::endl;
+        lstpi_fout << max_path_size << std::endl;
+        for (int i=0; i<num_lines; ++i) {
+          if (line_segment_to_path_id.find(i) != line_segment_to_path_id.end()) {
+            lstpi_fout << line_segment_to_path_id[i] << std::endl;
+          } else {
+            lstpi_fout << -1 << std::endl;
+          }
+        }
+        lstpi_fout.close();
     }
     else
     {
-        ofstream traj_fout("../logs/" + planner_name + "_abb_traj.txt");
+        ofstream traj_fout(root_dir + "/logs/" + planner_name + "_abb_traj.txt");
 
         for (auto& p : plan_vec)
         {
