@@ -37,6 +37,7 @@
 #include <iostream>
 #include <fstream>
 #include <numeric>
+#include <filesystem>
 #include <boost/functional/hash.hpp>
 #include <drake/math/matrix_util.h>
 #include <planners/insat/InsatPlanner.hpp>
@@ -418,6 +419,7 @@ void setupMujoco(mjModel **m, mjData **d, std::string modelpath)
   {
     mju_error("Cannot load the model");
   }
+  std::cout << modelpath << std::endl;
   *d = mj_makeData(*m);
 }
 
@@ -702,17 +704,35 @@ MatDf sampleTrajectory(const drake::trajectories::BsplineTrajectory<double>& tra
     return sampled_traj;
 }
 
+MatDf sampleTrajectory(const drake::trajectories::BsplineTrajectory<double>& traj, int num_deriv, double dt=1e-1)
+{
+    MatDf sampled_traj;
+    int i=0;
+    for (double t=0.0; t<=traj.end_time(); t+=dt)
+    {
+        sampled_traj.conservativeResize(rm::dof*(num_deriv+1), sampled_traj.cols() + 1);
+        for (int j=0; j<=num_deriv; ++j) 
+        {
+          sampled_traj.block(j*rm::dof,i,rm::dof,1) = traj.EvalDerivative(t, j);
+        }
+        ++i;
+    }
+    return sampled_traj;
+}
+
 
 int main(int argc, char* argv[])
 {
     int num_threads;
-    int num_lines = 4090;
-    int path_id = 0;
+    int num_lines = 5760;
+    int path_id = 2866;
     std::string root_dir = "/home/shield/code/shield_obs_ws/src/parallel_search";
     std::unordered_map<int, bool> ppid_to_done;
     std::unordered_map<int, double> ppid_to_duration;
     std::unordered_map<int, MatDf> ppid_to_traj;
     std::unordered_map<int, int> line_segment_to_path_id;
+    auto duration_file = root_dir + "/logs/paths_library/" + "path_execution_times.txt";
+    auto lstpi_file = root_dir + "/logs/paths_library/" + "line_segment_to_path_id_map.txt";
 
 
     if (!strcmp(argv[1], "insat") || !strcmp(argv[1], "wastar"))
@@ -734,6 +754,7 @@ int main(int argc, char* argv[])
 
 
     /// Load MuJoCo model
+    // std::string modelpath = root_dir + "/third_party/mujoco-2.3.2/model/abb/irb_1600/irb1600_6_12_realshield.xml";
     std::string modelpath = root_dir + "/third_party/mujoco-2.3.2/model/abb/irb_1600/irb1600_6_12_realshield_obs.xml";
     mjModel *m = nullptr;
     mjData *d = nullptr;
@@ -756,11 +777,11 @@ int main(int argc, char* argv[])
     ParamsType planner_params;
     planner_params["num_threads"] = num_threads;
     planner_params["heuristic_weight"] = 10;
-    planner_params["timeout"] = 10;
+    planner_params["timeout"] = 7;
     planner_params["adaptive_opt"] = 0;
     planner_params["smart_opt"] = 1;
     planner_params["min_exec_duration"] = 0.1;
-    planner_params["max_exec_duration"] = 1.0;
+    planner_params["max_exec_duration"] = 0.5;
     planner_params["preferred_exec_duration"] = 0.25;
     planner_params["num_ctrl_points"] = 7;
     planner_params["min_ctrl_points"] = 4;
@@ -795,10 +816,10 @@ int main(int argc, char* argv[])
     VecDi ppid;
     if (load_starts_goals_from_file)
     {
-        std::string starts_path = root_dir + "/examples/manipulation/resources/realshield/starts.txt";
-        std::string goals_path = root_dir + "/examples/manipulation/resources/realshield/goals.txt";
+        std::string starts_path = root_dir + "/examples/manipulation/resources/shield_1obs_wide/starts.txt";
+        std::string goals_path = root_dir + "/examples/manipulation/resources/shield_1obs_wide/goals.txt";
         loadStartsAndGoalsFromFile(starts, goals, starts_path, goals_path);
-        std::string ppid_file = root_dir + "/examples/manipulation/resources/realshield/ppid.txt";
+        std::string ppid_file = root_dir + "/examples/manipulation/resources/shield_1obs_wide/ppid.txt";
         MatDf ppid_dump = loadEigenFromFile<MatDf>(ppid_file);
         ppid = ppid_dump.cast<int>();
         ppid = ppid.reshaped();
@@ -858,6 +879,7 @@ int main(int argc, char* argv[])
                      opt_vec_ptr, num_threads);
 
     // Construct BFS actions
+    // std::string bfsmodelpath = root_dir + "/third_party/mujoco-2.3.2/model/abb/irb_1600/realshield_bfs_heuristic.xml";
     std::string bfsmodelpath = root_dir + "/third_party/mujoco-2.3.2/model/abb/irb_1600/realshield_obs_bfs_heuristic.xml";
     setupMujoco(&rm::global_bfs_m, &rm::global_bfs_d, bfsmodelpath);
     std::string bfsmprimpath = root_dir + "/examples/manipulation/resources/shield/bfs3d.mprim";
@@ -882,7 +904,32 @@ int main(int argc, char* argv[])
     int num_success = 0;
     vector<vector<PlanElement>> plan_vec;
 
-    int run_offset = 0;
+    // if (std::filesystem::exists(lstpi_file)) {
+    //   MatDf lstpi_dump = loadEigenFromFile<MatDf>(lstpi_file);
+    //   VecDi lstpi_vec = lstpi_dump.cast<int>();
+    //   lstpi_vec = lstpi_vec.reshaped();
+
+    //   for (int nn=lstpi_vec.size()-1; nn>1; --nn) {
+    //     if (lstpi_vec(nn) != -1) {
+    //       run_offset = nn-2;
+    //       break;
+    //     }
+    //   }
+
+    //   MatDf duration_dump = loadEigenFromFile<MatDf>(duration_file);
+    //   VecDf duration_vec = duration_vec.reshaped();
+
+    //   int idx = 0;
+    //   for (int nn=2; nn<lstpi_vec.size(); ++nn) {
+    //     line_segment_to_path_id[nn-2] = lstpi_vec(nn);
+    //     if (lstpi_vec(nn) != -1) {
+    //       ppid_to_duration[nn-2] = duration_vec[idx];
+    //       ++idx; 
+    //     }
+    //   }
+    // }
+
+    int run_offset = 10266;
     num_runs = starts.size();
     // num_runs = 500;
     for (int run = run_offset; run < run_offset+num_runs; ++run)
@@ -1050,12 +1097,20 @@ int main(int argc, char* argv[])
                 std::shared_ptr<InsatPlanner> insat_planner = std::dynamic_pointer_cast<InsatPlanner>(planner_ptr);
                 auto soln_traj = insat_planner->getSolutionTraj();
 
-                /// Saving sampled trajectory
-                auto samp_traj = sampleTrajectory(soln_traj.traj_, planner_params["sampling_dt"]);
-                traj_log.conservativeResize(insat_params.lowD_dims_, traj_log.cols()+samp_traj.cols());
+                // /// Saving sampled trajectory (just position)
+                // auto samp_traj = sampleTrajectory(soln_traj.traj_, planner_params["sampling_dt"]);
+                // traj_log.conservativeResize(insat_params.lowD_dims_, traj_log.cols()+samp_traj.cols());
+                // traj_log.rightCols(samp_traj.cols()) = samp_traj;
+                // traj_log.conservativeResize(insat_params.lowD_dims_, traj_log.cols()+1);
+                // traj_log.rightCols(1) = -1*VecDf::Ones(insat_params.lowD_dims_);
+
+                /// Saving sampled trajectory (position, vel, acc)
+                int num_deriv = 2; // up to acc
+                auto samp_traj = sampleTrajectory(soln_traj.traj_, num_deriv, planner_params["sampling_dt"]);
+                traj_log.conservativeResize((num_deriv+1)*insat_params.lowD_dims_, traj_log.cols()+samp_traj.cols());
                 traj_log.rightCols(samp_traj.cols()) = samp_traj;
-                traj_log.conservativeResize(insat_params.lowD_dims_, traj_log.cols()+1);
-                traj_log.rightCols(1) = -1*VecDf::Ones(insat_params.lowD_dims_);
+                traj_log.conservativeResize((num_deriv+1)*insat_params.lowD_dims_, traj_log.cols()+1);
+                traj_log.rightCols(1) = -1*VecDf::Ones((num_deriv+1)*insat_params.lowD_dims_);
 
                 /// Save control points
                 auto soln_ctrl_pts =  drake::math::StdVectorToEigen(soln_traj.traj_.control_points());
@@ -1098,13 +1153,13 @@ int main(int argc, char* argv[])
                 int max_path_size = 0;
                 for (auto& it : ppid_to_traj) {
                   auto paths_file = root_dir + "/logs/paths_library/" + "path_" + std::to_string(line_segment_to_path_id[it.first]);
-                  std::cout << "Writing to " << paths_file << std::endl;
+                  // std::cout << "Writing to " << paths_file << std::endl;
 
                   writeEigenToFile(paths_file, it.second);
                   max_path_size = std::max(max_path_size, static_cast<int>(it.second.rows()));
                 }
                 /// path_execution_times file
-                ofstream duration_fout(root_dir + "/logs/paths_library/" + "path_execution_times.txt");
+                ofstream duration_fout(duration_file);
                 for (int i=0; i<ppid.tail(1).value(); ++i) {
                   if (ppid_to_duration.find(i) != ppid_to_duration.end()) {
                     duration_fout << ppid_to_duration[i] << std::endl;
@@ -1112,7 +1167,7 @@ int main(int argc, char* argv[])
                 }
                 duration_fout.close();
                 /// line_segment_to_path_id file
-                ofstream lstpi_fout(root_dir + "/logs/paths_library/" + "line_segment_to_path_id_map.txt");
+                ofstream lstpi_fout(lstpi_file);
                 lstpi_fout << line_segment_to_path_id.size() << std::endl;
                 lstpi_fout << max_path_size << std::endl;
                 for (int i=0; i<num_lines; ++i) {
@@ -1191,13 +1246,13 @@ int main(int argc, char* argv[])
         int max_path_size = 0;
         for (auto& it : ppid_to_traj) {
           auto paths_file = root_dir + "/logs/paths_library/" + "path_" + std::to_string(line_segment_to_path_id[it.first]);
-          std::cout << "Writing to " << paths_file << std::endl;
+          // std::cout << "Writing to " << paths_file << std::endl;
 
           writeEigenToFile(paths_file, it.second);
           max_path_size = std::max(max_path_size, static_cast<int>(it.second.rows()));
         }
         /// path_execution_times file
-        ofstream duration_fout(root_dir + "/logs/paths_library/" + "path_execution_times.txt");
+        ofstream duration_fout(duration_file);
         for (int i=0; i<ppid.tail(1).value(); ++i) {
           if (ppid_to_duration.find(i) != ppid_to_duration.end()) {
             duration_fout << ppid_to_duration[i] << std::endl;
@@ -1205,7 +1260,7 @@ int main(int argc, char* argv[])
         }
         duration_fout.close();
         /// line_segment_to_path_id file
-        ofstream lstpi_fout(root_dir + "/logs/paths_library/" + "line_segment_to_path_id_map.txt");
+        ofstream lstpi_fout(lstpi_file);
         lstpi_fout << line_segment_to_path_id.size() << std::endl;
         lstpi_fout << max_path_size << std::endl;
         for (int i=0; i<num_lines; ++i) {

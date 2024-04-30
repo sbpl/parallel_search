@@ -122,7 +122,8 @@ namespace ps {
     // Modes
     HeuristicMode h_mode = HeuristicMode::LOS;
     GoalCheckerMode goal_mode = GoalCheckerMode::CSPACE;
-    PPMode pp_mode = PPMode::WAYPT;
+    PPMode pp_mode = PPMode::NONE;
+    // PPMode pp_mode = PPMode::WAYPT;
   };
 
   static Vec3f getEEPosition(const VecDf& state);
@@ -173,6 +174,7 @@ namespace ps {
 
 
       /// Load MuJoCo model
+      // std::string modelpath = (fs::path(model_dir)/fs::path("irb1600_6_12_realshield.xml")).string();
       std::string modelpath = (fs::path(model_dir)/fs::path("irb1600_6_12_realshield_obs.xml")).string();
       mjModel *m = nullptr;
       mjData *d = nullptr;
@@ -191,11 +193,11 @@ namespace ps {
       // Define planner parameters
       planner_params_["num_threads"] = num_threads;
       planner_params_["heuristic_weight"] = 10;
-      // planner_params_["timeout"] = 20; /// Set at the solve function
+      planner_params_["timeout"] = 2; /// Set at the solve function
       planner_params_["adaptive_opt"] = 0;
       planner_params_["smart_opt"] = 1;
       planner_params_["min_exec_duration"] = 0.1;
-      planner_params_["max_exec_duration"] = 0.5;
+      planner_params_["max_exec_duration"] = 2.0;
       planner_params_["num_ctrl_points"] = 7;
       planner_params_["min_ctrl_points"] = 4;
       planner_params_["max_ctrl_points"] = 7;
@@ -241,6 +243,7 @@ namespace ps {
                        opt_vec_ptr_, num_threads);
 
       // Construct BFS actions
+      // std::string bfsmodelpath = (fs::path(model_dir)/fs::path("realshield_bfs_heuristic.xml")).string();
       std::string bfsmodelpath = (fs::path(model_dir)/fs::path("realshield_obs_bfs_heuristic.xml")).string();
       setupMujoco(&config_.global_bfs_m, &config_.global_bfs_d, bfsmodelpath);
       std::string bfsmprimpath = (fs::path(mprim_dir)/fs::path("bfs3d.mprim")).string();
@@ -316,10 +319,6 @@ namespace ps {
       {
         config_.heuristic_cache.clear();
       }
-
-      /// Set BFS heuristic
-      std::shared_ptr<Planner> bfs_planner_ptr = std::make_shared<BFSPlanner>(planner_params_);
-//        setBFSHeuristic(goals[run], bfs_planner_ptr, bfs_action_ptrs, planner_params);
 
       // Construct planner
       std::shared_ptr<Planner> planner_ptr;
@@ -479,7 +478,7 @@ namespace ps {
           for (int i=0; i<plan.size(); ++i) {
             trajectory_msgs::JointTrajectoryPoint point;
             point.positions = plan[i].state_;
-            point.time_from_start = ros::Duration(i*planner_params_["sampling_dt"]);
+            // point.time_from_start = ros::Duration(i*planner_params_["sampling_dt"]);
             res.trajectory.joint_trajectory.points.push_back(point);
           }
         }
@@ -890,6 +889,11 @@ namespace ps {
 
   size_t StateKeyGenerator(const StateVarsType& state_vars)
   {
+    // for (auto s : state_vars) {
+    //   std::cout << s ;
+    // }
+    // std::cout << std::endl;
+
     size_t seed = 0;
     for (int i=0; i < ManipulationMoveitInterface::config_.dof; ++i)
     {
