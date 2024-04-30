@@ -153,7 +153,9 @@ void RrtPlanner::rrtThread(int thread_id)
 
         if(!isValidConfiguration(state_ptr->GetStateVars(), thread_id))
         {
-            throw runtime_error("COLLISION!");
+            // throw runtime_error("COLLISION!");
+            std::cout << "Extension in COLLISION!!!" << std::endl;
+            return;
         }
 
         if (VERBOSE)  cout << "Graph size: " <<  state_map_.size() << endl;   

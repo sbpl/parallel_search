@@ -171,7 +171,10 @@ void RrtConnectPlanner::rrtThread(int thread_id)
             
             if(!isValidConfiguration(state_ptr->GetStateVars(), thread_id))
             {
-                throw runtime_error("COLLISION!");
+                // throw runtime_error("COLLISION!");
+                std::cout << "Extension in COLLISION!!!" << std::endl;
+                break;
+                return;
             }
             
             StatePtrType connected_state;
@@ -203,7 +206,10 @@ void RrtConnectPlanner::rrtThread(int thread_id)
 
             if(!isValidConfiguration(state_ptr->GetStateVars(), thread_id))
             {
-                throw runtime_error("COLLISION!");
+                // throw runtime_error("COLLISION!");
+                std::cout << "Extension in COLLISION!!!" << std::endl;
+                break;
+                return;
             }
     
             StatePtrType connected_state;
