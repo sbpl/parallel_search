@@ -68,6 +68,9 @@ using VecDi = Eigen::Matrix<int, Eigen::Dynamic, 1>;
 using VecDf = Eigen::Matrix<decimal_t, Eigen::Dynamic, 1>;
 /// MxN Eigen matrix
 template <int M, int N>
+using Mati = Eigen::Matrix<int, M, N>;
+/// MxN Eigen matrix
+template <int M, int N>
 using Matf = Eigen::Matrix<decimal_t, M, N>;
 /// MxN Eigen matrix with M unknown
 template <int N>
@@ -123,6 +126,8 @@ typedef Matf<6, 6> Mat6f;
 typedef Vecf<Eigen::Dynamic> VecDf;
 /// Mx3 Eigen float matrix
 typedef MatDNf<3> MatD3f;
+/// Dynamic MxN Eigen int matrix
+typedef Mati<Eigen::Dynamic, Eigen::Dynamic> MatDi;
 /// Dynamic MxN Eigen float matrix
 typedef Matf<Eigen::Dynamic, Eigen::Dynamic> MatDf;
 

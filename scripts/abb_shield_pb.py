@@ -12,10 +12,12 @@ from numpy import genfromtxt
 # planner_name = 'pinsat'
 # planner_name = 'rrt'
 # planner_name = 'rrtconnect'
+planner_name = 'rrtc'
 # planner_name = 'epase'
-planner_name = 'gepase'
+# planner_name = 'gepase'
 
-static_planner = True if not (planner_name=='insat' or planner_name=='pinsat' or planner_name=='test') else False
+# static_planner = True if not (planner_name=='insat' or planner_name=='pinsat' or planner_name=='test') else False
+static_planner = False
 
 if static_planner:
   # dt = 1e-2
@@ -23,7 +25,7 @@ if static_planner:
   # dt = 6e-3
 else:
   # dt = 6e-3
-  dt = 5e-3
+  dt = 4e-3
   # dt = 0.5
   # dt = 1
 

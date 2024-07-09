@@ -122,8 +122,30 @@ namespace ps {
     // Modes
     HeuristicMode h_mode = HeuristicMode::LOS;
     GoalCheckerMode goal_mode = GoalCheckerMode::CSPACE;
-    PPMode pp_mode = PPMode::WAYPT;
+    PPMode pp_mode = PPMode::NONE;
+    // PPMode pp_mode = PPMode::WAYPT;
   };
+
+  static Vec3f getEEPosition(const VecDf& state);
+  static Vec3f getEEPosition(const StateVarsType& state_vars);
+  static Vec4f getEERotation(const VecDf& state);
+  static Vec4f getEERotation(const StateVarsType& state_vars);
+  static bool isGoalState(const StateVarsType& state_vars, double dist_thresh);
+  static bool isEEGoalState(const StateVarsType& state_vars, double dist_thresh);
+  static bool isBFS3DGoalState(const StateVarsType& state_vars, double dist_thresh);
+  static size_t StateKeyGenerator(const StateVarsType& state_vars);
+  static size_t BFS3DStateKeyGenerator(const StateVarsType& state_vars);
+  static size_t EdgeKeyGenerator(const EdgePtrType& edge_ptr);
+  static double computeHeuristicStateToState(const StateVarsType& state_vars_1, const StateVarsType& state_vars_2);
+  static double zeroHeuristic(const StateVarsType& state_vars);
+  static double computeHeuristic(const StateVarsType& state_vars);
+  static double computeEEHeuristic(const StateVarsType& state_vars);
+  static double computeLoSHeuristic(const StateVarsType& state_vars);
+  static double computeShieldHeuristic(const StateVarsType& state_vars);
+  // static double computeBFSHeuristic(const StateVarsType& state_vars);
+  static double computeBFSHeuristic(const StateVarsType& state_vars);
+  static void postProcess(std::vector<PlanElement>& path, double& cost, double allowed_time, const std::shared_ptr<Action>& act, BSplineOpt& opt);
+  static void postProcessWithControlPoints(std::vector<PlanElement>& path, double& cost, double allowed_time, const std::shared_ptr<Action>& act, BSplineOpt& opt);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -152,7 +174,8 @@ namespace ps {
 
 
       /// Load MuJoCo model
-      std::string modelpath = (fs::path(model_dir)/fs::path("irb1600_6_12_realshield.xml")).string();
+      // std::string modelpath = (fs::path(model_dir)/fs::path("irb1600_6_12_realshield.xml")).string();
+      std::string modelpath = (fs::path(model_dir)/fs::path("irb1600_6_12_realshield_obs.xml")).string();
       mjModel *m = nullptr;
       mjData *d = nullptr;
 
@@ -170,11 +193,11 @@ namespace ps {
       // Define planner parameters
       planner_params_["num_threads"] = num_threads;
       planner_params_["heuristic_weight"] = 10;
-      // planner_params_["timeout"] = 20; /// Set at the solve function
+      planner_params_["timeout"] = 2; /// Set at the solve function
       planner_params_["adaptive_opt"] = 0;
       planner_params_["smart_opt"] = 1;
       planner_params_["min_exec_duration"] = 0.1;
-      planner_params_["max_exec_duration"] = 0.7;
+      planner_params_["max_exec_duration"] = 2.0;
       planner_params_["num_ctrl_points"] = 7;
       planner_params_["min_ctrl_points"] = 4;
       planner_params_["max_ctrl_points"] = 7;
@@ -220,7 +243,8 @@ namespace ps {
                        opt_vec_ptr_, num_threads);
 
       // Construct BFS actions
-      std::string bfsmodelpath = (fs::path(model_dir)/fs::path("realshield_bfs_heuristic.xml")).string();
+      // std::string bfsmodelpath = (fs::path(model_dir)/fs::path("realshield_bfs_heuristic.xml")).string();
+      std::string bfsmodelpath = (fs::path(model_dir)/fs::path("realshield_obs_bfs_heuristic.xml")).string();
       setupMujoco(&config_.global_bfs_m, &config_.global_bfs_d, bfsmodelpath);
       std::string bfsmprimpath = (fs::path(mprim_dir)/fs::path("bfs3d.mprim")).string();
       std::vector<std::shared_ptr<Action>> bfs_action_ptrs;
@@ -241,9 +265,14 @@ namespace ps {
       return true;
     }
 
+    /********************************************************/
+
     bool solve(moveit_msgs::PlanningScene& planning_scene,
                moveit_msgs::MotionPlanRequest& req,
                moveit_msgs::MotionPlanResponse& res) {
+              
+      return false;
+
       planner_params_["timeout"] = req.allowed_planning_time;
 
       if (req.goal_constraints.size() != 1) {
@@ -290,10 +319,6 @@ namespace ps {
       {
         config_.heuristic_cache.clear();
       }
-
-      /// Set BFS heuristic
-      std::shared_ptr<Planner> bfs_planner_ptr = std::make_shared<BFSPlanner>(planner_params_);
-//        setBFSHeuristic(goals[run], bfs_planner_ptr, bfs_action_ptrs, planner_params);
 
       // Construct planner
       std::shared_ptr<Planner> planner_ptr;
@@ -453,7 +478,7 @@ namespace ps {
           for (int i=0; i<plan.size(); ++i) {
             trajectory_msgs::JointTrajectoryPoint point;
             point.positions = plan[i].state_;
-            point.time_from_start = ros::Duration(i*planner_params_["sampling_dt"]);
+            // point.time_from_start = ros::Duration(i*planner_params_["sampling_dt"]);
             res.trajectory.joint_trajectory.points.push_back(point);
           }
         }
@@ -502,201 +527,13 @@ namespace ps {
       return stats;
     }
 
-    /// Static functions
-    static double roundOff(double value, unsigned char prec)
+    double roundOff(double value, unsigned char prec)
     {
       double pow_10 = pow(10.0, (double)prec);
       return round(value * pow_10) / pow_10;
     }
 
-    static Vec3f getEEPosition(const VecDf& state)
-    {
-      mju_copy(config_.global_d->qpos, state.data(), config_.global_m->nq);
-      mj_fwdPosition(config_.global_m, config_.global_d);
-
-      VecDf ee_pos(3);
-      mju_copy(ee_pos.data(), config_.global_d->xpos + 3 * (config_.global_m->nbody - 1), 3);
-
-      return ee_pos;
-    }
-
-    static Vec3f getEEPosition(const StateVarsType& state_vars)
-    {
-      Eigen::Map<const VecDf> state(&state_vars[0], state_vars.size());
-      return getEEPosition(state);
-    }
-
-    static Vec4f getEERotation(const VecDf& state)
-    {
-      mju_copy(config_.global_d->qpos, state.data(), config_.global_m->nq);
-      mj_fwdPosition(config_.global_m, config_.global_d);
-
-      VecDf ee_rot(4);
-      mju_copy(ee_rot.data(), config_.global_d->xquat + 4 * (config_.global_m->nbody - 1), 4);
-
-      return ee_rot;
-    }
-
-    static Vec4f getEERotation(const StateVarsType& state_vars)
-    {
-      Eigen::Map<const VecDf> state(&state_vars[0], state_vars.size());
-      return getEERotation(state);
-    }
-
-    static bool isGoalState(const StateVarsType& state_vars, double dist_thresh)
-    {
-      /// Joint-wise threshold
-      for (int i=0; i < config_.dof; ++i)
-      {
-        if (fabs(config_.goal[i] - state_vars[i]) > dist_thresh)
-        {
-          return false;
-        }
-      }
-      return true;
-
-      /// Euclidean threshold
-  //    return (computeHeuristic(state_vars) < dist_thresh);
-    }
-
-    static bool isEEGoalState(const StateVarsType& state_vars, double dist_thresh)
-    {
-      Vec3f ee_pos = getEEPosition(state_vars);
-
-      /// Joint-wise threshold
-      for (int i=0; i < 3; ++i)
-      {
-        if (fabs(config_.goal_ee_pos[i] - ee_pos[i]) > dist_thresh)
-        {
-          return false;
-        }
-      }
-      return true;
-    }
-
-
-    static bool isBFS3DGoalState(const StateVarsType& state_vars, double dist_thresh)
-    {
-      return false;
-    }
-
-    static size_t StateKeyGenerator(const StateVarsType& state_vars)
-    {
-      size_t seed = 0;
-      for (int i=0; i < config_.dof; ++i)
-      {
-        boost::hash_combine(seed, state_vars[i]);
-      }
-      return seed;
-    }
-
-    static size_t BFS3DStateKeyGenerator(const StateVarsType& state_vars)
-    {
-      size_t seed = 0;
-      for (int i=0; i < 3; ++i)
-      {
-        boost::hash_combine(seed, state_vars[i]);
-      }
-      return seed;
-    }
-
-    static size_t EdgeKeyGenerator(const EdgePtrType& edge_ptr)
-    {
-      int controller_id;
-      auto action_ptr = edge_ptr->action_ptr_;
-
-      controller_id = std::stoi(action_ptr->GetType());
-
-      size_t seed = 0;
-      boost::hash_combine(seed, edge_ptr->parent_state_ptr_->GetStateID());
-      boost::hash_combine(seed, controller_id);
-
-      return seed;
-    }
-
-    static double computeHeuristicStateToState(const StateVarsType& state_vars_1, const StateVarsType& state_vars_2)
-    {
-      double dist = 0.0;
-      for (int i=0; i < config_.dof; ++i)
-      {
-        dist += pow(state_vars_2[i]-state_vars_1[i], 2);
-      }
-      return std::sqrt(dist);
-    }
-
-    static double zeroHeuristic(const StateVarsType& state_vars)
-    {
-      return 0.0;
-    }
-
-    static double computeHeuristic(const StateVarsType& state_vars)
-    {
-      return computeHeuristicStateToState(state_vars, config_.goal);
-    }
-
-    static double computeEEHeuristic(const StateVarsType& state_vars)
-    {
-      Eigen::Map<const VecDf> state(&state_vars[0], state_vars.size());
-      Vec3f ee_pos = getEEPosition(state);
-
-      return (config_.goal_ee_pos - ee_pos).norm();
-    }
-
-    static double computeLoSHeuristic(const StateVarsType& state_vars)
-    {
-      size_t state_key = StateKeyGenerator(state_vars);
-      if (config_.heuristic_cache.find(state_key) != config_.heuristic_cache.end())
-      {
-        return config_.heuristic_cache[state_key];
-      }
-
-      double h = computeHeuristic(state_vars);
-      config_.heuristic_cache[state_key] = h;
-      int N = static_cast<int>(h)/9e-1;
-      Eigen::Map<const VecDf> p1(&state_vars[0], state_vars.size());
-      Eigen::Map<const VecDf> p2(&config_.goal[0], config_.goal.size());
-
-      for (int i=0; i<N; ++i)
-      {
-        double j = i/static_cast<double>(N);
-        VecDf intp_pt = p1*(1-j) + p2*j;
-
-        mju_copy(config_.global_d->qpos, intp_pt.data(), config_.global_m->nq);
-        mj_fwdPosition(config_.global_m, config_.global_d);
-
-        if (config_.global_d->ncon > 0)
-        {
-          config_.heuristic_cache[state_key] = 100;
-          break;
-        }
-      }
-
-      return config_.heuristic_cache[state_key];
-    }
-
-    static double computeShieldHeuristic(const StateVarsType& state_vars)
-    {
-
-  //    double cost = shield_h_w(0) * pow((goal[0] - state_vars[0]),2) +
-  //                  shield_h_w(1) * pow((state_vars[1]),2) +
-  //                  shield_h_w(2) * pow((goal[2] - state_vars[2]),2) +
-  //                  shield_h_w(3) * pow((goal[3] - state_vars[3]),2) +
-  //                  shield_h_w(4) * pow((goal[4] - state_vars[4]),2) +
-  //                  shield_h_w(5) * pow((goal[5] - state_vars[5]),2);
-
-      double cost = config_.shield_h_w(0) * pow((config_.goal[0] - state_vars[0]), 2) +
-                    config_.shield_h_w(1) * pow((state_vars[1]), 2) +
-                    config_.shield_h_w(2) * pow((-M_PI / 2 - state_vars[2]), 2);
-      return std::sqrt(cost);
-    }
-
-  // double computeBFSHeuristic(const StateVarsType& state_vars)
-  // {
-  //   size_t state_key = StateKeyGenerator(state_vars);
-  //   return rm::bfs_state_map[state_key]->GetFValue();
-  // }
-
-    static void initializeBFS(int length, int width, int height, std::vector<std::vector<int>> occupied_cells)
+    void initializeBFS(int length, int width, int height, std::vector<std::vector<int>> occupied_cells)
     {
       config_.bfs3d = std::make_shared<smpl::BFS_3D>(length, width, height);
       for (auto& c : occupied_cells)
@@ -705,7 +542,7 @@ namespace ps {
       }
     }
 
-    static void setupSmplBFS()
+    void setupSmplBFS()
     {
       Vec3f lwh;
       lwh << config_.global_bfs_m->numeric_data[3] - config_.global_bfs_m->numeric_data[0],
@@ -752,7 +589,7 @@ namespace ps {
                 << " cells containing " << occupied_cells.size() << " occupied cells." << std::endl;
     }
 
-    static void recomputeBFS()
+    void recomputeBFS()
     {
       int x = static_cast<int>((config_.goal_ee_pos(0) - config_.global_bfs_m->numeric_data[0]) / BFS_DISCRETIZATION);
       int y = static_cast<int>((config_.goal_ee_pos(1) - config_.global_bfs_m->numeric_data[1]) / BFS_DISCRETIZATION);
@@ -761,41 +598,7 @@ namespace ps {
       config_.bfs3d->run(x, y, z);
     }
 
-    static double computeBFSHeuristic(const StateVarsType& state_vars)
-    {
-      Vec3f ee_pos = getEEPosition(state_vars);
-
-      int x = static_cast<int>((ee_pos(0) - config_.global_bfs_m->numeric_data[0]) / BFS_DISCRETIZATION);
-      int y = static_cast<int>((ee_pos(1) - config_.global_bfs_m->numeric_data[1]) / BFS_DISCRETIZATION);
-      int z = static_cast<int>((ee_pos(2) - config_.global_bfs_m->numeric_data[2]) / BFS_DISCRETIZATION);
-      double cost_per_cell = 1;
-
-      if (!config_.bfs3d->inBounds(x, y, z)) {
-        return DINF;
-      }
-      else if (config_.bfs3d->getDistance(x, y, z) == smpl::BFS_3D::WALL) {
-        return DINF;
-      }
-      else {
-        return cost_per_cell * config_.bfs3d->getDistance(x, y, z);
-      }
-    }
-
-    static void postProcess(std::vector<PlanElement>& path, double& cost, double allowed_time, const std::shared_ptr<Action>& act, BSplineOpt& opt)
-    {
-      std::cout << "Post processing with timeout: " << allowed_time << std::endl;
-      std::shared_ptr<InsatAction> ins_act = std::dynamic_pointer_cast<InsatAction>(act);
-      opt.postProcess(path, cost, allowed_time, ins_act.get());
-    }
-
-    static void postProcessWithControlPoints(std::vector<PlanElement>& path, double& cost, double allowed_time, const std::shared_ptr<Action>& act, BSplineOpt& opt)
-    {
-      std::cout << "Post processing with timeout: " << allowed_time << std::endl;
-      std::shared_ptr<InsatAction> ins_act = std::dynamic_pointer_cast<InsatAction>(act);
-      opt.postProcessWithControlPoints(path, cost, allowed_time, ins_act.get());
-    }
-
-    static void setupMujoco(mjModel **m, mjData **d, std::string modelpath)
+    void setupMujoco(mjModel **m, mjData **d, std::string modelpath)
     {
       *m = nullptr;
       if (std::strlen(modelpath.c_str()) > 4 && !strcmp(modelpath.c_str() + std::strlen(modelpath.c_str()) - 4, ".mjb"))
@@ -813,7 +616,7 @@ namespace ps {
       *d = mj_makeData(*m);
     }
 
-    static MatDf loadMPrims(std::string mprim_file)
+    MatDf loadMPrims(std::string mprim_file)
     {
       if (!config_.global_m)
       {
@@ -832,7 +635,7 @@ namespace ps {
       return mprims;
     }
 
-    static void constructActions(std::vector<std::shared_ptr<Action>>& action_ptrs,
+    void constructActions(std::vector<std::shared_ptr<Action>>& action_ptrs,
                           ParamsType& action_params,
                           std::string& mj_modelpath, std::string& mprimpath,
                           ManipulationAction::OptVecPtrType& opt,
@@ -879,7 +682,7 @@ namespace ps {
     }
 
 
-    static void constructBFSActions(std::vector<std::shared_ptr<Action>>& action_ptrs,
+    void constructBFSActions(std::vector<std::shared_ptr<Action>>& action_ptrs,
                             ParamsType& action_params,
                             std::string& mj_modelpath, std::string& mprimpath,
                             int num_threads)
@@ -910,7 +713,7 @@ namespace ps {
     }
 
 
-    static void constructPlanner(std::string planner_name, std::shared_ptr<Planner>& planner_ptr, std::vector<std::shared_ptr<Action>>& action_ptrs, ParamsType& planner_params, ParamsType& action_params, BSplineOpt& opt)
+    void constructPlanner(std::string planner_name, std::shared_ptr<Planner>& planner_ptr, std::vector<std::shared_ptr<Action>>& action_ptrs, ParamsType& planner_params, ParamsType& action_params, BSplineOpt& opt)
     {
       if (planner_name == "epase")
         planner_ptr = std::make_shared<EpasePlanner>(planner_params);
@@ -981,7 +784,7 @@ namespace ps {
       }
     }
 
-    static MatDf sampleTrajectory(const drake::trajectories::BsplineTrajectory<double>& traj, double dt=1e-1)
+    MatDf sampleTrajectory(const drake::trajectories::BsplineTrajectory<double>& traj, double dt=1e-1)
     {
       MatDf sampled_traj;
       int i=0;
@@ -1010,7 +813,234 @@ namespace ps {
 
   };
 
+  /////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////Free Functions ///////////////////////////////////////////////
 
+  Vec3f getEEPosition(const VecDf& state)
+  {
+    mju_copy(ManipulationMoveitInterface::config_.global_d->qpos, state.data(), ManipulationMoveitInterface::config_.global_m->nq);
+    mj_fwdPosition(ManipulationMoveitInterface::config_.global_m, ManipulationMoveitInterface::config_.global_d);
+
+    VecDf ee_pos(3);
+    mju_copy(ee_pos.data(), ManipulationMoveitInterface::config_.global_d->xpos + 3 * (ManipulationMoveitInterface::config_.global_m->nbody - 1), 3);
+
+    return ee_pos;
+  }
+
+  Vec3f getEEPosition(const StateVarsType& state_vars)
+  {
+    Eigen::Map<const VecDf> state(&state_vars[0], state_vars.size());
+    return getEEPosition(state);
+  }
+
+  Vec4f getEERotation(const VecDf& state)
+  {
+    mju_copy(ManipulationMoveitInterface::config_.global_d->qpos, state.data(), ManipulationMoveitInterface::config_.global_m->nq);
+    mj_fwdPosition(ManipulationMoveitInterface::config_.global_m, ManipulationMoveitInterface::config_.global_d);
+
+    VecDf ee_rot(4);
+    mju_copy(ee_rot.data(), ManipulationMoveitInterface::config_.global_d->xquat + 4 * (ManipulationMoveitInterface::config_.global_m->nbody - 1), 4);
+
+    return ee_rot;
+  }
+
+  Vec4f getEERotation(const StateVarsType& state_vars)
+  {
+    Eigen::Map<const VecDf> state(&state_vars[0], state_vars.size());
+    return getEERotation(state);
+  }
+
+  bool isGoalState(const StateVarsType& state_vars, double dist_thresh)
+  {
+    /// Joint-wise threshold
+    for (int i=0; i < ManipulationMoveitInterface::config_.dof; ++i)
+    {
+      if (fabs(ManipulationMoveitInterface::config_.goal[i] - state_vars[i]) > dist_thresh)
+      {
+        return false;
+      }
+    }
+    return true;
+
+    /// Euclidean threshold
+//    return (computeHeuristic(state_vars) < dist_thresh);
+  }
+
+  bool isEEGoalState(const StateVarsType& state_vars, double dist_thresh)
+  {
+    Vec3f ee_pos = getEEPosition(state_vars);
+
+    /// Joint-wise threshold
+    for (int i=0; i < 3; ++i)
+    {
+      if (fabs(ManipulationMoveitInterface::config_.goal_ee_pos[i] - ee_pos[i]) > dist_thresh)
+      {
+        return false;
+      }
+    }
+    return true;
+  }
+
+
+  bool isBFS3DGoalState(const StateVarsType& state_vars, double dist_thresh)
+  {
+    return false;
+  }
+
+  size_t StateKeyGenerator(const StateVarsType& state_vars)
+  {
+    // for (auto s : state_vars) {
+    //   std::cout << s ;
+    // }
+    // std::cout << std::endl;
+
+    size_t seed = 0;
+    for (int i=0; i < ManipulationMoveitInterface::config_.dof; ++i)
+    {
+      boost::hash_combine(seed, state_vars[i]);
+    }
+    return seed;
+  }
+
+  size_t BFS3DStateKeyGenerator(const StateVarsType& state_vars)
+  {
+    size_t seed = 0;
+    for (int i=0; i < 3; ++i)
+    {
+      boost::hash_combine(seed, state_vars[i]);
+    }
+    return seed;
+  }
+
+  size_t EdgeKeyGenerator(const EdgePtrType& edge_ptr)
+  {
+    int controller_id;
+    auto action_ptr = edge_ptr->action_ptr_;
+
+    controller_id = std::stoi(action_ptr->GetType());
+
+    size_t seed = 0;
+    boost::hash_combine(seed, edge_ptr->parent_state_ptr_->GetStateID());
+    boost::hash_combine(seed, controller_id);
+
+    return seed;
+  }
+
+  double computeHeuristicStateToState(const StateVarsType& state_vars_1, const StateVarsType& state_vars_2)
+  {
+    double dist = 0.0;
+    for (int i=0; i < ManipulationMoveitInterface::config_.dof; ++i)
+    {
+      dist += pow(state_vars_2[i]-state_vars_1[i], 2);
+    }
+    return std::sqrt(dist);
+  }
+
+  double zeroHeuristic(const StateVarsType& state_vars)
+  {
+    return 0.0;
+  }
+
+  double computeHeuristic(const StateVarsType& state_vars)
+  {
+    return computeHeuristicStateToState(state_vars, ManipulationMoveitInterface::config_.goal);
+  }
+
+  double computeEEHeuristic(const StateVarsType& state_vars)
+  {
+    Eigen::Map<const VecDf> state(&state_vars[0], state_vars.size());
+    Vec3f ee_pos = getEEPosition(state);
+
+    return (ManipulationMoveitInterface::config_.goal_ee_pos - ee_pos).norm();
+  }
+
+  double computeLoSHeuristic(const StateVarsType& state_vars)
+  {
+    size_t state_key = StateKeyGenerator(state_vars);
+    if (ManipulationMoveitInterface::config_.heuristic_cache.find(state_key) != ManipulationMoveitInterface::config_.heuristic_cache.end())
+    {
+      return ManipulationMoveitInterface::config_.heuristic_cache[state_key];
+    }
+
+    double h = computeHeuristic(state_vars);
+    ManipulationMoveitInterface::config_.heuristic_cache[state_key] = h;
+    int N = static_cast<int>(h)/9e-1;
+    Eigen::Map<const VecDf> p1(&state_vars[0], state_vars.size());
+    Eigen::Map<const VecDf> p2(&ManipulationMoveitInterface::config_.goal[0], ManipulationMoveitInterface::config_.goal.size());
+
+    for (int i=0; i<N; ++i)
+    {
+      double j = i/static_cast<double>(N);
+      VecDf intp_pt = p1*(1-j) + p2*j;
+
+      mju_copy(ManipulationMoveitInterface::config_.global_d->qpos, intp_pt.data(), ManipulationMoveitInterface::config_.global_m->nq);
+      mj_fwdPosition(ManipulationMoveitInterface::config_.global_m, ManipulationMoveitInterface::config_.global_d);
+
+      if (ManipulationMoveitInterface::config_.global_d->ncon > 0)
+      {
+        ManipulationMoveitInterface::config_.heuristic_cache[state_key] = 100;
+        break;
+      }
+    }
+
+    return ManipulationMoveitInterface::config_.heuristic_cache[state_key];
+  }
+
+  double computeShieldHeuristic(const StateVarsType& state_vars)
+  {
+
+//    double cost = shield_h_w(0) * pow((goal[0] - state_vars[0]),2) +
+//                  shield_h_w(1) * pow((state_vars[1]),2) +
+//                  shield_h_w(2) * pow((goal[2] - state_vars[2]),2) +
+//                  shield_h_w(3) * pow((goal[3] - state_vars[3]),2) +
+//                  shield_h_w(4) * pow((goal[4] - state_vars[4]),2) +
+//                  shield_h_w(5) * pow((goal[5] - state_vars[5]),2);
+
+    double cost = ManipulationMoveitInterface::config_.shield_h_w(0) * pow((ManipulationMoveitInterface::config_.goal[0] - state_vars[0]), 2) +
+                  ManipulationMoveitInterface::config_.shield_h_w(1) * pow((state_vars[1]), 2) +
+                  ManipulationMoveitInterface::config_.shield_h_w(2) * pow((-M_PI / 2 - state_vars[2]), 2);
+    return std::sqrt(cost);
+  }
+
+  // double computeBFSHeuristic(const StateVarsType& state_vars)
+  // {
+  //   size_t state_key = StateKeyGenerator(state_vars);
+  //   return ManipulationMoveitInterface::config_.bfs_state_map[state_key]->GetFValue();
+  // }
+
+  double computeBFSHeuristic(const StateVarsType& state_vars)
+  {
+    Vec3f ee_pos = getEEPosition(state_vars);
+
+    int x = static_cast<int>((ee_pos(0) - ManipulationMoveitInterface::config_.global_bfs_m->numeric_data[0]) / BFS_DISCRETIZATION);
+    int y = static_cast<int>((ee_pos(1) - ManipulationMoveitInterface::config_.global_bfs_m->numeric_data[1]) / BFS_DISCRETIZATION);
+    int z = static_cast<int>((ee_pos(2) - ManipulationMoveitInterface::config_.global_bfs_m->numeric_data[2]) / BFS_DISCRETIZATION);
+    double cost_per_cell = 1;
+
+    if (!ManipulationMoveitInterface::config_.bfs3d->inBounds(x, y, z)) {
+      return DINF;
+    }
+    else if (ManipulationMoveitInterface::config_.bfs3d->getDistance(x, y, z) == smpl::BFS_3D::WALL) {
+      return DINF;
+    }
+    else {
+      return cost_per_cell * ManipulationMoveitInterface::config_.bfs3d->getDistance(x, y, z);
+    }
+  }
+
+  void postProcess(std::vector<PlanElement>& path, double& cost, double allowed_time, const std::shared_ptr<Action>& act, BSplineOpt& opt)
+  {
+    std::cout << "Post processing with timeout: " << allowed_time << std::endl;
+    std::shared_ptr<InsatAction> ins_act = std::dynamic_pointer_cast<InsatAction>(act);
+    opt.postProcess(path, cost, allowed_time, ins_act.get());
+  }
+
+  void postProcessWithControlPoints(std::vector<PlanElement>& path, double& cost, double allowed_time, const std::shared_ptr<Action>& act, BSplineOpt& opt)
+  {
+    std::cout << "Post processing with timeout: " << allowed_time << std::endl;
+    std::shared_ptr<InsatAction> ins_act = std::dynamic_pointer_cast<InsatAction>(act);
+    opt.postProcessWithControlPoints(path, cost, allowed_time, ins_act.get());
+  }
 
 }
 
