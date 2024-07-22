@@ -39,12 +39,12 @@
         <geom name="floor" pos="0 0 0" size="5 5 .125" type="plane" material="BeigeMaterial" condim="3"  contype="0" conaffinity="0"/>
 
         <!-- <site name="world"/> -->
-        <body name="obstacle" pos="0.0 0.0 0.4041">
+        <!-- <body name="obstacle" pos="0.0 0.0 0.4041"> -->
 
             <include file="realshield_assembly.xml"/>
 
-            <body name="base" pos="0.0 0.0 0.07847612194" euler="0 0 2.0944">
-                <site name="base"/>
+            <body name="abb_arm" pos="0.0 0.0 0.482576122" euler="0 0 2.0944">
+                <site name="abb_arm"/>
                 <geom type="mesh" rgba="0.9 0.9 0.9 1" mesh="base_link" contype="2" conaffinity="2"/>
                 <body name="link_1" pos="0 0 0">
                     <inertial pos="0.0444007 -0.00834001 0.340163" quat="0.575539 0.391509 0.239129 0.676973" mass="44.6131" diaginertia="1.4797 1.22366 0.686463" />
@@ -79,7 +79,7 @@
                     </body>
                 </body>            
             </body>
-        </body>
+        <!-- </body> -->
 
     </worldbody>
 
