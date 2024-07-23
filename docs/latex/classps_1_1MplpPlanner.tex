@@ -1,0 +1,132 @@
+\hypertarget{classps_1_1MplpPlanner}{}\doxysection{ps\+::Mplp\+Planner Class Reference}
+\label{classps_1_1MplpPlanner}\index{ps::MplpPlanner@{ps::MplpPlanner}}
+
+
+Inheritance diagram for ps\+::Mplp\+Planner\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=167pt]{classps_1_1MplpPlanner__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for ps\+::Mplp\+Planner\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classps_1_1MplpPlanner__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1MplpPlanner_aeaf45048ef8bb9ad5ae323e20647381d}\label{classps_1_1MplpPlanner_aeaf45048ef8bb9ad5ae323e20647381d}} 
+{\bfseries Mplp\+Planner} (Params\+Type planner\+\_\+params)
+\item 
+\mbox{\Hypertarget{classps_1_1MplpPlanner_a7b6eef8ee56357ea5717bafa0d18bef7}\label{classps_1_1MplpPlanner_a7b6eef8ee56357ea5717bafa0d18bef7}} 
+bool {\bfseries Plan} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1MplpPlanner_a53fc26f977a69731d504bdfa4976a577}\label{classps_1_1MplpPlanner_a53fc26f977a69731d504bdfa4976a577}} 
+void {\bfseries initialize} ()
+\item 
+\mbox{\Hypertarget{classps_1_1MplpPlanner_a6dde9e752a2c322f229d8c89fd99b13a}\label{classps_1_1MplpPlanner_a6dde9e752a2c322f229d8c89fd99b13a}} 
+void {\bfseries initialize\+Replanning} ()
+\item 
+\mbox{\Hypertarget{classps_1_1MplpPlanner_a619af08ed6ff8bd99cc899e339970d43}\label{classps_1_1MplpPlanner_a619af08ed6ff8bd99cc899e339970d43}} 
+bool {\bfseries replan\+MPLP} ()
+\item 
+\mbox{\Hypertarget{classps_1_1MplpPlanner_a35f0d8dde9b872d169470d8cca82d90d}\label{classps_1_1MplpPlanner_a35f0d8dde9b872d169470d8cca82d90d}} 
+void {\bfseries expand\+State} (\mbox{\hyperlink{classps_1_1State}{State\+Ptr\+Type}} state\+\_\+ptr)
+\item 
+\mbox{\Hypertarget{classps_1_1MplpPlanner_a2f7ff21259a51e73c121e38b379b5d0f}\label{classps_1_1MplpPlanner_a2f7ff21259a51e73c121e38b379b5d0f}} 
+void {\bfseries delegate\+Edges} ()
+\item 
+\mbox{\Hypertarget{classps_1_1MplpPlanner_a02d21d1315f2f5dc7ae7b4ee7b37d1ff}\label{classps_1_1MplpPlanner_a02d21d1315f2f5dc7ae7b4ee7b37d1ff}} 
+void {\bfseries evaluate\+Edge} (\mbox{\hyperlink{classps_1_1Edge}{Edge\+Ptr\+Type}} edge\+\_\+ptr, int thread\+\_\+id)
+\item 
+\mbox{\Hypertarget{classps_1_1MplpPlanner_a6078e2c4c330cba65cf97084b35715ad}\label{classps_1_1MplpPlanner_a6078e2c4c330cba65cf97084b35715ad}} 
+void {\bfseries evaluate\+Edge\+Loop} (int thread\+\_\+id)
+\item 
+\mbox{\Hypertarget{classps_1_1MplpPlanner_ad4a886562b2d8895f6892c3815a9858b}\label{classps_1_1MplpPlanner_ad4a886562b2d8895f6892c3815a9858b}} 
+void {\bfseries construct\+Plan} (\mbox{\hyperlink{classps_1_1State}{State\+Ptr\+Type}} goal\+\_\+state\+\_\+ptr)
+\item 
+\mbox{\Hypertarget{classps_1_1MplpPlanner_a6df0b51ec9da955454fb35bbd4af87cb}\label{classps_1_1MplpPlanner_a6df0b51ec9da955454fb35bbd4af87cb}} 
+void {\bfseries monitor\+Paths} ()
+\item 
+\mbox{\Hypertarget{classps_1_1MplpPlanner_aa0d23f5e4c883df2841e678edb37a83b}\label{classps_1_1MplpPlanner_aa0d23f5e4c883df2841e678edb37a83b}} 
+void {\bfseries assign\+Edge\+Priority} (\mbox{\hyperlink{classps_1_1Edge}{Edge\+Ptr\+Type}} \&edge\+\_\+ptr)
+\item 
+\mbox{\Hypertarget{classps_1_1MplpPlanner_af2ad7a844e5ecf8500c5562680618882}\label{classps_1_1MplpPlanner_af2ad7a844e5ecf8500c5562680618882}} 
+void {\bfseries update\+Edge\+Priority} (std\+::vector$<$ \mbox{\hyperlink{classps_1_1Edge}{Edge\+Ptr\+Type}} $>$ \&edge\+\_\+ptr, double factor)
+\item 
+\mbox{\Hypertarget{classps_1_1MplpPlanner_a8c6ea0bbfece2997ecd99fe71c014d09}\label{classps_1_1MplpPlanner_a8c6ea0bbfece2997ecd99fe71c014d09}} 
+void {\bfseries update\+Edge\+Priority} (\mbox{\hyperlink{classps_1_1Edge}{Edge\+Ptr\+Type}} \&edge\+\_\+ptr, double factor)
+\item 
+\mbox{\Hypertarget{classps_1_1MplpPlanner_af851f6cef72ff4defddfb05eb70dcd84}\label{classps_1_1MplpPlanner_af851f6cef72ff4defddfb05eb70dcd84}} 
+void {\bfseries exit} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1MplpPlanner_ad1ac0eae634336d45a4c71eef9072811}\label{classps_1_1MplpPlanner_ad1ac0eae634336d45a4c71eef9072811}} 
+\mbox{\hyperlink{classsmpl_1_1intrusive__heap}{State\+Queue\+Min\+Type}} {\bfseries state\+\_\+open\+\_\+list\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1MplpPlanner_ace7850d1a267b3c916e3feaa058d04be}\label{classps_1_1MplpPlanner_ace7850d1a267b3c916e3feaa058d04be}} 
+\mbox{\hyperlink{classsmpl_1_1intrusive__heap}{Edge\+Queue\+Max\+Type}} {\bfseries edges\+\_\+open\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1MplpPlanner_a707341212b500ee97574cbaefaf32224}\label{classps_1_1MplpPlanner_a707341212b500ee97574cbaefaf32224}} 
+std\+::vector$<$ std\+::vector$<$ \mbox{\hyperlink{classps_1_1Edge}{Edge\+Ptr\+Type}} $>$ $>$ {\bfseries lazy\+\_\+plans\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1MplpPlanner_a7969470af39992953d9b1a3b2ab960aa}\label{classps_1_1MplpPlanner_a7969470af39992953d9b1a3b2ab960aa}} 
+std\+::vector$<$ int $>$ {\bfseries plan\+\_\+evaluation\+\_\+outcomes\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1MplpPlanner_aa9c83d6761485aeca0575c2a6730b1b6}\label{classps_1_1MplpPlanner_aa9c83d6761485aeca0575c2a6730b1b6}} 
+int {\bfseries successful\+\_\+plan\+\_\+idx\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1MplpPlanner_a3a3ce0ef623bd61ae4ae9a56c550ac69}\label{classps_1_1MplpPlanner_a3a3ce0ef623bd61ae4ae9a56c550ac69}} 
+double {\bfseries cost\+\_\+bound\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1MplpPlanner_a12f1e7e0be1b8243f1f5386722593c3e}\label{classps_1_1MplpPlanner_a12f1e7e0be1b8243f1f5386722593c3e}} 
+int {\bfseries num\+\_\+threads\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1MplpPlanner_ab9a2f897fcf7ceddb0c8d0c1b0edd749}\label{classps_1_1MplpPlanner_ab9a2f897fcf7ceddb0c8d0c1b0edd749}} 
+Lock\+Type {\bfseries lock\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1MplpPlanner_a7b52664970d7ad8500d95535a959ab5f}\label{classps_1_1MplpPlanner_a7b52664970d7ad8500d95535a959ab5f}} 
+Lock\+Type {\bfseries lock\+\_\+2\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1MplpPlanner_a5141f1536219f1c294f15a14b14f9756}\label{classps_1_1MplpPlanner_a5141f1536219f1c294f15a14b14f9756}} 
+std\+::vector$<$ Lock\+Type $>$ {\bfseries lock\+\_\+vec\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1MplpPlanner_adfbca0edbef5fdfee00b420eac0b5544}\label{classps_1_1MplpPlanner_adfbca0edbef5fdfee00b420eac0b5544}} 
+std\+::vector$<$ std\+::future$<$ void $>$ $>$ {\bfseries edge\+\_\+evaluation\+\_\+futures\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1MplpPlanner_a0a697fe29ea3861c4305821ce5b116dd}\label{classps_1_1MplpPlanner_a0a697fe29ea3861c4305821ce5b116dd}} 
+std\+::vector$<$ \mbox{\hyperlink{classps_1_1Edge}{Edge\+Ptr\+Type}} $>$ {\bfseries edge\+\_\+evaluation\+\_\+vec\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1MplpPlanner_aef7123523cdc17ba4878b1ab3d41d81e}\label{classps_1_1MplpPlanner_aef7123523cdc17ba4878b1ab3d41d81e}} 
+std\+::vector$<$ int $>$ {\bfseries edge\+\_\+evaluation\+\_\+status\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1MplpPlanner_afae9150d5ce307e8dfc12627c75253dd}\label{classps_1_1MplpPlanner_afae9150d5ce307e8dfc12627c75253dd}} 
+std\+::shared\+\_\+ptr$<$ std\+::thread $>$ {\bfseries delegate\+\_\+edges\+\_\+process\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1MplpPlanner_ad959441613af76d5c3b52ca2d4cc3a07}\label{classps_1_1MplpPlanner_ad959441613af76d5c3b52ca2d4cc3a07}} 
+std\+::shared\+\_\+ptr$<$ std\+::thread $>$ {\bfseries monitor\+\_\+paths\+\_\+process\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1MplpPlanner_aa520fcfb00c6e57adc7716d5e2196211}\label{classps_1_1MplpPlanner_aa520fcfb00c6e57adc7716d5e2196211}} 
+std\+::atomic$<$ bool $>$ {\bfseries terminate\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1MplpPlanner_a30eeb667483c62d126abd17c2ecc72fc}\label{classps_1_1MplpPlanner_a30eeb667483c62d126abd17c2ecc72fc}} 
+std\+::atomic$<$ bool $>$ {\bfseries plan\+\_\+found\+\_\+}
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/planners/Mplp\+Planner.\+hpp\item 
+src/planners/Mplp\+Planner.\+cpp\end{DoxyCompactItemize}

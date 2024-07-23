@@ -1,0 +1,161 @@
+\hypertarget{classmujoco_1_1PlatformUIAdapter}{}\doxysection{mujoco\+::Platform\+UIAdapter Class Reference}
+\label{classmujoco_1_1PlatformUIAdapter}\index{mujoco::PlatformUIAdapter@{mujoco::PlatformUIAdapter}}
+
+
+Inheritance diagram for mujoco\+::Platform\+UIAdapter\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=215pt]{classmujoco_1_1PlatformUIAdapter__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for mujoco\+::Platform\+UIAdapter\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classmujoco_1_1PlatformUIAdapter__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_a7ac628a2a1bed808a6487adde6a5df62}\label{classmujoco_1_1PlatformUIAdapter_a7ac628a2a1bed808a6487adde6a5df62}} 
+\mbox{\hyperlink{structmjuiState__}{mjui\+State}} \& {\bfseries state} ()
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_aae61151085fd939aa1963fa4ed479d90}\label{classmujoco_1_1PlatformUIAdapter_aae61151085fd939aa1963fa4ed479d90}} 
+const \mbox{\hyperlink{structmjuiState__}{mjui\+State}} \& {\bfseries state} () const
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_a500dbc0903e25df7823dc290a9aed129}\label{classmujoco_1_1PlatformUIAdapter_a500dbc0903e25df7823dc290a9aed129}} 
+\mbox{\hyperlink{structmjrContext__}{mjr\+Context}} \& {\bfseries mjr\+\_\+context} ()
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_a0b6c169af7b756174d70490f498badb2}\label{classmujoco_1_1PlatformUIAdapter_a0b6c169af7b756174d70490f498badb2}} 
+const \mbox{\hyperlink{structmjrContext__}{mjr\+Context}} \& {\bfseries mjr\+\_\+context} () const
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_ae75178119ae78510c4a74717085e1348}\label{classmujoco_1_1PlatformUIAdapter_ae75178119ae78510c4a74717085e1348}} 
+void {\bfseries Set\+Event\+Callback} (void($\ast$event\+\_\+callback)(\mbox{\hyperlink{structmjuiState__}{mjui\+State}} $\ast$))
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_a10742975fbf3537a93020460a0000a0a}\label{classmujoco_1_1PlatformUIAdapter_a10742975fbf3537a93020460a0000a0a}} 
+void {\bfseries Set\+Layout\+Callback} (void($\ast$layout\+\_\+callback)(\mbox{\hyperlink{structmjuiState__}{mjui\+State}} $\ast$))
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_a43f6af0a98a4f3f6e5db38ab89b6392d}\label{classmujoco_1_1PlatformUIAdapter_a43f6af0a98a4f3f6e5db38ab89b6392d}} 
+virtual bool {\bfseries Refresh\+Mjr\+Context} (const \mbox{\hyperlink{structmjModel__}{mj\+Model}} $\ast$m, int fontscale)
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_ab3d65ca3b10467a0c3bedf5778d6037f}\label{classmujoco_1_1PlatformUIAdapter_ab3d65ca3b10467a0c3bedf5778d6037f}} 
+virtual std\+::pair$<$ double, double $>$ {\bfseries Get\+Cursor\+Position} () const =0
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_a2fea3a9f26ce949ffdfad4afaac91559}\label{classmujoco_1_1PlatformUIAdapter_a2fea3a9f26ce949ffdfad4afaac91559}} 
+virtual double {\bfseries Get\+Display\+Pixels\+Per\+Inch} () const =0
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_ad20b5e42118b96451a95828fcd5af232}\label{classmujoco_1_1PlatformUIAdapter_ad20b5e42118b96451a95828fcd5af232}} 
+virtual std\+::pair$<$ int, int $>$ {\bfseries Get\+Framebuffer\+Size} () const =0
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_ae002ee06dbe5414569996d07ce1770b0}\label{classmujoco_1_1PlatformUIAdapter_ae002ee06dbe5414569996d07ce1770b0}} 
+virtual std\+::pair$<$ int, int $>$ {\bfseries Get\+Window\+Size} () const =0
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_a37525d29870c321fc0dc7f1271444932}\label{classmujoco_1_1PlatformUIAdapter_a37525d29870c321fc0dc7f1271444932}} 
+virtual bool {\bfseries Is\+GPUAccelerated} () const =0
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_ae08666bf4c5722d38ec9fc987a49d162}\label{classmujoco_1_1PlatformUIAdapter_ae08666bf4c5722d38ec9fc987a49d162}} 
+virtual void {\bfseries Poll\+Events} ()=0
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_a5901733540c483e1f40fab907ded04ef}\label{classmujoco_1_1PlatformUIAdapter_a5901733540c483e1f40fab907ded04ef}} 
+virtual void {\bfseries Set\+Clipboard\+String} (const char $\ast$text)=0
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_a65ed3f72394668307f2d08adf8bef18b}\label{classmujoco_1_1PlatformUIAdapter_a65ed3f72394668307f2d08adf8bef18b}} 
+virtual void {\bfseries Set\+VSync} (bool enabled)=0
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_a11e26846c1ef723fe83a45edd94b7963}\label{classmujoco_1_1PlatformUIAdapter_a11e26846c1ef723fe83a45edd94b7963}} 
+virtual void {\bfseries Set\+Window\+Title} (const char $\ast$title)=0
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_acfe5897735c3821e11d5a788f7017131}\label{classmujoco_1_1PlatformUIAdapter_acfe5897735c3821e11d5a788f7017131}} 
+virtual bool {\bfseries Should\+Close\+Window} () const =0
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_ab977a1f5319e7d1adece26e70d2a4581}\label{classmujoco_1_1PlatformUIAdapter_ab977a1f5319e7d1adece26e70d2a4581}} 
+virtual void {\bfseries Swap\+Buffers} ()=0
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_a17a49c5be0642a9574996211393ecc23}\label{classmujoco_1_1PlatformUIAdapter_a17a49c5be0642a9574996211393ecc23}} 
+virtual void {\bfseries Toggle\+Fullscreen} ()=0
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_a506fad87d3f5251a4881d5bd69cc2507}\label{classmujoco_1_1PlatformUIAdapter_a506fad87d3f5251a4881d5bd69cc2507}} 
+virtual bool {\bfseries Is\+Left\+Mouse\+Button\+Pressed} () const =0
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_ac51d1f8d67412b28fe2db8a76b0cb229}\label{classmujoco_1_1PlatformUIAdapter_ac51d1f8d67412b28fe2db8a76b0cb229}} 
+virtual bool {\bfseries Is\+Middle\+Mouse\+Button\+Pressed} () const =0
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_a0dc954526b3860d1629c6aa3d2b7e1c0}\label{classmujoco_1_1PlatformUIAdapter_a0dc954526b3860d1629c6aa3d2b7e1c0}} 
+virtual bool {\bfseries Is\+Right\+Mouse\+Button\+Pressed} () const =0
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_a31e157be41bf17b938c36d538d91e8cb}\label{classmujoco_1_1PlatformUIAdapter_a31e157be41bf17b938c36d538d91e8cb}} 
+virtual bool {\bfseries Is\+Alt\+Key\+Pressed} () const =0
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_a7fe43637a131afc2558eb703b5add0e3}\label{classmujoco_1_1PlatformUIAdapter_a7fe43637a131afc2558eb703b5add0e3}} 
+virtual bool {\bfseries Is\+Ctrl\+Key\+Pressed} () const =0
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_a0323ac71700a00723c6e5e915bdc126e}\label{classmujoco_1_1PlatformUIAdapter_a0323ac71700a00723c6e5e915bdc126e}} 
+virtual bool {\bfseries Is\+Shift\+Key\+Pressed} () const =0
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_a8543e3d7e470433f1b2a6127f59a9af2}\label{classmujoco_1_1PlatformUIAdapter_a8543e3d7e470433f1b2a6127f59a9af2}} 
+virtual bool {\bfseries Is\+Mouse\+Button\+Down\+Event} (int act) const =0
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_a36552e278e352c8fe8aad4501f677b8b}\label{classmujoco_1_1PlatformUIAdapter_a36552e278e352c8fe8aad4501f677b8b}} 
+virtual bool {\bfseries Is\+Key\+Down\+Event} (int act) const =0
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_a0d2f9e31e666ad4860f683f13cbca76b}\label{classmujoco_1_1PlatformUIAdapter_a0d2f9e31e666ad4860f683f13cbca76b}} 
+virtual int {\bfseries Translate\+Key\+Code} (int key) const =0
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_ac05022981e0865e97e5a4f5657322a39}\label{classmujoco_1_1PlatformUIAdapter_ac05022981e0865e97e5a4f5657322a39}} 
+virtual mjt\+Button {\bfseries Translate\+Mouse\+Button} (int button) const =0
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_af53fc9f96e5b597af10e77acf77c5f02}\label{classmujoco_1_1PlatformUIAdapter_af53fc9f96e5b597af10e77acf77c5f02}} 
+void {\bfseries On\+Files\+Drop} (int count, const char $\ast$$\ast$paths)
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_a04c80efbbd5e3857c2315fafac4afd08}\label{classmujoco_1_1PlatformUIAdapter_a04c80efbbd5e3857c2315fafac4afd08}} 
+void {\bfseries On\+Key} (int key, int scancode, int act)
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_a5ffd2d3d94d5e6facbebd41d8f61b372}\label{classmujoco_1_1PlatformUIAdapter_a5ffd2d3d94d5e6facbebd41d8f61b372}} 
+void {\bfseries On\+Mouse\+Button} (int button, int act)
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_a140aeaf10db5bae47af5f8e73f2ff0b1}\label{classmujoco_1_1PlatformUIAdapter_a140aeaf10db5bae47af5f8e73f2ff0b1}} 
+void {\bfseries On\+Mouse\+Move} (double x, double y)
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_ae3b135ca5aab1a0a2eae884e349d382a}\label{classmujoco_1_1PlatformUIAdapter_ae3b135ca5aab1a0a2eae884e349d382a}} 
+void {\bfseries On\+Scroll} (double xoffset, double yoffset)
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_a078a07f922ea62b20fe3c5a1985317a1}\label{classmujoco_1_1PlatformUIAdapter_a078a07f922ea62b20fe3c5a1985317a1}} 
+void {\bfseries On\+Window\+Refresh} ()
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_af92e0416397a521ab6882e425cd327cb}\label{classmujoco_1_1PlatformUIAdapter_af92e0416397a521ab6882e425cd327cb}} 
+void {\bfseries On\+Window\+Resize} (int width, int height)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_af0f9ddb3dd46cf164196f15290a843e1}\label{classmujoco_1_1PlatformUIAdapter_af0f9ddb3dd46cf164196f15290a843e1}} 
+\mbox{\hyperlink{structmjuiState__}{mjui\+State}} {\bfseries state\+\_\+}
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_ad77db50a3f66e69aada015482187f7f0}\label{classmujoco_1_1PlatformUIAdapter_ad77db50a3f66e69aada015482187f7f0}} 
+void($\ast$ {\bfseries event\+\_\+callback\+\_\+} )(\mbox{\hyperlink{structmjuiState__}{mjui\+State}} $\ast$)
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_a885f88a42024f920522134875d96b165}\label{classmujoco_1_1PlatformUIAdapter_a885f88a42024f920522134875d96b165}} 
+void($\ast$ {\bfseries layout\+\_\+callback\+\_\+} )(\mbox{\hyperlink{structmjuiState__}{mjui\+State}} $\ast$)
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_a388edbfe5e1c728ae22d6072b1f4d9a4}\label{classmujoco_1_1PlatformUIAdapter_a388edbfe5e1c728ae22d6072b1f4d9a4}} 
+\mbox{\hyperlink{structmjrContext__}{mjr\+Context}} {\bfseries con\+\_\+}
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_aeea1f90574c8559b21d68f6503dd082f}\label{classmujoco_1_1PlatformUIAdapter_aeea1f90574c8559b21d68f6503dd082f}} 
+const \mbox{\hyperlink{structmjModel__}{mj\+Model}} $\ast$ {\bfseries last\+\_\+model\+\_\+} = nullptr
+\item 
+\mbox{\Hypertarget{classmujoco_1_1PlatformUIAdapter_ad95ce5e602abe931880c8b92d0da0a3a}\label{classmujoco_1_1PlatformUIAdapter_ad95ce5e602abe931880c8b92d0da0a3a}} 
+int {\bfseries last\+\_\+fontscale\+\_\+} = -\/1
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+third\+\_\+party/mujoco-\/2.\+3.\+2/simulate/platform\+\_\+ui\+\_\+adapter.\+h\item 
+third\+\_\+party/mujoco-\/2.\+3.\+2/simulate/platform\+\_\+ui\+\_\+adapter.\+cc\end{DoxyCompactItemize}

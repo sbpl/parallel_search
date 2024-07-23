@@ -1,0 +1,61 @@
+\hypertarget{classps_1_1DummyOpt}{}\doxysection{ps\+::Dummy\+Opt Class Reference}
+\label{classps_1_1DummyOpt}\index{ps::DummyOpt@{ps::DummyOpt}}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1DummyOpt_a8951e7afb494fcef61e0a87722cadba1}\label{classps_1_1DummyOpt_a8951e7afb494fcef61e0a87722cadba1}} 
+enum {\bfseries Interp\+Mode} \{ {\bfseries LINEAR} = 0
+, {\bfseries SPLINE}
+ \}
+\item 
+\mbox{\Hypertarget{classps_1_1DummyOpt_a0319543637a13662e03541f3c2b05ddb}\label{classps_1_1DummyOpt_a0319543637a13662e03541f3c2b05ddb}} 
+typedef std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classps_1_1DummyOpt}{Dummy\+Opt}} $>$ {\bfseries Ptr}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1DummyOpt_a8791eebeec7c4294ab7d0bc8ce64adaa}\label{classps_1_1DummyOpt_a8791eebeec7c4294ab7d0bc8ce64adaa}} 
+{\bfseries Dummy\+Opt} (Interp\+Mode intp=Interp\+Mode\+::\+LINEAR, double wp\+\_\+delta=1e-\/1, double conv\+\_\+delta=1e-\/1)
+\item 
+\mbox{\Hypertarget{classps_1_1DummyOpt_a2312e176881699e1fc70652fbec67ad6}\label{classps_1_1DummyOpt_a2312e176881699e1fc70652fbec67ad6}} 
+virtual \mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} {\bfseries optimize} (const \mbox{\hyperlink{classps_1_1InsatAction}{Insat\+Action}} $\ast$act, const Vec\+Df \&s1, const Vec\+Df \&s2, int thread\+\_\+id)
+\item 
+\mbox{\Hypertarget{classps_1_1DummyOpt_a6e7cb01baa1ae33e3f83c28d01c0b2f2}\label{classps_1_1DummyOpt_a6e7cb01baa1ae33e3f83c28d01c0b2f2}} 
+virtual \mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} {\bfseries optimize} (const \mbox{\hyperlink{classps_1_1InsatAction}{Insat\+Action}} $\ast$act, const Vec\+Df \&s1, const Vec\+Df \&s2, int N, int thread\+\_\+id)
+\item 
+\mbox{\Hypertarget{classps_1_1DummyOpt_a3019cbfedfa31edf7db201940d74e8ea}\label{classps_1_1DummyOpt_a3019cbfedfa31edf7db201940d74e8ea}} 
+virtual \mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} {\bfseries warm\+Optimize} (const \mbox{\hyperlink{classps_1_1InsatAction}{Insat\+Action}} $\ast$act, const \mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} \&traj1, const \mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} \&traj2, int thread\+\_\+id)
+\item 
+\mbox{\Hypertarget{classps_1_1DummyOpt_ac82664ed71fef0d92bdada9ab1be50dc}\label{classps_1_1DummyOpt_ac82664ed71fef0d92bdada9ab1be50dc}} 
+virtual \mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} {\bfseries warm\+Optimize} (const \mbox{\hyperlink{classps_1_1InsatAction}{Insat\+Action}} $\ast$act, const \mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} \&traj, int thread\+\_\+id)
+\item 
+\mbox{\Hypertarget{classps_1_1DummyOpt_a8bc54ac060043b15540169f742df6f2b}\label{classps_1_1DummyOpt_a8bc54ac060043b15540169f742df6f2b}} 
+virtual double {\bfseries calculate\+Cost} (const \mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} \&traj)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1DummyOpt_aa8890f732601ceb42e9ded4bd8121822}\label{classps_1_1DummyOpt_aa8890f732601ceb42e9ded4bd8121822}} 
+Mat\+Df {\bfseries lin\+Interp} (const Vec\+Df \&p1, const Vec\+Df \&p2, int N)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1DummyOpt_a1917b239066c7a4c3591d8efc552ea3b}\label{classps_1_1DummyOpt_a1917b239066c7a4c3591d8efc552ea3b}} 
+std\+::vector$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classps_1_1InsatAction}{Insat\+Action}} $>$ $>$ {\bfseries env\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1DummyOpt_a3253f4e1d7dbd0d9e516655ec38bffbf}\label{classps_1_1DummyOpt_a3253f4e1d7dbd0d9e516655ec38bffbf}} 
+Interp\+Mode {\bfseries intp\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1DummyOpt_ac41518a9e256f4c133eff5ea1c260f46}\label{classps_1_1DummyOpt_ac41518a9e256f4c133eff5ea1c260f46}} 
+double {\bfseries wp\+\_\+delta\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1DummyOpt_aed38373cab6de67ea3a6b7a7346035d5}\label{classps_1_1DummyOpt_aed38373cab6de67ea3a6b7a7346035d5}} 
+double {\bfseries conv\+\_\+delta\+\_\+}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/planners/insat/opt/Dummy\+Opt.\+hpp\item 
+src/planners/insat/opt/Dummy\+Opt.\+cpp\end{DoxyCompactItemize}

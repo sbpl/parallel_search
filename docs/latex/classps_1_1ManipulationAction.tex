@@ -1,0 +1,204 @@
+\hypertarget{classps_1_1ManipulationAction}{}\doxysection{ps\+::Manipulation\+Action Class Reference}
+\label{classps_1_1ManipulationAction}\index{ps::ManipulationAction@{ps::ManipulationAction}}
+
+
+Inheritance diagram for ps\+::Manipulation\+Action\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=318pt]{classps_1_1ManipulationAction__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for ps\+::Manipulation\+Action\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=263pt]{classps_1_1ManipulationAction__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_a1614eca66dd5816186f384630d41e85f}\label{classps_1_1ManipulationAction_a1614eca66dd5816186f384630d41e85f}} 
+enum \mbox{\hyperlink{classps_1_1ManipulationAction_a1614eca66dd5816186f384630d41e85f}{Mode}} \{ {\bfseries CSPACE} = 0
+, {\bfseries TASKSPACE3D}
+ \}
+\begin{DoxyCompactList}\small\item\em Mu\+Jo\+Co. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_aac19aad2dc581fc9b47e30b6f64563c1}\label{classps_1_1ManipulationAction_aac19aad2dc581fc9b47e30b6f64563c1}} 
+typedef std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classps_1_1ManipulationAction}{Manipulation\+Action}} $>$ {\bfseries Ptr}
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_abceb20a16c5c706268c85d15ed0fca58}\label{classps_1_1ManipulationAction_abceb20a16c5c706268c85d15ed0fca58}} 
+typedef \mbox{\hyperlink{classps_1_1BSplineOpt}{BSpline\+Opt}} {\bfseries Opt\+Type}
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_a4ce0579f0f244485172f5c969114e70d}\label{classps_1_1ManipulationAction_a4ce0579f0f244485172f5c969114e70d}} 
+typedef std\+::vector$<$ \mbox{\hyperlink{classps_1_1BSplineOpt}{Opt\+Type}} $>$ {\bfseries Opt\+Vec\+Type}
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_a17e0fa14b7031709d4140ada47b4c09f}\label{classps_1_1ManipulationAction_a17e0fa14b7031709d4140ada47b4c09f}} 
+typedef std\+::shared\+\_\+ptr$<$ Opt\+Vec\+Type $>$ {\bfseries Opt\+Vec\+Ptr\+Type}
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_a78cedac6aee0c3fbd75688b59b6bd3c2}\label{classps_1_1ManipulationAction_a78cedac6aee0c3fbd75688b59b6bd3c2}} 
+typedef std\+::vector$<$ \mbox{\hyperlink{structmjModel__}{mj\+Model}} $\ast$ $>$ {\bfseries Mj\+Model\+Vec\+Type}
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_ad7bb7133428cd10954cd54eaa0725fb9}\label{classps_1_1ManipulationAction_ad7bb7133428cd10954cd54eaa0725fb9}} 
+typedef std\+::vector$<$ \mbox{\hyperlink{structmjData__}{mj\+Data}} $\ast$ $>$ \mbox{\hyperlink{classps_1_1ManipulationAction_ad7bb7133428cd10954cd54eaa0725fb9}{Mj\+Data\+Vec\+Type}}
+\begin{DoxyCompactList}\small\item\em Mu\+Jo\+Co. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_ade962bd8ffca8512a843d2bcfde74b35}\label{classps_1_1ManipulationAction_ade962bd8ffca8512a843d2bcfde74b35}} 
+{\bfseries Manipulation\+Action} (const std\+::string \&type, Params\+Type params, \mbox{\hyperlink{classps_1_1ManipulationAction_a1614eca66dd5816186f384630d41e85f}{Mode}} mode, double discretization, Mat\+Df \&mprims, Opt\+Vec\+Ptr\+Type opt, Mj\+Model\+Vec\+Type \&m\+\_\+vec, \mbox{\hyperlink{classps_1_1ManipulationAction_ad7bb7133428cd10954cd54eaa0725fb9}{Mj\+Data\+Vec\+Type}} \&d\+\_\+vec, int num\+\_\+threads=1, bool is\+\_\+expensive=true)
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_a7716bfa54bab3b17f3db879932e1e387}\label{classps_1_1ManipulationAction_a7716bfa54bab3b17f3db879932e1e387}} 
+virtual bool {\bfseries Check\+Preconditions} (const State\+Vars\+Type \&state)
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_a515a2a37b0397e47b1107ce76a6b5158}\label{classps_1_1ManipulationAction_a515a2a37b0397e47b1107ce76a6b5158}} 
+\mbox{\hyperlink{structps_1_1ActionSuccessor}{Action\+Successor}} {\bfseries Get\+Successor} (const State\+Vars\+Type \&state\+\_\+vars, int thread\+\_\+id)
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_aa8b27b93b3dd65ce1674890fb31c0096}\label{classps_1_1ManipulationAction_aa8b27b93b3dd65ce1674890fb31c0096}} 
+\mbox{\hyperlink{structps_1_1ActionSuccessor}{Action\+Successor}} {\bfseries Get\+Successor\+Lazy} (const State\+Vars\+Type \&state\+\_\+vars, int thread\+\_\+id)
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_aaf208fe29414e327f2aa40ed3515549b}\label{classps_1_1ManipulationAction_aaf208fe29414e327f2aa40ed3515549b}} 
+\mbox{\hyperlink{structps_1_1ActionSuccessor}{Action\+Successor}} {\bfseries Evaluate} (const State\+Vars\+Type \&parent\+\_\+state\+\_\+vars, const State\+Vars\+Type \&child\+\_\+state\+\_\+vars, int thread\+\_\+id)
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_a2814355cd9169bca4657b5b87e6a1565}\label{classps_1_1ManipulationAction_a2814355cd9169bca4657b5b87e6a1565}} 
+Vec\+Df \mbox{\hyperlink{classps_1_1ManipulationAction_a2814355cd9169bca4657b5b87e6a1565}{cont\+To\+Disc}} (const Vec\+Df \&cont\+\_\+state, int thread\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Snap to Grid. \end{DoxyCompactList}\item 
+Vec\+Df \mbox{\hyperlink{classps_1_1ManipulationAction_a9d9a5a9ddf5d33f3029fb9583246e438}{Get\+Successor}} (const Vec\+Df \&state, int thread\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Mu\+Jo\+Co. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_ab12f964ee781afba539aea0c98f14e77}\label{classps_1_1ManipulationAction_ab12f964ee781afba539aea0c98f14e77}} 
+bool {\bfseries Is\+Feasible} (const State\+Vars\+Type \&state\+\_\+vars, int thread\+\_\+id)
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_aea12a5a940c0431c81f35bbfc1ef7746}\label{classps_1_1ManipulationAction_aea12a5a940c0431c81f35bbfc1ef7746}} 
+bool {\bfseries is\+Collision\+Free} (const Vec\+Df \&state, int thread\+\_\+id) const
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_a371668eace548b0966ef3100dc381b8d}\label{classps_1_1ManipulationAction_a371668eace548b0966ef3100dc381b8d}} 
+bool {\bfseries is\+Collision\+Free} (const State\+Vars\+Type \&state\+\_\+vars, int thread\+\_\+id) const
+\item 
+bool \mbox{\hyperlink{classps_1_1ManipulationAction_a218f26018cd8f8f822da740a9abd5c57}{is\+Collision\+Free}} (const Vec\+Df \&curr, const Vec\+Df \&succ, Vec\+Df \&free\+\_\+state, int thread\+\_\+id) const
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_ac41f7792393225b414ff9b22016f1382}\label{classps_1_1ManipulationAction_ac41f7792393225b414ff9b22016f1382}} 
+State\+Vars\+Type \mbox{\hyperlink{classps_1_1ManipulationAction_ac41f7792393225b414ff9b22016f1382}{Sample\+Feasible\+State}} (int thread\+\_\+id)
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{classps_1_1Edge}{Edge}} collision check and return the last free state. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_a0088e5bbba2e5d7409d602923c55dbb7}\label{classps_1_1ManipulationAction_a0088e5bbba2e5d7409d602923c55dbb7}} 
+bool {\bfseries validate\+Joint\+Limits} (const Vec\+Df \&state, int thread\+\_\+id) const
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_acf827374e813a9d2d22a60e78709373b}\label{classps_1_1ManipulationAction_acf827374e813a9d2d22a60e78709373b}} 
+std\+::vector$<$ std\+::pair$<$ double, double $>$ $>$ {\bfseries get\+Joint\+Limits} (int thread\+\_\+id) const
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_a366dbbfe734638b0f7fba50371fcadc7}\label{classps_1_1ManipulationAction_a366dbbfe734638b0f7fba50371fcadc7}} 
+bool {\bfseries validate\+Joint\+Limits} (const State\+Vars\+Type \&state\+\_\+vars, int thread\+\_\+id) const
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_a7018d147f7614c160ca5377a0ae085a5}\label{classps_1_1ManipulationAction_a7018d147f7614c160ca5377a0ae085a5}} 
+double {\bfseries Get\+Cost\+To\+Successor} (const State\+Vars\+Type \&current\+\_\+state, const State\+Vars\+Type \&successor\+\_\+state, int thread\+\_\+id)
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_a48f12dfdea276374d4be23d5d8918721}\label{classps_1_1ManipulationAction_a48f12dfdea276374d4be23d5d8918721}} 
+double {\bfseries get\+Cost\+To\+Successor} (const Vec\+Df \&current\+\_\+state, const Vec\+Df \&successor\+\_\+state, int thread\+\_\+id)
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_a7d7177960c3d52ddfbaf52afdd279f70}\label{classps_1_1ManipulationAction_a7d7177960c3d52ddfbaf52afdd279f70}} 
+void \mbox{\hyperlink{classps_1_1ManipulationAction_a7d7177960c3d52ddfbaf52afdd279f70}{set\+Opt}} (Opt\+Vec\+Ptr\+Type \&opt)
+\begin{DoxyCompactList}\small\item\em INSAT. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_a2cf9ac84b76bf654d4892d7d63b1beba}\label{classps_1_1ManipulationAction_a2cf9ac84b76bf654d4892d7d63b1beba}} 
+bool {\bfseries is\+Feasible} (Mat\+Df \&traj, int thread\+\_\+id) const
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_a08f0efb87f895b1f1c3afffb63835e90}\label{classps_1_1ManipulationAction_a08f0efb87f895b1f1c3afffb63835e90}} 
+\mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} {\bfseries optimize} (const State\+Vars\+Type \&s1, const State\+Vars\+Type \&s2, int thread\+\_\+id) const
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_aa83baac0717baa3f8267e782a868808f}\label{classps_1_1ManipulationAction_aa83baac0717baa3f8267e782a868808f}} 
+\mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} {\bfseries warm\+Optimize} (const \mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} \&t1, const \mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} \&t2, int thread\+\_\+id) const
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_a9db538d00030cf37fcdf2270d7e53fd0}\label{classps_1_1ManipulationAction_a9db538d00030cf37fcdf2270d7e53fd0}} 
+\mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} {\bfseries warm\+Optimize} (const \mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} \&t, int thread\+\_\+id) const
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_ac7a0e98527c563e36d62125d144434cc}\label{classps_1_1ManipulationAction_ac7a0e98527c563e36d62125d144434cc}} 
+\mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} {\bfseries optimize} (const \mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} \&incoming\+\_\+traj, const State\+Vars\+Type \&s1, const State\+Vars\+Type \&s2, int thread\+\_\+id)
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_a39fd389ad8ed3ec33f81b77f8d2c1828}\label{classps_1_1ManipulationAction_a39fd389ad8ed3ec33f81b77f8d2c1828}} 
+\mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} {\bfseries optimize} (const \mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} \&incoming\+\_\+traj, const std\+::vector$<$ State\+Vars\+Type $>$ \&ancestors, const State\+Vars\+Type \&successor, int thread\+\_\+id)
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_a4b649f8dce3936315b8a98914e4e2ae2}\label{classps_1_1ManipulationAction_a4b649f8dce3936315b8a98914e4e2ae2}} 
+double {\bfseries get\+Cost} (const \mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} \&traj, int thread\+\_\+id) const
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_add7f1cb61aef42ed2ed5850440d6ad07}\label{classps_1_1ManipulationAction_add7f1cb61aef42ed2ed5850440d6ad07}} 
+Mat\+Df {\bfseries lin\+Interp} (const Vec\+Df \&p1, const Vec\+Df \&p2, int N) const
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_a72bdb6d91ab3f40993e4109db7b77553}\label{classps_1_1ManipulationAction_a72bdb6d91ab3f40993e4109db7b77553}} 
+void \mbox{\hyperlink{classps_1_1ManipulationAction_a72bdb6d91ab3f40993e4109db7b77553}{set\+Goal}} (State\+Vars\+Type \&goal)
+\begin{DoxyCompactList}\small\item\em goal \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_ab029ac16dabd099068bb7a54b1e5c8e9}\label{classps_1_1ManipulationAction_ab029ac16dabd099068bb7a54b1e5c8e9}} 
+Lock\+Type {\bfseries lock\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_aaea408fa19178c64dce98a6095eed051}\label{classps_1_1ManipulationAction_aaea408fa19178c64dce98a6095eed051}} 
+Vec\+Df {\bfseries goal\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_a82c11e3facf5aeb2056a0b63cc808cbd}\label{classps_1_1ManipulationAction_a82c11e3facf5aeb2056a0b63cc808cbd}} 
+Mat\+Df \mbox{\hyperlink{classps_1_1ManipulationAction_a82c11e3facf5aeb2056a0b63cc808cbd}{mprims\+\_\+}}
+\begin{DoxyCompactList}\small\item\em Discretization stuff. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_a0b23d132dbf12bb89b663e4bc69560df}\label{classps_1_1ManipulationAction_a0b23d132dbf12bb89b663e4bc69560df}} 
+double {\bfseries discretization\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_a015da45e11d14b7884a18740469ae70c}\label{classps_1_1ManipulationAction_a015da45e11d14b7884a18740469ae70c}} 
+std\+::unordered\+\_\+map$<$ int, Vec\+Df $>$ {\bfseries discrete\+\_\+angles\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_a2b267b4b576a461339461389ac925661}\label{classps_1_1ManipulationAction_a2b267b4b576a461339461389ac925661}} 
+\mbox{\hyperlink{classps_1_1ManipulationAction_a1614eca66dd5816186f384630d41e85f}{Mode}} {\bfseries mprim\+\_\+mode\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_a8a2d575503fa4ff127b18e4ac145981c}\label{classps_1_1ManipulationAction_a8a2d575503fa4ff127b18e4ac145981c}} 
+Opt\+Vec\+Ptr\+Type \mbox{\hyperlink{classps_1_1ManipulationAction_a8a2d575503fa4ff127b18e4ac145981c}{opt\+\_\+}}
+\begin{DoxyCompactList}\small\item\em Optimizer stuff. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_a00194aa31f3ff6f7789c188cb8ba09d0}\label{classps_1_1ManipulationAction_a00194aa31f3ff6f7789c188cb8ba09d0}} 
+\mbox{\hyperlink{structps_1_1IRB1600}{IRB1600}} \mbox{\hyperlink{classps_1_1ManipulationAction_a00194aa31f3ff6f7789c188cb8ba09d0}{robot\+\_\+params\+\_\+}}
+\begin{DoxyCompactList}\small\item\em Robot stuff. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_af178f9aeecee3578c71f7707cdb6864c}\label{classps_1_1ManipulationAction_af178f9aeecee3578c71f7707cdb6864c}} 
+Mj\+Model\+Vec\+Type \mbox{\hyperlink{classps_1_1ManipulationAction_af178f9aeecee3578c71f7707cdb6864c}{m\+\_\+}}
+\begin{DoxyCompactList}\small\item\em Mu\+Jo\+Co. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_abc7701d4433aa81b5a23d42f36a42fb3}\label{classps_1_1ManipulationAction_abc7701d4433aa81b5a23d42f36a42fb3}} 
+\mbox{\hyperlink{classps_1_1ManipulationAction_ad7bb7133428cd10954cd54eaa0725fb9}{Mj\+Data\+Vec\+Type}} {\bfseries d\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_a72d839daa7c342e33762dcefa66e3d79}\label{classps_1_1ManipulationAction_a72d839daa7c342e33762dcefa66e3d79}} 
+std\+::vector$<$ std\+::pair$<$ double, double $>$ $>$ {\bfseries joint\+\_\+limits\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationAction_acdcea0ccbf32010bf325164d1513cbc1}\label{classps_1_1ManipulationAction_acdcea0ccbf32010bf325164d1513cbc1}} 
+std\+::mt19937 {\bfseries gen\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classps_1_1ManipulationAction_a9d9a5a9ddf5d33f3029fb9583246e438}\label{classps_1_1ManipulationAction_a9d9a5a9ddf5d33f3029fb9583246e438}} 
+\index{ps::ManipulationAction@{ps::ManipulationAction}!GetSuccessor@{GetSuccessor}}
+\index{GetSuccessor@{GetSuccessor}!ps::ManipulationAction@{ps::ManipulationAction}}
+\doxysubsubsection{\texorpdfstring{GetSuccessor()}{GetSuccessor()}}
+{\footnotesize\ttfamily Vec\+Df ps\+::\+Manipulation\+Action\+::\+Get\+Successor (\begin{DoxyParamCaption}\item[{const Vec\+Df \&}]{state,  }\item[{int}]{thread\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+Mu\+Jo\+Co. 
+
+If successor is the same as the state. This will happen if the joint angle is close its limit.
+
+assuming discretization is never finer than 1e-\/3.
+
+Direct edge to goal If successor is the same as the state. This will happen if the joint angle is close its limit. if expanded state is too close to goal
+
+assuming discretization is never finer than 1e-\/3.
+
+if goal is in LoS then return it
+
+If successor is the same as the state. This will happen if the joint angle is close its limit.
+
+assuming discretization is never finer than 1e-\/3.\mbox{\Hypertarget{classps_1_1ManipulationAction_a218f26018cd8f8f822da740a9abd5c57}\label{classps_1_1ManipulationAction_a218f26018cd8f8f822da740a9abd5c57}} 
+\index{ps::ManipulationAction@{ps::ManipulationAction}!isCollisionFree@{isCollisionFree}}
+\index{isCollisionFree@{isCollisionFree}!ps::ManipulationAction@{ps::ManipulationAction}}
+\doxysubsubsection{\texorpdfstring{isCollisionFree()}{isCollisionFree()}}
+{\footnotesize\ttfamily bool ps\+::\+Manipulation\+Action\+::is\+Collision\+Free (\begin{DoxyParamCaption}\item[{const Vec\+Df \&}]{curr,  }\item[{const Vec\+Df \&}]{succ,  }\item[{Vec\+Df \&}]{free\+\_\+state,  }\item[{int}]{thread\+\_\+id }\end{DoxyParamCaption}) const}
+
+Magic number 3.\+0 will prevent roundoff errors
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+examples/manipulation/Manipulation\+Actions.\+hpp\item 
+examples/manipulation/\mbox{\hyperlink{ManipulationActions_8cpp}{Manipulation\+Actions.\+cpp}}\end{DoxyCompactItemize}

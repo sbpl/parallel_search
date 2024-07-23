@@ -1,0 +1,65 @@
+\hypertarget{structps_1_1Config}{}\doxysection{ps\+::Config Struct Reference}
+\label{structps_1_1Config}\index{ps::Config@{ps::Config}}
+
+
+Collaboration diagram for ps\+::Config\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{structps_1_1Config__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structps_1_1Config_afd38b737d88ce230d524ef252a1095e0}\label{structps_1_1Config_afd38b737d88ce230d524ef252a1095e0}} 
+std\+::vector$<$ double $>$ {\bfseries goal}
+\item 
+\mbox{\Hypertarget{structps_1_1Config_abf9aa680f232462299fb07e563856dca}\label{structps_1_1Config_abf9aa680f232462299fb07e563856dca}} 
+Vec3f {\bfseries goal\+\_\+ee\+\_\+pos}
+\item 
+\mbox{\Hypertarget{structps_1_1Config_ab8ab7ad54071a60183fdc5bc7551d81c}\label{structps_1_1Config_ab8ab7ad54071a60183fdc5bc7551d81c}} 
+int {\bfseries dof}
+\item 
+\mbox{\Hypertarget{structps_1_1Config_aed77c8f345e749b179922ff042282dca}\label{structps_1_1Config_aed77c8f345e749b179922ff042282dca}} 
+Vec\+Df {\bfseries discretization}
+\item 
+\mbox{\Hypertarget{structps_1_1Config_a36fa277d755d0cdb6d08e438f85fa4cb}\label{structps_1_1Config_a36fa277d755d0cdb6d08e438f85fa4cb}} 
+\mbox{\hyperlink{structmjModel__}{mj\+Model}} $\ast$ {\bfseries global\+\_\+m} = nullptr
+\item 
+\mbox{\Hypertarget{structps_1_1Config_a7208573243768c4c5ce4bbe3ad973e25}\label{structps_1_1Config_a7208573243768c4c5ce4bbe3ad973e25}} 
+\mbox{\hyperlink{structmjData__}{mj\+Data}} $\ast$ {\bfseries global\+\_\+d} = nullptr
+\item 
+\mbox{\Hypertarget{structps_1_1Config_a1a956ec1f12edfa14e8eaf4732d68a48}\label{structps_1_1Config_a1a956ec1f12edfa14e8eaf4732d68a48}} 
+std\+::unordered\+\_\+map$<$ size\+\_\+t, double $>$ \mbox{\hyperlink{structps_1_1Config_a1a956ec1f12edfa14e8eaf4732d68a48}{heuristic\+\_\+cache}}
+\begin{DoxyCompactList}\small\item\em LoS heuristic. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structps_1_1Config_ac5f1ef417ef09ae3e8da3c4005a3f395}\label{structps_1_1Config_ac5f1ef417ef09ae3e8da3c4005a3f395}} 
+Vec\+Df \mbox{\hyperlink{structps_1_1Config_ac5f1ef417ef09ae3e8da3c4005a3f395}{shield\+\_\+h\+\_\+w}}
+\begin{DoxyCompactList}\small\item\em shield heuristic weight \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structps_1_1Config_a41a7322675f453e61c4de5dc6449f7cc}\label{structps_1_1Config_a41a7322675f453e61c4de5dc6449f7cc}} 
+\mbox{\hyperlink{structmjModel__}{mj\+Model}} $\ast$ \mbox{\hyperlink{structps_1_1Config_a41a7322675f453e61c4de5dc6449f7cc}{global\+\_\+bfs\+\_\+m}} = nullptr
+\begin{DoxyCompactList}\small\item\em BFS model Mj Handles. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structps_1_1Config_a0dea0bc05f744d70f48faf9be0935395}\label{structps_1_1Config_a0dea0bc05f744d70f48faf9be0935395}} 
+\mbox{\hyperlink{structmjData__}{mj\+Data}} $\ast$ {\bfseries global\+\_\+bfs\+\_\+d} = nullptr
+\item 
+\mbox{\Hypertarget{structps_1_1Config_a041663dfe85142133d8f99cfa1e51d92}\label{structps_1_1Config_a041663dfe85142133d8f99cfa1e51d92}} 
+ps\+::\+Planner\+::\+State\+Ptr\+Map\+Type \mbox{\hyperlink{structps_1_1Config_a041663dfe85142133d8f99cfa1e51d92}{bfs\+\_\+state\+\_\+map}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{classps_1_1State}{State}} Map for BFS heuristic. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structps_1_1Config_afcb5c8e949e1ef110a01784cae6011c9}\label{structps_1_1Config_afcb5c8e949e1ef110a01784cae6011c9}} 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classsmpl_1_1BFS__3D}{smpl\+::\+BFS\+\_\+3D}} $>$ {\bfseries bfs3d}
+\item 
+\mbox{\Hypertarget{structps_1_1Config_ad8576a1dd8420d40af9bdc75cc15e37f}\label{structps_1_1Config_ad8576a1dd8420d40af9bdc75cc15e37f}} 
+Heuristic\+Mode {\bfseries h\+\_\+mode} = Heuristic\+Mode\+::\+LOS
+\item 
+\mbox{\Hypertarget{structps_1_1Config_a29f6ce1a115717d3cd4f337d02c0e6ce}\label{structps_1_1Config_a29f6ce1a115717d3cd4f337d02c0e6ce}} 
+Goal\+Checker\+Mode {\bfseries goal\+\_\+mode} = Goal\+Checker\+Mode\+::\+CSPACE
+\item 
+\mbox{\Hypertarget{structps_1_1Config_adff4d940c330c333d94ffdb7f572f040}\label{structps_1_1Config_adff4d940c330c333d94ffdb7f572f040}} 
+PPMode {\bfseries pp\+\_\+mode} = PPMode\+::\+NONE
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+examples/manipulation/\mbox{\hyperlink{MoveitInterface_8hpp}{Moveit\+Interface.\+hpp}}\item 
+examples/manipulation/\mbox{\hyperlink{utils_8hpp}{utils.\+hpp}}\end{DoxyCompactItemize}

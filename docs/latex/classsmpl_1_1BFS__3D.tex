@@ -1,0 +1,89 @@
+\hypertarget{classsmpl_1_1BFS__3D}{}\doxysection{smpl\+::BFS\+\_\+3D Class Reference}
+\label{classsmpl_1_1BFS__3D}\index{smpl::BFS\_3D@{smpl::BFS\_3D}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classsmpl_1_1BFS__3D_a79a0ff1df3c806dbbcd40badf8a626bb}\label{classsmpl_1_1BFS__3D_a79a0ff1df3c806dbbcd40badf8a626bb}} 
+{\bfseries BFS\+\_\+3D} (int length, int width, int height)
+\item 
+\mbox{\Hypertarget{classsmpl_1_1BFS__3D_a1d89569cb696f957b78cc559e2e9cf33}\label{classsmpl_1_1BFS__3D_a1d89569cb696f957b78cc559e2e9cf33}} 
+void {\bfseries get\+Dimensions} (int $\ast$length, int $\ast$width, int $\ast$height)
+\item 
+\mbox{\Hypertarget{classsmpl_1_1BFS__3D_abefd7c365ccc909d1c88915edb8755e5}\label{classsmpl_1_1BFS__3D_abefd7c365ccc909d1c88915edb8755e5}} 
+void {\bfseries set\+Wall} (int x, int y, int z)
+\item 
+\mbox{\Hypertarget{classsmpl_1_1BFS__3D_a631d4c93aa22437a99d8676806b15a1e}\label{classsmpl_1_1BFS__3D_a631d4c93aa22437a99d8676806b15a1e}} 
+bool {\bfseries escape\+Cell} (int x, int y, int z)
+\item 
+\mbox{\Hypertarget{classsmpl_1_1BFS__3D_ab4e1791715de7ba9992982031d31c8a7}\label{classsmpl_1_1BFS__3D_ab4e1791715de7ba9992982031d31c8a7}} 
+void {\bfseries run} (int x, int y, int z)
+\item 
+\mbox{\Hypertarget{classsmpl_1_1BFS__3D_a59596fea11a0419c8e9cbc10301a8c35}\label{classsmpl_1_1BFS__3D_a59596fea11a0419c8e9cbc10301a8c35}} 
+{\footnotesize template$<$typename Input\+It $>$ }\\void \mbox{\hyperlink{classsmpl_1_1BFS__3D_a59596fea11a0419c8e9cbc10301a8c35}{run}} (Input\+It cells\+\_\+begin, Input\+It cells\+\_\+end)
+\begin{DoxyCompactList}\small\item\em Run the BFS starting from a variable number of cells. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classsmpl_1_1BFS__3D_a89d04400f2b0b4c1605b5f66d051934d}\label{classsmpl_1_1BFS__3D_a89d04400f2b0b4c1605b5f66d051934d}} 
+void {\bfseries run\+\_\+components} (int gx, int gy, int gz)
+\item 
+\mbox{\Hypertarget{classsmpl_1_1BFS__3D_a6d3b73011d628f7f8f1e7e83cba45eef}\label{classsmpl_1_1BFS__3D_a6d3b73011d628f7f8f1e7e83cba45eef}} 
+bool {\bfseries in\+Bounds} (int x, int y, int z) const
+\item 
+int \mbox{\hyperlink{classsmpl_1_1BFS__3D_a6cb68af21084a76a74ee3cf90d18b529}{get\+Distance}} (int x, int y, int z) const
+\begin{DoxyCompactList}\small\item\em Return the distance, in cells, to the nearest occupied cell. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classsmpl_1_1BFS__3D_a2f8eb78a93945cfdb62117debc532cce}{is\+Undiscovered}} (int x, int y, int z) const
+\begin{DoxyCompactList}\small\item\em Return whether this cell has been discovered. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classsmpl_1_1BFS__3D_a26034d8a5d714d797c62b10849e7a41c}\label{classsmpl_1_1BFS__3D_a26034d8a5d714d797c62b10849e7a41c}} 
+int {\bfseries get\+Nearest\+Free\+Node\+Dist} (int x, int y, int z)
+\item 
+\mbox{\Hypertarget{classsmpl_1_1BFS__3D_a481209c12f9cc335ed9a7d3658c87b9c}\label{classsmpl_1_1BFS__3D_a481209c12f9cc335ed9a7d3658c87b9c}} 
+bool {\bfseries is\+Wall} (int x, int y, int z) const
+\item 
+\mbox{\Hypertarget{classsmpl_1_1BFS__3D_adb7a33d8b00999d699328a39969937e0}\label{classsmpl_1_1BFS__3D_adb7a33d8b00999d699328a39969937e0}} 
+bool {\bfseries is\+Running} () const
+\item 
+\mbox{\Hypertarget{classsmpl_1_1BFS__3D_ac4046bf4dd7bc2f20ce4c3d6d1980977}\label{classsmpl_1_1BFS__3D_ac4046bf4dd7bc2f20ce4c3d6d1980977}} 
+int {\bfseries count\+Walls} () const
+\item 
+\mbox{\Hypertarget{classsmpl_1_1BFS__3D_ac03bb702e5d2801dd316cdaaafd9331f}\label{classsmpl_1_1BFS__3D_ac03bb702e5d2801dd316cdaaafd9331f}} 
+int {\bfseries count\+Undiscovered} () const
+\item 
+\mbox{\Hypertarget{classsmpl_1_1BFS__3D_afdbf9bb9f495a716d5f9af146eccf468}\label{classsmpl_1_1BFS__3D_afdbf9bb9f495a716d5f9af146eccf468}} 
+int {\bfseries count\+Discovered} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classsmpl_1_1BFS__3D_ab60b8e925d78e3a783111e0857b892be}\label{classsmpl_1_1BFS__3D_ab60b8e925d78e3a783111e0857b892be}} 
+static const int {\bfseries WALL} = 0x7\+FFFFFFF
+\item 
+\mbox{\Hypertarget{classsmpl_1_1BFS__3D_afc497cd75f66dbe80028d1ceb1bf2324}\label{classsmpl_1_1BFS__3D_afc497cd75f66dbe80028d1ceb1bf2324}} 
+static const int {\bfseries UNDISCOVERED} = 0x\+FFFFFFFF
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classsmpl_1_1BFS__3D_a6cb68af21084a76a74ee3cf90d18b529}\label{classsmpl_1_1BFS__3D_a6cb68af21084a76a74ee3cf90d18b529}} 
+\index{smpl::BFS\_3D@{smpl::BFS\_3D}!getDistance@{getDistance}}
+\index{getDistance@{getDistance}!smpl::BFS\_3D@{smpl::BFS\_3D}}
+\doxysubsubsection{\texorpdfstring{getDistance()}{getDistance()}}
+{\footnotesize\ttfamily int smpl\+::\+BFS\+\_\+3\+D\+::get\+Distance (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{y,  }\item[{int}]{z }\end{DoxyParamCaption}) const}
+
+
+
+Return the distance, in cells, to the nearest occupied cell. 
+
+This function is blocking if the BFS is running in parallel and a value has not yet been computed for this cell. \mbox{\Hypertarget{classsmpl_1_1BFS__3D_a2f8eb78a93945cfdb62117debc532cce}\label{classsmpl_1_1BFS__3D_a2f8eb78a93945cfdb62117debc532cce}} 
+\index{smpl::BFS\_3D@{smpl::BFS\_3D}!isUndiscovered@{isUndiscovered}}
+\index{isUndiscovered@{isUndiscovered}!smpl::BFS\_3D@{smpl::BFS\_3D}}
+\doxysubsubsection{\texorpdfstring{isUndiscovered()}{isUndiscovered()}}
+{\footnotesize\ttfamily bool smpl\+::\+BFS\+\_\+3\+D\+::is\+Undiscovered (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{y,  }\item[{int}]{z }\end{DoxyParamCaption}) const}
+
+
+
+Return whether this cell has been discovered. 
+
+This function is blocking if the BFS is running. Once the BFS has finished, this function will return true for cells that are isolated from the region of the grid containing the start cell. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+examples/manipulation/bfs3d.\+h\item 
+examples/manipulation/bfs3d.\+cpp\end{DoxyCompactItemize}

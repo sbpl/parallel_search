@@ -1,0 +1,9 @@
+<map id="mjuiSection_" name="mjuiSection_">
+<area shape="rect" id="node1" title=" " alt="" coords="19,187,117,213"/>
+<area shape="rect" id="node2" href="$structmjrRect__.html" title=" " alt="" coords="5,5,80,32"/>
+<area shape="rect" id="node3" href="$structmjuiItem__.html" title=" " alt="" coords="186,96,265,123"/>
+<area shape="rect" id="node4" href="$structmjuiItemEdit__.html" title=" " alt="" coords="105,5,207,32"/>
+<area shape="rect" id="node5" href="$structmjuiItemSlider__.html" title=" " alt="" coords="232,5,344,32"/>
+<area shape="rect" id="node6" href="$structmjuiItemSingle__.html" title=" " alt="" coords="368,5,483,32"/>
+<area shape="rect" id="node7" href="$structmjuiItemMulti__.html" title=" " alt="" coords="507,5,613,32"/>
+</map>

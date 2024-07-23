@@ -1,0 +1,126 @@
+\hypertarget{classps_1_1RrtPlanner}{}\doxysection{ps\+::Rrt\+Planner Class Reference}
+\label{classps_1_1RrtPlanner}\index{ps::RrtPlanner@{ps::RrtPlanner}}
+
+
+Inheritance diagram for ps\+::Rrt\+Planner\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=196pt]{classps_1_1RrtPlanner__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for ps\+::Rrt\+Planner\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classps_1_1RrtPlanner__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1RrtPlanner_a5ffd6831aa24754348ff12fc35eb5622}\label{classps_1_1RrtPlanner_a5ffd6831aa24754348ff12fc35eb5622}} 
+{\bfseries Rrt\+Planner} (Params\+Type planner\+\_\+params)
+\item 
+\mbox{\Hypertarget{classps_1_1RrtPlanner_a6395fc4c2cbb750d4325e44760e3269a}\label{classps_1_1RrtPlanner_a6395fc4c2cbb750d4325e44760e3269a}} 
+virtual void {\bfseries Set\+Goal\+State} (const State\+Vars\+Type \&state\+\_\+vars)
+\item 
+\mbox{\Hypertarget{classps_1_1RrtPlanner_a59eabf5119ed34bd5ef603edc625ad32}\label{classps_1_1RrtPlanner_a59eabf5119ed34bd5ef603edc625ad32}} 
+virtual bool {\bfseries Plan} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1RrtPlanner_afe2e9af45203c8c97413a99eb6926202}\label{classps_1_1RrtPlanner_afe2e9af45203c8c97413a99eb6926202}} 
+void {\bfseries initialize} ()
+\item 
+\mbox{\Hypertarget{classps_1_1RrtPlanner_a1ae826ddd96f899a313e557d3a070733}\label{classps_1_1RrtPlanner_a1ae826ddd96f899a313e557d3a070733}} 
+double {\bfseries get\+Cost} (const State\+Vars\+Type \&current\+\_\+state, const State\+Vars\+Type \&successor\+\_\+state, int thread\+\_\+id)
+\item 
+\mbox{\Hypertarget{classps_1_1RrtPlanner_ada6a7f8f1618bc7bebcc4aad35830c37}\label{classps_1_1RrtPlanner_ada6a7f8f1618bc7bebcc4aad35830c37}} 
+\mbox{\hyperlink{classps_1_1State}{State\+Ptr\+Type}} {\bfseries construct\+State} (const State\+Vars\+Type \&state, State\+Ptr\+Map\+Type \&state\+\_\+map)
+\item 
+\mbox{\Hypertarget{classps_1_1RrtPlanner_ae81ab16385a84c9358ec23a9c86534cb}\label{classps_1_1RrtPlanner_ae81ab16385a84c9358ec23a9c86534cb}} 
+\mbox{\hyperlink{classps_1_1Edge}{Edge\+Ptr\+Type}} {\bfseries add\+Edge} (\mbox{\hyperlink{classps_1_1State}{State\+Ptr\+Type}} parent\+\_\+state, \mbox{\hyperlink{classps_1_1State}{State\+Ptr\+Type}} child\+\_\+state, Edge\+Ptr\+Map\+Type \&edge\+\_\+map)
+\item 
+\mbox{\Hypertarget{classps_1_1RrtPlanner_ad975dcbf6fabb4dddcec7fe593076d0f}\label{classps_1_1RrtPlanner_ad975dcbf6fabb4dddcec7fe593076d0f}} 
+virtual void {\bfseries rrt\+Thread} (int thread\+\_\+id)
+\item 
+\mbox{\Hypertarget{classps_1_1RrtPlanner_a200dfded7d24200d44a1d89b00dfdd5c}\label{classps_1_1RrtPlanner_a200dfded7d24200d44a1d89b00dfdd5c}} 
+double {\bfseries get\+Random\+Number\+Between} (double min, double max)
+\item 
+\mbox{\Hypertarget{classps_1_1RrtPlanner_abe59a25744465ab57b166c8ef5ade434}\label{classps_1_1RrtPlanner_abe59a25744465ab57b166c8ef5ade434}} 
+State\+Vars\+Type {\bfseries sample\+Feasible\+State} (int thread\+\_\+id)
+\item 
+\mbox{\Hypertarget{classps_1_1RrtPlanner_abf47c4b414bdbe77a68a4b5f178b36eb}\label{classps_1_1RrtPlanner_abf47c4b414bdbe77a68a4b5f178b36eb}} 
+State\+Vars\+Type {\bfseries sample\+State} (\mbox{\hyperlink{classps_1_1State}{State\+Ptr\+Type}} goal\+\_\+state\+\_\+ptr, int thread\+\_\+id, double goal\+\_\+prob)
+\item 
+\mbox{\Hypertarget{classps_1_1RrtPlanner_ac15ce9d093021ae278ae71de1683c759}\label{classps_1_1RrtPlanner_ac15ce9d093021ae278ae71de1683c759}} 
+double {\bfseries wrap\+Angle} (double angle)
+\item 
+\mbox{\Hypertarget{classps_1_1RrtPlanner_af79d68cd13b6364e168a46b1edfad33b}\label{classps_1_1RrtPlanner_af79d68cd13b6364e168a46b1edfad33b}} 
+double {\bfseries angle\+Difference} (double angle1, double angle2)
+\item 
+\mbox{\Hypertarget{classps_1_1RrtPlanner_aee8ab5fcc9c8babf2bae1d8b7a2227c0}\label{classps_1_1RrtPlanner_aee8ab5fcc9c8babf2bae1d8b7a2227c0}} 
+double {\bfseries calculate\+Distance} (const State\+Vars\+Type \&state\+\_\+1, const State\+Vars\+Type \&state\+\_\+2)
+\item 
+\mbox{\Hypertarget{classps_1_1RrtPlanner_a5a51f4a204169ee7c5189207e1078c16}\label{classps_1_1RrtPlanner_a5a51f4a204169ee7c5189207e1078c16}} 
+\mbox{\hyperlink{classps_1_1State}{State\+Ptr\+Type}} {\bfseries get\+Nearest\+Neighbor} (const State\+Vars\+Type \&sampled\+\_\+state, const State\+Ptr\+Map\+Type \&state\+\_\+map)
+\item 
+\mbox{\Hypertarget{classps_1_1RrtPlanner_ae455ecc6a31c1d00d791062a44a058e6}\label{classps_1_1RrtPlanner_ae455ecc6a31c1d00d791062a44a058e6}} 
+bool {\bfseries is\+Valid\+Configuration} (const State\+Vars\+Type \&state\+\_\+vars, int thread\+\_\+id)
+\item 
+\mbox{\Hypertarget{classps_1_1RrtPlanner_af944bc96ac49c74150e2075e0a8ef3a4}\label{classps_1_1RrtPlanner_af944bc96ac49c74150e2075e0a8ef3a4}} 
+State\+Vars\+Type {\bfseries collision\+Free} (const State\+Vars\+Type \&state\+\_\+vars\+\_\+start, const State\+Vars\+Type \&state\+\_\+vars\+\_\+end, const State\+Ptr\+Map\+Type \&state\+\_\+map, bool \&is\+\_\+collision, int thread\+\_\+id)
+\item 
+\mbox{\Hypertarget{classps_1_1RrtPlanner_a64dc012dadf0a2fbb360ae860f2d3e60}\label{classps_1_1RrtPlanner_a64dc012dadf0a2fbb360ae860f2d3e60}} 
+\mbox{\hyperlink{classps_1_1State}{State\+Ptr\+Type}} {\bfseries extend} (const \mbox{\hyperlink{classps_1_1State}{State\+Ptr\+Type}} \&nearest\+\_\+neighbor, const State\+Vars\+Type \&sampled\+\_\+state, bool \&is\+\_\+collision, State\+Ptr\+Map\+Type \&state\+\_\+map, int thread\+\_\+id)
+\item 
+\mbox{\Hypertarget{classps_1_1RrtPlanner_a5581f2474863e35d663ddb60815e921a}\label{classps_1_1RrtPlanner_a5581f2474863e35d663ddb60815e921a}} 
+void {\bfseries exit\+Threads} ()
+\item 
+\mbox{\Hypertarget{classps_1_1RrtPlanner_a5c9684cc309d783fa8d0cdfb0edc9f02}\label{classps_1_1RrtPlanner_a5c9684cc309d783fa8d0cdfb0edc9f02}} 
+void {\bfseries exit} ()
+\item 
+\mbox{\Hypertarget{classps_1_1RrtPlanner_afcd5797fc17a89e4bef6ce3561b7c8a0}\label{classps_1_1RrtPlanner_afcd5797fc17a89e4bef6ce3561b7c8a0}} 
+void {\bfseries Print\+State\+Vars} (const State\+Vars\+Type \&state\+\_\+vars, const std\+::string \&prefix=\char`\"{}\char`\"{})
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1RrtPlanner_ad3f81e301709dacec2c61875a13be0d9}\label{classps_1_1RrtPlanner_ad3f81e301709dacec2c61875a13be0d9}} 
+std\+::random\+\_\+device {\bfseries random\+\_\+device\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1RrtPlanner_acb93bf13f953b06cb020ea3b731b1d0c}\label{classps_1_1RrtPlanner_acb93bf13f953b06cb020ea3b731b1d0c}} 
+Lock\+Type {\bfseries lock\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1RrtPlanner_a77bd356102865662e6921d76c1a9d74e}\label{classps_1_1RrtPlanner_a77bd356102865662e6921d76c1a9d74e}} 
+size\+\_\+t {\bfseries state\+\_\+key\+\_\+} = 0
+\item 
+\mbox{\Hypertarget{classps_1_1RrtPlanner_a35c5dfccbf571302ce995f71a5f6beae}\label{classps_1_1RrtPlanner_a35c5dfccbf571302ce995f71a5f6beae}} 
+State\+Vars\+Type {\bfseries goal\+\_\+state\+\_\+vars\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1RrtPlanner_ad1ac0c624a2504686eb70d4f389cf469}\label{classps_1_1RrtPlanner_ad1ac0c624a2504686eb70d4f389cf469}} 
+std\+::atomic$<$ bool $>$ {\bfseries terminate\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1RrtPlanner_a3d79d41db8c3b13f61ebb82ccdaa1b7b}\label{classps_1_1RrtPlanner_a3d79d41db8c3b13f61ebb82ccdaa1b7b}} 
+std\+::atomic$<$ bool $>$ {\bfseries plan\+\_\+found\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1RrtPlanner_a4dc2faf6af34aabd7ea270c0b2f83723}\label{classps_1_1RrtPlanner_a4dc2faf6af34aabd7ea270c0b2f83723}} 
+std\+::vector$<$ std\+::future$<$ void $>$ $>$ {\bfseries rrt\+\_\+futures\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1RrtPlanner_a2a25e4ba59137629bd67b0831bf18a13}\label{classps_1_1RrtPlanner_a2a25e4ba59137629bd67b0831bf18a13}} 
+\mbox{\hyperlink{classps_1_1State}{State\+Ptr\+Type}} {\bfseries start\+\_\+rrt\+\_\+state\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1RrtPlanner_ab7940c4feb55dab8deb319cfbd699684}\label{classps_1_1RrtPlanner_ab7940c4feb55dab8deb319cfbd699684}} 
+\mbox{\hyperlink{classps_1_1State}{State\+Ptr\+Type}} {\bfseries goal\+\_\+rrt\+\_\+state\+\_\+}
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/planners/Rrt\+Planner.\+hpp\item 
+src/planners/Rrt\+Planner.\+cpp\end{DoxyCompactItemize}

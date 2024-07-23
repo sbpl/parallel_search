@@ -1,0 +1,12 @@
+<map id="mjUI_" name="mjUI_">
+<area shape="rect" id="node1" title=" " alt="" coords="245,276,303,303"/>
+<area shape="rect" id="node2" href="$structmjuiThemeColor__.html" title=" " alt="" coords="5,187,129,213"/>
+<area shape="rect" id="node3" href="$structmjuiSection__.html" title=" " alt="" coords="153,187,251,213"/>
+<area shape="rect" id="node4" href="$structmjrRect__.html" title=" " alt="" coords="95,5,170,32"/>
+<area shape="rect" id="node5" href="$structmjuiItem__.html" title=" " alt="" coords="260,96,339,123"/>
+<area shape="rect" id="node6" href="$structmjuiItemEdit__.html" title=" " alt="" coords="195,5,297,32"/>
+<area shape="rect" id="node7" href="$structmjuiItemSlider__.html" title=" " alt="" coords="322,5,434,32"/>
+<area shape="rect" id="node8" href="$structmjuiItemSingle__.html" title=" " alt="" coords="458,5,573,32"/>
+<area shape="rect" id="node9" href="$structmjuiItemMulti__.html" title=" " alt="" coords="597,5,703,32"/>
+<area shape="rect" id="node10" href="$structmjuiThemeSpacing__.html" title=" " alt="" coords="399,187,539,213"/>
+</map>

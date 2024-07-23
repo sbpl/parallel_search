@@ -1,0 +1,79 @@
+\hypertarget{structps_1_1BSplineOpt_1_1BSplineOptParams}{}\doxysection{ps\+::BSpline\+Opt\+::BSpline\+Opt\+Params Struct Reference}
+\label{structps_1_1BSplineOpt_1_1BSplineOptParams}\index{ps::BSplineOpt::BSplineOptParams@{ps::BSplineOpt::BSplineOptParams}}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structps_1_1BSplineOpt_1_1BSplineOptParams_a55f5a2b193dc630893e69999f096edb6}\label{structps_1_1BSplineOpt_1_1BSplineOptParams_a55f5a2b193dc630893e69999f096edb6}} 
+enum class {\bfseries Constraint\+Mode} \{ {\bfseries WAYPT} = 0
+, {\bfseries CONTROLPT}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structps_1_1BSplineOpt_1_1BSplineOptParams_ab70ffcd2db484757eb9a2df48c391efd}\label{structps_1_1BSplineOpt_1_1BSplineOptParams_ab70ffcd2db484757eb9a2df48c391efd}} 
+{\bfseries BSpline\+Opt\+Params} (int num\+\_\+positions, int num\+\_\+control\+\_\+points, int spline\+\_\+order, double min\+\_\+duration, double max\+\_\+duration, Constraint\+Mode mode)
+\item 
+\mbox{\Hypertarget{structps_1_1BSplineOpt_1_1BSplineOptParams_ac91ec8b493e29bbffb4ee80e99dbdb39}\label{structps_1_1BSplineOpt_1_1BSplineOptParams_ac91ec8b493e29bbffb4ee80e99dbdb39}} 
+void {\bfseries set\+Adaptive\+Params} (int min\+\_\+ctrl\+\_\+points, int max\+\_\+ctrl\+\_\+points)
+\item 
+\mbox{\Hypertarget{structps_1_1BSplineOpt_1_1BSplineOptParams_a167f3b08a636d853690593232748e241}\label{structps_1_1BSplineOpt_1_1BSplineOptParams_a167f3b08a636d853690593232748e241}} 
+void {\bfseries set\+Duration\+Cost\+Weight} (double duration\+\_\+cost\+\_\+w)
+\item 
+\mbox{\Hypertarget{structps_1_1BSplineOpt_1_1BSplineOptParams_aef69571a0845827729b9cd6d799d39b4}\label{structps_1_1BSplineOpt_1_1BSplineOptParams_aef69571a0845827729b9cd6d799d39b4}} 
+void {\bfseries set\+Traj\+Length\+Cost\+Weight} (double length\+\_\+cost\+\_\+w)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structps_1_1BSplineOpt_1_1BSplineOptParams_a9dd8c863c83c735eb1fa1e2f654c9933}\label{structps_1_1BSplineOpt_1_1BSplineOptParams_a9dd8c863c83c735eb1fa1e2f654c9933}} 
+int {\bfseries num\+\_\+positions\+\_\+}
+\item 
+\mbox{\Hypertarget{structps_1_1BSplineOpt_1_1BSplineOptParams_afd7b4b9daeef03a0893a4558715e6505}\label{structps_1_1BSplineOpt_1_1BSplineOptParams_afd7b4b9daeef03a0893a4558715e6505}} 
+int {\bfseries num\+\_\+control\+\_\+points\+\_\+}
+\item 
+\mbox{\Hypertarget{structps_1_1BSplineOpt_1_1BSplineOptParams_a6adb43040142b26edf8e54a7d1530d6e}\label{structps_1_1BSplineOpt_1_1BSplineOptParams_a6adb43040142b26edf8e54a7d1530d6e}} 
+int {\bfseries spline\+\_\+order\+\_\+}
+\item 
+\mbox{\Hypertarget{structps_1_1BSplineOpt_1_1BSplineOptParams_ac1fd05a98d4336460ba4aad4d7a7169b}\label{structps_1_1BSplineOpt_1_1BSplineOptParams_ac1fd05a98d4336460ba4aad4d7a7169b}} 
+double {\bfseries min\+\_\+duration\+\_\+}
+\item 
+\mbox{\Hypertarget{structps_1_1BSplineOpt_1_1BSplineOptParams_ab879310dd85fab78d55a1581e9b33965}\label{structps_1_1BSplineOpt_1_1BSplineOptParams_ab879310dd85fab78d55a1581e9b33965}} 
+double {\bfseries max\+\_\+duration\+\_\+}
+\item 
+\mbox{\Hypertarget{structps_1_1BSplineOpt_1_1BSplineOptParams_ade1f1406ac7f3f95c343175a02558037}\label{structps_1_1BSplineOpt_1_1BSplineOptParams_ade1f1406ac7f3f95c343175a02558037}} 
+Constraint\+Mode {\bfseries constraint\+\_\+mode\+\_\+}
+\item 
+\mbox{\Hypertarget{structps_1_1BSplineOpt_1_1BSplineOptParams_a651aeacd1d330208e4d46a56d69f4a87}\label{structps_1_1BSplineOpt_1_1BSplineOptParams_a651aeacd1d330208e4d46a56d69f4a87}} 
+double {\bfseries duration\+\_\+cost\+\_\+w\+\_\+} = 1.\+0
+\item 
+\mbox{\Hypertarget{structps_1_1BSplineOpt_1_1BSplineOptParams_ac830eddd03331af908e36a6a1ff1ed6a}\label{structps_1_1BSplineOpt_1_1BSplineOptParams_ac830eddd03331af908e36a6a1ff1ed6a}} 
+double {\bfseries length\+\_\+cost\+\_\+w\+\_\+} = 0.\+1
+\item 
+\mbox{\Hypertarget{structps_1_1BSplineOpt_1_1BSplineOptParams_aec49afecbe0d77dbbc0ebe8111f85f03}\label{structps_1_1BSplineOpt_1_1BSplineOptParams_aec49afecbe0d77dbbc0ebe8111f85f03}} 
+bool {\bfseries zero\+\_\+vel\+\_\+start\+\_\+} = true
+\item 
+\mbox{\Hypertarget{structps_1_1BSplineOpt_1_1BSplineOptParams_a313e04cd39e2c1c8de490a51f845f000}\label{structps_1_1BSplineOpt_1_1BSplineOptParams_a313e04cd39e2c1c8de490a51f845f000}} 
+bool {\bfseries zero\+\_\+vel\+\_\+goal\+\_\+} = false
+\item 
+\mbox{\Hypertarget{structps_1_1BSplineOpt_1_1BSplineOptParams_a4a09c7c96e8111635164c15571dcfb42}\label{structps_1_1BSplineOpt_1_1BSplineOptParams_a4a09c7c96e8111635164c15571dcfb42}} 
+int \mbox{\hyperlink{structps_1_1BSplineOpt_1_1BSplineOptParams_a4a09c7c96e8111635164c15571dcfb42}{min\+\_\+ctrl\+\_\+points\+\_\+}}
+\begin{DoxyCompactList}\small\item\em Adaptive BSpline optimization. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structps_1_1BSplineOpt_1_1BSplineOptParams_a0fb29de676b18e782e23ed2cf4ee10e5}\label{structps_1_1BSplineOpt_1_1BSplineOptParams_a0fb29de676b18e782e23ed2cf4ee10e5}} 
+int {\bfseries max\+\_\+ctrl\+\_\+points\+\_\+}
+\item 
+\mbox{\Hypertarget{structps_1_1BSplineOpt_1_1BSplineOptParams_aad875beaaf327a36629308e08fb3f543}\label{structps_1_1BSplineOpt_1_1BSplineOptParams_aad875beaaf327a36629308e08fb3f543}} 
+Vec\+Df {\bfseries global\+\_\+start\+\_\+}
+\item 
+\mbox{\Hypertarget{structps_1_1BSplineOpt_1_1BSplineOptParams_a6f4af9cf0888e0cf9f0fdf7af3408471}\label{structps_1_1BSplineOpt_1_1BSplineOptParams_a6f4af9cf0888e0cf9f0fdf7af3408471}} 
+Vec\+Df \mbox{\hyperlink{structps_1_1BSplineOpt_1_1BSplineOptParams_a6f4af9cf0888e0cf9f0fdf7af3408471}{global\+\_\+goal\+\_\+}}
+\begin{DoxyCompactList}\small\item\em For now assuming higher derivatives = 0. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structps_1_1BSplineOpt_1_1BSplineOptParams_ac14567604c56b933758cb819ab7134d6}\label{structps_1_1BSplineOpt_1_1BSplineOptParams_ac14567604c56b933758cb819ab7134d6}} 
+double \mbox{\hyperlink{structps_1_1BSplineOpt_1_1BSplineOptParams_ac14567604c56b933758cb819ab7134d6}{start\+\_\+goal\+\_\+dist\+\_\+}}
+\begin{DoxyCompactList}\small\item\em For now assuming higher derivatives = 0. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/planners/insat/opt/BSpline\+Opt.\+hpp\item 
+src/planners/insat/opt/\mbox{\hyperlink{BSplineOpt_8cpp}{BSpline\+Opt.\+cpp}}\end{DoxyCompactItemize}

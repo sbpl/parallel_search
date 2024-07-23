@@ -1,0 +1,394 @@
+\hypertarget{classps_1_1BSplineOpt}{}\doxysection{ps\+::BSpline\+Opt Class Reference}
+\label{classps_1_1BSplineOpt}\index{ps::BSplineOpt@{ps::BSplineOpt}}
+
+
+Collaboration diagram for ps\+::BSpline\+Opt\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classps_1_1BSplineOpt__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structps_1_1BSplineOpt_1_1BSplineOptParams}{BSpline\+Opt\+Params}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1BSplineOpt_a14809cf743d3787fe0b639ff6563cd33}\label{classps_1_1BSplineOpt_a14809cf743d3787fe0b639ff6563cd33}} 
+typedef drake\+::planning\+::trajectory\+\_\+optimization\+::\+Kinematic\+Trajectory\+Optimization {\bfseries Opt\+Type}
+\item 
+\mbox{\Hypertarget{classps_1_1BSplineOpt_a6aa62502b02ca0b8ea56a2d84e326166}\label{classps_1_1BSplineOpt_a6aa62502b02ca0b8ea56a2d84e326166}} 
+typedef drake\+::solvers\+::\+Binding$<$ drake\+::solvers\+::\+Cost $>$ {\bfseries Cost\+Type}
+\item 
+\mbox{\Hypertarget{classps_1_1BSplineOpt_a928a1d7d656c4ffeaff7c868c9577d36}\label{classps_1_1BSplineOpt_a928a1d7d656c4ffeaff7c868c9577d36}} 
+typedef drake\+::solvers\+::\+Binding$<$ drake\+::solvers\+::\+Constraint $>$ {\bfseries Constraint\+Type}
+\item 
+\mbox{\Hypertarget{classps_1_1BSplineOpt_a79ef83a26d52942ba8d13cb96652a43f}\label{classps_1_1BSplineOpt_a79ef83a26d52942ba8d13cb96652a43f}} 
+typedef drake\+::solvers\+::\+Mathematical\+Program\+Result {\bfseries Opt\+Result}
+\item 
+\mbox{\Hypertarget{classps_1_1BSplineOpt_aaeaa5eec112aacbb6d7a30dd0165bbfa}\label{classps_1_1BSplineOpt_aaeaa5eec112aacbb6d7a30dd0165bbfa}} 
+typedef \mbox{\hyperlink{structps_1_1IRB1600}{IRB1600}} {\bfseries Robot\+Params\+Type}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1BSplineOpt_aae234174cd9a8d137b049e70537d5404}\label{classps_1_1BSplineOpt_aae234174cd9a8d137b049e70537d5404}} 
+{\bfseries BSpline\+Opt} (const \mbox{\hyperlink{structps_1_1InsatParams}{Insat\+Params}} \&insat\+\_\+params, const \mbox{\hyperlink{structps_1_1IRB1600}{Robot\+Params\+Type}} \&robot\+\_\+params, const \mbox{\hyperlink{structps_1_1BSplineOpt_1_1BSplineOptParams}{BSpline\+Opt\+Params}} \&opt\+\_\+params, Params\+Type \&search\+\_\+params)
+\item 
+\mbox{\Hypertarget{classps_1_1BSplineOpt_ad236dbe0c6286f6d243953d0e3e895ef}\label{classps_1_1BSplineOpt_ad236dbe0c6286f6d243953d0e3e895ef}} 
+void {\bfseries Set\+Goal\+Checker} (std\+::function$<$ bool(const State\+Vars\+Type \&)$>$ callback)
+\item 
+\mbox{\Hypertarget{classps_1_1BSplineOpt_a94f9a31c6745b43b75e6514ef36cbc23}\label{classps_1_1BSplineOpt_a94f9a31c6745b43b75e6514ef36cbc23}} 
+void {\bfseries update\+Start\+And\+Goal} (State\+Vars\+Type \&start, State\+Vars\+Type \&goal)
+\item 
+\mbox{\Hypertarget{classps_1_1BSplineOpt_aa42458b1d0c9f737656841d5a8a55121}\label{classps_1_1BSplineOpt_aa42458b1d0c9f737656841d5a8a55121}} 
+bool {\bfseries is\+Goal} (const Vec\+Df \&state) const
+\item 
+\mbox{\Hypertarget{classps_1_1BSplineOpt_ab82b9248d04489f4eef163b1613549fd}\label{classps_1_1BSplineOpt_ab82b9248d04489f4eef163b1613549fd}} 
+Mat\+Df \mbox{\hyperlink{classps_1_1BSplineOpt_ab82b9248d04489f4eef163b1613549fd}{sample\+Trajectory}} (const BSpline\+Traj\+::\+Traj\+Instance\+Type \&traj, double dt) const
+\begin{DoxyCompactList}\small\item\em trajectory samplers with fixed time \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classps_1_1BSplineOpt_a93d25c26cb6bc70cbd120585592e7001}\label{classps_1_1BSplineOpt_a93d25c26cb6bc70cbd120585592e7001}} 
+Mat\+Df {\bfseries sample\+Trajectory} (const \mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} \&traj, double dt) const
+\item 
+Mat\+Df \mbox{\hyperlink{classps_1_1BSplineOpt_a5200ac8277750ec93ac4b0cd1fe3eadc}{sample\+Trajectory}} (const BSpline\+Traj\+::\+Traj\+Instance\+Type \&traj) const
+\begin{DoxyCompactList}\small\item\em trajectory samplers with adaptive time \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classps_1_1BSplineOpt_a872b98c6cbc265ab23cc6f733ce5dac7}\label{classps_1_1BSplineOpt_a872b98c6cbc265ab23cc6f733ce5dac7}} 
+Mat\+Df {\bfseries sample\+Trajectory} (const \mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} \&traj) const
+\item 
+\mbox{\Hypertarget{classps_1_1BSplineOpt_a95dbc4045dc14f3e3a52ef512890f465}\label{classps_1_1BSplineOpt_a95dbc4045dc14f3e3a52ef512890f465}} 
+void {\bfseries add\+Duration\+And\+Path\+Cost} (Opt\+Type \&opt) const
+\item 
+\mbox{\Hypertarget{classps_1_1BSplineOpt_a48210c386e97de3c4572eb144928d938}\label{classps_1_1BSplineOpt_a48210c386e97de3c4572eb144928d938}} 
+void {\bfseries add\+State\+Space\+Bounds} (Opt\+Type \&opt) const
+\item 
+\mbox{\Hypertarget{classps_1_1BSplineOpt_a1697bfc8dcf871194fe351c1a20a334f}\label{classps_1_1BSplineOpt_a1697bfc8dcf871194fe351c1a20a334f}} 
+void {\bfseries add\+Duration\+Constraint} (Opt\+Type \&opt, double min\+\_\+t, double max\+\_\+t) const
+\item 
+std\+::vector$<$ BSpline\+Traj\+::\+Traj\+Instance\+Type $>$ \mbox{\hyperlink{classps_1_1BSplineOpt_acd34efe26e3e5c6943333c906ba95ea0}{optimize\+With\+Callback}} (const Opt\+Type \&opt, drake\+::solvers\+::\+Mathematical\+Program \&prog) const
+\begin{DoxyCompactList}\small\item\em callback for optimization trace \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classps_1_1BSplineOpt_ac7bb374862c0a744499fe462c112283e}\label{classps_1_1BSplineOpt_ac7bb374862c0a744499fe462c112283e}} 
+\mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} \mbox{\hyperlink{classps_1_1BSplineOpt_ac7bb374862c0a744499fe462c112283e}{optimize}} (const \mbox{\hyperlink{classps_1_1InsatAction}{Insat\+Action}} $\ast$act, const Vec\+Df \&s1, const Vec\+Df \&s2, int thread\+\_\+id)
+\begin{DoxyCompactList}\small\item\em non adaptive standard version \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} \mbox{\hyperlink{classps_1_1BSplineOpt_aecff631668d942610fc7a064b58c800f}{warm\+Optimize}} (const \mbox{\hyperlink{classps_1_1InsatAction}{Insat\+Action}} $\ast$act, const \mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} \&traj1, const \mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} \&traj2, int thread\+\_\+id)
+\item 
+\mbox{\Hypertarget{classps_1_1BSplineOpt_ab63dba2483ceebff64989c8acbcf139e}\label{classps_1_1BSplineOpt_ab63dba2483ceebff64989c8acbcf139e}} 
+\mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} {\bfseries warm\+Optimize} (const \mbox{\hyperlink{classps_1_1InsatAction}{Insat\+Action}} $\ast$act, const \mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} \&traj, int thread\+\_\+id)
+\item 
+\mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} \mbox{\hyperlink{classps_1_1BSplineOpt_a7fe5bd47804327a7b0a5afc619dee333}{run\+BSpline\+Opt}} (const \mbox{\hyperlink{classps_1_1InsatAction}{Insat\+Action}} $\ast$act, const Vec\+Df \&q0, const Vec\+Df \&qF, Vec\+Df \&dq0, Vec\+Df \&dqF, int order, int num\+\_\+ctrl\+\_\+pt, double T, int thread\+\_\+id)
+\begin{DoxyCompactList}\small\item\em adaptive version \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} \mbox{\hyperlink{classps_1_1BSplineOpt_a6540733f7a271dbbec5eed50819fedad}{run\+BSpline\+Opt\+With\+Init\+Guess}} (const \mbox{\hyperlink{classps_1_1InsatAction}{Insat\+Action}} $\ast$act, const \mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} \&t1, \mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} \&t2, const Vec\+Df \&q0, const Vec\+Df \&qF, Vec\+Df \&dq0, Vec\+Df \&dqF, int order, int c1, int c2, double T, int thread\+\_\+id)
+\begin{DoxyCompactList}\small\item\em The assumption is both t1 and t2 exists and this function is only used for blending. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classps_1_1BSplineOpt_a670379ccd5468cbf048fdbfee4fc1131}\label{classps_1_1BSplineOpt_a670379ccd5468cbf048fdbfee4fc1131}} 
+\mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} {\bfseries optimize} (const \mbox{\hyperlink{classps_1_1InsatAction}{Insat\+Action}} $\ast$act, const \mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} \&incoming\+\_\+traj, const Vec\+Df \&curr\+\_\+state, const Vec\+Df \&succ\+\_\+state, int thread\+\_\+id)
+\item 
+\mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} \mbox{\hyperlink{classps_1_1BSplineOpt_a5e94f528ed89a7f41a6c205acdcfd7da}{optimize}} (const \mbox{\hyperlink{classps_1_1InsatAction}{Insat\+Action}} $\ast$act, const \mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} \&incoming\+\_\+traj, const std\+::vector$<$ State\+Vars\+Type $>$ \&ancestors, const State\+Vars\+Type \&successor, int thread\+\_\+id)
+\begin{DoxyCompactList}\small\item\em smart opt and magic opt entry point \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} \mbox{\hyperlink{classps_1_1BSplineOpt_a78f420ff6c400a7b89bab88a837ddfba}{optimize\+With\+Waypoint\+Constraint}} (Vec\+Df \&st, Vec\+Df \&go, Mat\+Df \&wp, Vec\+Df \&s\+\_\+wp) const
+\item 
+\mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} \mbox{\hyperlink{classps_1_1BSplineOpt_a7811be877b690bbc0f96d89e8506375f}{optimize\+With\+Waypoint\+Constraint\+And\+Init}} (const \mbox{\hyperlink{classps_1_1InsatAction}{Insat\+Action}} $\ast$act, Vec\+Df \&st, Vec\+Df \&go, Mat\+Df \&wp, Vec\+Df \&s\+\_\+wp, const \mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} \&init\+\_\+traj, int thread\+\_\+id) const
+\item 
+\mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} \mbox{\hyperlink{classps_1_1BSplineOpt_a80ea978c605d9f9ff761cf4e47324532}{optimize\+With\+Waypoint\+Constraint\+And\+Callback}} (const \mbox{\hyperlink{classps_1_1InsatAction}{Insat\+Action}} $\ast$act, Vec\+Df \&st, Vec\+Df \&go, Mat\+Df \&wp, Vec\+Df \&s\+\_\+wp, int thread\+\_\+id) const
+\item 
+\mbox{\Hypertarget{classps_1_1BSplineOpt_ad3c23363cab28d58bf5c30f85777386d}\label{classps_1_1BSplineOpt_ad3c23363cab28d58bf5c30f85777386d}} 
+\mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} {\bfseries fit\+Best\+Waypoint\+BSpline} (const \mbox{\hyperlink{classps_1_1InsatAction}{Insat\+Action}} $\ast$act, Mat\+Df \&path, const \mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} \&init\+\_\+traj, int thread\+\_\+id) const
+\item 
+\mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} \mbox{\hyperlink{classps_1_1BSplineOpt_a7fa1c7a4b97ff69b7501d13daab274fc}{fit\+Best\+Control\+Point\+BSpline}} (const \mbox{\hyperlink{classps_1_1InsatAction}{Insat\+Action}} $\ast$act, Mat\+Df \&path, const \mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} \&init\+\_\+traj, int thread\+\_\+id) const
+\begin{DoxyCompactList}\small\item\em magic opt \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} \mbox{\hyperlink{classps_1_1BSplineOpt_a452d66893ada5c7fcd552959a0985a28}{direct\+Optimize}} (const \mbox{\hyperlink{classps_1_1InsatAction}{Insat\+Action}} $\ast$act, const Vec\+Df \&q0, const Vec\+Df \&qF, int thread\+\_\+id) const
+\item 
+\mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} \mbox{\hyperlink{classps_1_1BSplineOpt_afea977d42fec8de0b562a74d2d899361}{direct\+Optimize\+With\+Callback}} (const \mbox{\hyperlink{classps_1_1InsatAction}{Insat\+Action}} $\ast$act, const Vec\+Df \&q0, const Vec\+Df \&qF, int thread\+\_\+id) const
+\item 
+\mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} \mbox{\hyperlink{classps_1_1BSplineOpt_ac09e4e97bff72774e90716b6ca30b55c}{optimize\+With\+Init}} (const \mbox{\hyperlink{classps_1_1InsatAction}{Insat\+Action}} $\ast$act, const Vec\+Df \&q0, const Vec\+Df \&qF, BSpline\+Traj\+::\+Traj\+Instance\+Type \&init\+\_\+traj, int thread\+\_\+id) const
+\item 
+\mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} \mbox{\hyperlink{classps_1_1BSplineOpt_aaa1cd7fd7082fd8b1db83017b4d611e2}{optimize\+With\+Init\+And\+Callback}} (const \mbox{\hyperlink{classps_1_1InsatAction}{Insat\+Action}} $\ast$act, const Vec\+Df \&q0, const Vec\+Df \&qF, BSpline\+Traj\+::\+Traj\+Instance\+Type \&init\+\_\+traj, int thread\+\_\+id) const
+\item 
+\mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} \mbox{\hyperlink{classps_1_1BSplineOpt_a2f5de13b30c2a4ca39a7d79fd3ea888e}{blend\+With\+Higher\+Order\+And\+Control}} (const \mbox{\hyperlink{classps_1_1InsatAction}{Insat\+Action}} $\ast$act, const \mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} \&t1, const \mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} \&t2, int thread\+\_\+id) const
+\item 
+Mat\+Df \mbox{\hyperlink{classps_1_1BSplineOpt_adf446ea19f1dfc45234ed665e22ea364}{post\+Process}} (std\+::vector$<$ \mbox{\hyperlink{structps_1_1PlanElement}{Plan\+Element}} $>$ \&path, double \&cost, double time\+\_\+limit, const \mbox{\hyperlink{classps_1_1InsatAction}{Insat\+Action}} $\ast$act) const
+\begin{DoxyCompactList}\small\item\em Post processing. \end{DoxyCompactList}\item 
+Mat\+Df \mbox{\hyperlink{classps_1_1BSplineOpt_a66cd3d597c9c08bcb0688702b2e93af4}{post\+Process\+With\+Control\+Points}} (std\+::vector$<$ \mbox{\hyperlink{structps_1_1PlanElement}{Plan\+Element}} $>$ \&path, double \&cost, double time\+\_\+limit, const \mbox{\hyperlink{classps_1_1InsatAction}{Insat\+Action}} $\ast$act) const
+\item 
+\mbox{\Hypertarget{classps_1_1BSplineOpt_a00133de23ea9b0e01772c93e65b43e5c}\label{classps_1_1BSplineOpt_a00133de23ea9b0e01772c93e65b43e5c}} 
+virtual double {\bfseries calculate\+Cost} (const \mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} \&traj) const
+\item 
+\mbox{\Hypertarget{classps_1_1BSplineOpt_a471f5030aaacd915a9d2e60df1602801}\label{classps_1_1BSplineOpt_a471f5030aaacd915a9d2e60df1602801}} 
+virtual double {\bfseries calculate\+Cost} (const Mat\+Df \&traj) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1BSplineOpt_a712d9bcbea81cd5a1cf371d7b42978fe}\label{classps_1_1BSplineOpt_a712d9bcbea81cd5a1cf371d7b42978fe}} 
+\mbox{\hyperlink{structps_1_1InsatParams}{Insat\+Params}} \mbox{\hyperlink{classps_1_1BSplineOpt_a712d9bcbea81cd5a1cf371d7b42978fe}{insat\+\_\+params\+\_\+}}
+\begin{DoxyCompactList}\small\item\em Params. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classps_1_1BSplineOpt_ae1fa6a69a9cdd63eccbaf37cd13dc0cf}\label{classps_1_1BSplineOpt_ae1fa6a69a9cdd63eccbaf37cd13dc0cf}} 
+\mbox{\hyperlink{structps_1_1IRB1600}{IRB1600}} {\bfseries robot\+\_\+params\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1BSplineOpt_afbb4cd4a3afac8afbd031133b7450b97}\label{classps_1_1BSplineOpt_afbb4cd4a3afac8afbd031133b7450b97}} 
+\mbox{\hyperlink{structps_1_1BSplineOpt_1_1BSplineOptParams}{BSpline\+Opt\+Params}} {\bfseries opt\+\_\+params\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1BSplineOpt_a6647ad64b553a417f53f62e57aeb88fa}\label{classps_1_1BSplineOpt_a6647ad64b553a417f53f62e57aeb88fa}} 
+Params\+Type {\bfseries search\+\_\+params\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1BSplineOpt_ae1d769f13d53bab850bedfcd4558c4c3}\label{classps_1_1BSplineOpt_ae1d769f13d53bab850bedfcd4558c4c3}} 
+std\+::function$<$ double(const State\+Vars\+Type \&)$>$ \mbox{\hyperlink{classps_1_1BSplineOpt_ae1d769f13d53bab850bedfcd4558c4c3}{goal\+\_\+checker\+\_\+}}
+\begin{DoxyCompactList}\small\item\em Adaptive \mbox{\hyperlink{classps_1_1BSplineOpt}{BSpline\+Opt}}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classps_1_1BSplineOpt_a2f5de13b30c2a4ca39a7d79fd3ea888e}\label{classps_1_1BSplineOpt_a2f5de13b30c2a4ca39a7d79fd3ea888e}} 
+\index{ps::BSplineOpt@{ps::BSplineOpt}!blendWithHigherOrderAndControl@{blendWithHigherOrderAndControl}}
+\index{blendWithHigherOrderAndControl@{blendWithHigherOrderAndControl}!ps::BSplineOpt@{ps::BSplineOpt}}
+\doxysubsubsection{\texorpdfstring{blendWithHigherOrderAndControl()}{blendWithHigherOrderAndControl()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} ps\+::\+BSpline\+Opt\+::blend\+With\+Higher\+Order\+And\+Control (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classps_1_1InsatAction}{Insat\+Action}} $\ast$}]{act,  }\item[{const \mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} \&}]{t1,  }\item[{const \mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} \&}]{t2,  }\item[{int}]{thread\+\_\+id }\end{DoxyParamCaption}) const}
+
+set up the basis functions\mbox{\Hypertarget{classps_1_1BSplineOpt_a452d66893ada5c7fcd552959a0985a28}\label{classps_1_1BSplineOpt_a452d66893ada5c7fcd552959a0985a28}} 
+\index{ps::BSplineOpt@{ps::BSplineOpt}!directOptimize@{directOptimize}}
+\index{directOptimize@{directOptimize}!ps::BSplineOpt@{ps::BSplineOpt}}
+\doxysubsubsection{\texorpdfstring{directOptimize()}{directOptimize()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} ps\+::\+BSpline\+Opt\+::direct\+Optimize (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classps_1_1InsatAction}{Insat\+Action}} $\ast$}]{act,  }\item[{const Vec\+Df \&}]{q0,  }\item[{const Vec\+Df \&}]{qF,  }\item[{int}]{thread\+\_\+id }\end{DoxyParamCaption}) const}
+
+Start constraint
+
+Goal constraint
+
+Cost
+
+Solve\mbox{\Hypertarget{classps_1_1BSplineOpt_afea977d42fec8de0b562a74d2d899361}\label{classps_1_1BSplineOpt_afea977d42fec8de0b562a74d2d899361}} 
+\index{ps::BSplineOpt@{ps::BSplineOpt}!directOptimizeWithCallback@{directOptimizeWithCallback}}
+\index{directOptimizeWithCallback@{directOptimizeWithCallback}!ps::BSplineOpt@{ps::BSplineOpt}}
+\doxysubsubsection{\texorpdfstring{directOptimizeWithCallback()}{directOptimizeWithCallback()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} ps\+::\+BSpline\+Opt\+::direct\+Optimize\+With\+Callback (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classps_1_1InsatAction}{Insat\+Action}} $\ast$}]{act,  }\item[{const Vec\+Df \&}]{q0,  }\item[{const Vec\+Df \&}]{qF,  }\item[{int}]{thread\+\_\+id }\end{DoxyParamCaption}) const}
+
+Start constraint
+
+Goal constraint
+
+Cost
+
+Solve
+
+re-\/solve with callback\mbox{\Hypertarget{classps_1_1BSplineOpt_a7fa1c7a4b97ff69b7501d13daab274fc}\label{classps_1_1BSplineOpt_a7fa1c7a4b97ff69b7501d13daab274fc}} 
+\index{ps::BSplineOpt@{ps::BSplineOpt}!fitBestControlPointBSpline@{fitBestControlPointBSpline}}
+\index{fitBestControlPointBSpline@{fitBestControlPointBSpline}!ps::BSplineOpt@{ps::BSplineOpt}}
+\doxysubsubsection{\texorpdfstring{fitBestControlPointBSpline()}{fitBestControlPointBSpline()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} ps\+::\+BSpline\+Opt\+::fit\+Best\+Control\+Point\+BSpline (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classps_1_1InsatAction}{Insat\+Action}} $\ast$}]{act,  }\item[{Mat\+Df \&}]{path,  }\item[{const \mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} \&}]{init\+\_\+traj,  }\item[{int}]{thread\+\_\+id }\end{DoxyParamCaption}) const}
+
+
+
+magic opt 
+
+remove
+
+remove
+
+should happen only when expanding start in low-\/D
+
+Do direct optimization This shouldn\textquotesingle{}t be failing (at least the assumption is)
+
+remove
+
+For min to max control points
+
+set up the basis functions
+
+Use the incoming trajectory as initial guess
+
+Construct control points
+
+remove\mbox{\Hypertarget{classps_1_1BSplineOpt_a5e94f528ed89a7f41a6c205acdcfd7da}\label{classps_1_1BSplineOpt_a5e94f528ed89a7f41a6c205acdcfd7da}} 
+\index{ps::BSplineOpt@{ps::BSplineOpt}!optimize@{optimize}}
+\index{optimize@{optimize}!ps::BSplineOpt@{ps::BSplineOpt}}
+\doxysubsubsection{\texorpdfstring{optimize()}{optimize()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} ps\+::\+BSpline\+Opt\+::optimize (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classps_1_1InsatAction}{Insat\+Action}} $\ast$}]{act,  }\item[{const \mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} \&}]{incoming\+\_\+traj,  }\item[{const std\+::vector$<$ State\+Vars\+Type $>$ \&}]{ancestors,  }\item[{const State\+Vars\+Type \&}]{successor,  }\item[{int}]{thread\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+smart opt and magic opt entry point 
+
+path should be in the order\+: Start -\/---$>$ Goal (recent ancestor)\mbox{\Hypertarget{classps_1_1BSplineOpt_acd34efe26e3e5c6943333c906ba95ea0}\label{classps_1_1BSplineOpt_acd34efe26e3e5c6943333c906ba95ea0}} 
+\index{ps::BSplineOpt@{ps::BSplineOpt}!optimizeWithCallback@{optimizeWithCallback}}
+\index{optimizeWithCallback@{optimizeWithCallback}!ps::BSplineOpt@{ps::BSplineOpt}}
+\doxysubsubsection{\texorpdfstring{optimizeWithCallback()}{optimizeWithCallback()}}
+{\footnotesize\ttfamily std\+::vector$<$ BSpline\+Traj\+::\+Traj\+Instance\+Type $>$ ps\+::\+BSpline\+Opt\+::optimize\+With\+Callback (\begin{DoxyParamCaption}\item[{const Opt\+Type \&}]{opt,  }\item[{drake\+::solvers\+::\+Mathematical\+Program \&}]{prog }\end{DoxyParamCaption}) const}
+
+
+
+callback for optimization trace 
+
+The control vector transformed to control matrix (this MUST BE DONE IN COLUMN MAJOR ORDER)
+
+control pts
+
+duration
+
+Seting callbacks
+
+Reconstructing trajectory with control point and duration trace\mbox{\Hypertarget{classps_1_1BSplineOpt_ac09e4e97bff72774e90716b6ca30b55c}\label{classps_1_1BSplineOpt_ac09e4e97bff72774e90716b6ca30b55c}} 
+\index{ps::BSplineOpt@{ps::BSplineOpt}!optimizeWithInit@{optimizeWithInit}}
+\index{optimizeWithInit@{optimizeWithInit}!ps::BSplineOpt@{ps::BSplineOpt}}
+\doxysubsubsection{\texorpdfstring{optimizeWithInit()}{optimizeWithInit()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} ps\+::\+BSpline\+Opt\+::optimize\+With\+Init (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classps_1_1InsatAction}{Insat\+Action}} $\ast$}]{act,  }\item[{const Vec\+Df \&}]{q0,  }\item[{const Vec\+Df \&}]{qF,  }\item[{BSpline\+Traj\+::\+Traj\+Instance\+Type \&}]{init\+\_\+traj,  }\item[{int}]{thread\+\_\+id }\end{DoxyParamCaption}) const}
+
+Start constraint
+
+Goal constraint
+
+Cost
+
+Solve\mbox{\Hypertarget{classps_1_1BSplineOpt_aaa1cd7fd7082fd8b1db83017b4d611e2}\label{classps_1_1BSplineOpt_aaa1cd7fd7082fd8b1db83017b4d611e2}} 
+\index{ps::BSplineOpt@{ps::BSplineOpt}!optimizeWithInitAndCallback@{optimizeWithInitAndCallback}}
+\index{optimizeWithInitAndCallback@{optimizeWithInitAndCallback}!ps::BSplineOpt@{ps::BSplineOpt}}
+\doxysubsubsection{\texorpdfstring{optimizeWithInitAndCallback()}{optimizeWithInitAndCallback()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} ps\+::\+BSpline\+Opt\+::optimize\+With\+Init\+And\+Callback (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classps_1_1InsatAction}{Insat\+Action}} $\ast$}]{act,  }\item[{const Vec\+Df \&}]{q0,  }\item[{const Vec\+Df \&}]{qF,  }\item[{BSpline\+Traj\+::\+Traj\+Instance\+Type \&}]{init\+\_\+traj,  }\item[{int}]{thread\+\_\+id }\end{DoxyParamCaption}) const}
+
+Start constraint
+
+Goal constraint
+
+Cost
+
+Solve
+
+re-\/solve with callback\mbox{\Hypertarget{classps_1_1BSplineOpt_a78f420ff6c400a7b89bab88a837ddfba}\label{classps_1_1BSplineOpt_a78f420ff6c400a7b89bab88a837ddfba}} 
+\index{ps::BSplineOpt@{ps::BSplineOpt}!optimizeWithWaypointConstraint@{optimizeWithWaypointConstraint}}
+\index{optimizeWithWaypointConstraint@{optimizeWithWaypointConstraint}!ps::BSplineOpt@{ps::BSplineOpt}}
+\doxysubsubsection{\texorpdfstring{optimizeWithWaypointConstraint()}{optimizeWithWaypointConstraint()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} ps\+::\+BSpline\+Opt\+::optimize\+With\+Waypoint\+Constraint (\begin{DoxyParamCaption}\item[{Vec\+Df \&}]{st,  }\item[{Vec\+Df \&}]{go,  }\item[{Mat\+Df \&}]{wp,  }\item[{Vec\+Df \&}]{s\+\_\+wp }\end{DoxyParamCaption}) const}
+
+Start constraint
+
+Goal constraint
+
+Add waypoint constraint
+
+Cost
+
+Solve\mbox{\Hypertarget{classps_1_1BSplineOpt_a80ea978c605d9f9ff761cf4e47324532}\label{classps_1_1BSplineOpt_a80ea978c605d9f9ff761cf4e47324532}} 
+\index{ps::BSplineOpt@{ps::BSplineOpt}!optimizeWithWaypointConstraintAndCallback@{optimizeWithWaypointConstraintAndCallback}}
+\index{optimizeWithWaypointConstraintAndCallback@{optimizeWithWaypointConstraintAndCallback}!ps::BSplineOpt@{ps::BSplineOpt}}
+\doxysubsubsection{\texorpdfstring{optimizeWithWaypointConstraintAndCallback()}{optimizeWithWaypointConstraintAndCallback()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} ps\+::\+BSpline\+Opt\+::optimize\+With\+Waypoint\+Constraint\+And\+Callback (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classps_1_1InsatAction}{Insat\+Action}} $\ast$}]{act,  }\item[{Vec\+Df \&}]{st,  }\item[{Vec\+Df \&}]{go,  }\item[{Mat\+Df \&}]{wp,  }\item[{Vec\+Df \&}]{s\+\_\+wp,  }\item[{int}]{thread\+\_\+id }\end{DoxyParamCaption}) const}
+
+Start constraint
+
+Goal constraint
+
+Add waypoint constraint
+
+Cost
+
+Solve
+
+re-\/solve with callback\mbox{\Hypertarget{classps_1_1BSplineOpt_a7811be877b690bbc0f96d89e8506375f}\label{classps_1_1BSplineOpt_a7811be877b690bbc0f96d89e8506375f}} 
+\index{ps::BSplineOpt@{ps::BSplineOpt}!optimizeWithWaypointConstraintAndInit@{optimizeWithWaypointConstraintAndInit}}
+\index{optimizeWithWaypointConstraintAndInit@{optimizeWithWaypointConstraintAndInit}!ps::BSplineOpt@{ps::BSplineOpt}}
+\doxysubsubsection{\texorpdfstring{optimizeWithWaypointConstraintAndInit()}{optimizeWithWaypointConstraintAndInit()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} ps\+::\+BSpline\+Opt\+::optimize\+With\+Waypoint\+Constraint\+And\+Init (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classps_1_1InsatAction}{Insat\+Action}} $\ast$}]{act,  }\item[{Vec\+Df \&}]{st,  }\item[{Vec\+Df \&}]{go,  }\item[{Mat\+Df \&}]{wp,  }\item[{Vec\+Df \&}]{s\+\_\+wp,  }\item[{const \mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} \&}]{init\+\_\+traj,  }\item[{int}]{thread\+\_\+id }\end{DoxyParamCaption}) const}
+
+Start constraint
+
+Goal constraint
+
+Add waypoint constraint
+
+Cost
+
+Solve\mbox{\Hypertarget{classps_1_1BSplineOpt_adf446ea19f1dfc45234ed665e22ea364}\label{classps_1_1BSplineOpt_adf446ea19f1dfc45234ed665e22ea364}} 
+\index{ps::BSplineOpt@{ps::BSplineOpt}!postProcess@{postProcess}}
+\index{postProcess@{postProcess}!ps::BSplineOpt@{ps::BSplineOpt}}
+\doxysubsubsection{\texorpdfstring{postProcess()}{postProcess()}}
+{\footnotesize\ttfamily Mat\+Df ps\+::\+BSpline\+Opt\+::post\+Process (\begin{DoxyParamCaption}\item[{std\+::vector$<$ \mbox{\hyperlink{structps_1_1PlanElement}{Plan\+Element}} $>$ \&}]{path,  }\item[{double \&}]{cost,  }\item[{double}]{time\+\_\+limit,  }\item[{const \mbox{\hyperlink{classps_1_1InsatAction}{Insat\+Action}} $\ast$}]{act }\end{DoxyParamCaption}) const}
+
+
+
+Post processing. 
+
+Return already if the time length is negative (means time limit already elapsed)\mbox{\Hypertarget{classps_1_1BSplineOpt_a66cd3d597c9c08bcb0688702b2e93af4}\label{classps_1_1BSplineOpt_a66cd3d597c9c08bcb0688702b2e93af4}} 
+\index{ps::BSplineOpt@{ps::BSplineOpt}!postProcessWithControlPoints@{postProcessWithControlPoints}}
+\index{postProcessWithControlPoints@{postProcessWithControlPoints}!ps::BSplineOpt@{ps::BSplineOpt}}
+\doxysubsubsection{\texorpdfstring{postProcessWithControlPoints()}{postProcessWithControlPoints()}}
+{\footnotesize\ttfamily Mat\+Df ps\+::\+BSpline\+Opt\+::post\+Process\+With\+Control\+Points (\begin{DoxyParamCaption}\item[{std\+::vector$<$ \mbox{\hyperlink{structps_1_1PlanElement}{Plan\+Element}} $>$ \&}]{path,  }\item[{double \&}]{cost,  }\item[{double}]{time\+\_\+limit,  }\item[{const \mbox{\hyperlink{classps_1_1InsatAction}{Insat\+Action}} $\ast$}]{act }\end{DoxyParamCaption}) const}
+
+Return already if the time length is negative (means time limit already elapsed)
+
+For min to max control points\mbox{\Hypertarget{classps_1_1BSplineOpt_a7fe5bd47804327a7b0a5afc619dee333}\label{classps_1_1BSplineOpt_a7fe5bd47804327a7b0a5afc619dee333}} 
+\index{ps::BSplineOpt@{ps::BSplineOpt}!runBSplineOpt@{runBSplineOpt}}
+\index{runBSplineOpt@{runBSplineOpt}!ps::BSplineOpt@{ps::BSplineOpt}}
+\doxysubsubsection{\texorpdfstring{runBSplineOpt()}{runBSplineOpt()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} ps\+::\+BSpline\+Opt\+::run\+BSpline\+Opt (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classps_1_1InsatAction}{Insat\+Action}} $\ast$}]{act,  }\item[{const Vec\+Df \&}]{q0,  }\item[{const Vec\+Df \&}]{qF,  }\item[{Vec\+Df \&}]{dq0,  }\item[{Vec\+Df \&}]{dqF,  }\item[{int}]{order,  }\item[{int}]{num\+\_\+ctrl\+\_\+pt,  }\item[{double}]{T,  }\item[{int}]{thread\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+adaptive version 
+
+Terminal position constraint
+
+Terminal velocity constraints if needed
+
+Cost
+
+Solve\mbox{\Hypertarget{classps_1_1BSplineOpt_a6540733f7a271dbbec5eed50819fedad}\label{classps_1_1BSplineOpt_a6540733f7a271dbbec5eed50819fedad}} 
+\index{ps::BSplineOpt@{ps::BSplineOpt}!runBSplineOptWithInitGuess@{runBSplineOptWithInitGuess}}
+\index{runBSplineOptWithInitGuess@{runBSplineOptWithInitGuess}!ps::BSplineOpt@{ps::BSplineOpt}}
+\doxysubsubsection{\texorpdfstring{runBSplineOptWithInitGuess()}{runBSplineOptWithInitGuess()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} ps\+::\+BSpline\+Opt\+::run\+BSpline\+Opt\+With\+Init\+Guess (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classps_1_1InsatAction}{Insat\+Action}} $\ast$}]{act,  }\item[{const \mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} \&}]{t1,  }\item[{\mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} \&}]{t2,  }\item[{const Vec\+Df \&}]{q0,  }\item[{const Vec\+Df \&}]{qF,  }\item[{Vec\+Df \&}]{dq0,  }\item[{Vec\+Df \&}]{dqF,  }\item[{int}]{order,  }\item[{int}]{c1,  }\item[{int}]{c2,  }\item[{double}]{T,  }\item[{int}]{thread\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+The assumption is both t1 and t2 exists and this function is only used for blending. 
+
+Terminal position constraint
+
+Terminal velocity constraints if needed
+
+Control vector blending
+
+number of control points should be equal to the number of basis
+
+Now set the init guess
+
+Cost
+
+Solve\mbox{\Hypertarget{classps_1_1BSplineOpt_a5200ac8277750ec93ac4b0cd1fe3eadc}\label{classps_1_1BSplineOpt_a5200ac8277750ec93ac4b0cd1fe3eadc}} 
+\index{ps::BSplineOpt@{ps::BSplineOpt}!sampleTrajectory@{sampleTrajectory}}
+\index{sampleTrajectory@{sampleTrajectory}!ps::BSplineOpt@{ps::BSplineOpt}}
+\doxysubsubsection{\texorpdfstring{sampleTrajectory()}{sampleTrajectory()}}
+{\footnotesize\ttfamily Mat\+Df ps\+::\+BSpline\+Opt\+::sample\+Trajectory (\begin{DoxyParamCaption}\item[{const BSpline\+Traj\+::\+Traj\+Instance\+Type \&}]{traj }\end{DoxyParamCaption}) const}
+
+
+
+trajectory samplers with adaptive time 
+
+save the init state
+
+loop over t
+
+adaptive dt called ddt
+
+keep decreasing adaptive t until distance is smaller than threshold
+
+once distance smaller than threshold collect the sample
+
+update t with adaptive t\mbox{\Hypertarget{classps_1_1BSplineOpt_aecff631668d942610fc7a064b58c800f}\label{classps_1_1BSplineOpt_aecff631668d942610fc7a064b58c800f}} 
+\index{ps::BSplineOpt@{ps::BSplineOpt}!warmOptimize@{warmOptimize}}
+\index{warmOptimize@{warmOptimize}!ps::BSplineOpt@{ps::BSplineOpt}}
+\doxysubsubsection{\texorpdfstring{warmOptimize()}{warmOptimize()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structps_1_1BSplineTraj}{BSpline\+Traj}} ps\+::\+BSpline\+Opt\+::warm\+Optimize (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classps_1_1InsatAction}{Insat\+Action}} $\ast$}]{act,  }\item[{const \mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} \&}]{traj1,  }\item[{const \mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} \&}]{traj2,  }\item[{int}]{thread\+\_\+id }\end{DoxyParamCaption})}
+
+Start constraint
+
+Goal constraint
+
+Cost
+
+Solve
+
+re-\/solve with callback
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/planners/insat/opt/BSpline\+Opt.\+hpp\item 
+src/planners/insat/opt/\mbox{\hyperlink{BSplineOpt_8cpp}{BSpline\+Opt.\+cpp}}\end{DoxyCompactItemize}

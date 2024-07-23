@@ -1,0 +1,12 @@
+<map id="ps::RobotNav2dAction" name="ps::RobotNav2dAction">
+<area shape="rect" id="node1" title=" " alt="" coords="135,183,289,209"/>
+<area shape="rect" id="node3" href="$classps_1_1MoveDownAction.html" title=" " alt="" coords="353,5,500,32"/>
+<area shape="rect" id="node4" href="$classps_1_1MoveDownLeftAction.html" title=" " alt="" coords="342,56,511,83"/>
+<area shape="rect" id="node5" href="$classps_1_1MoveLeftAction.html" title=" " alt="" coords="359,107,494,133"/>
+<area shape="rect" id="node6" href="$classps_1_1MoveLeftUpAction.html" title=" " alt="" coords="351,157,503,184"/>
+<area shape="rect" id="node7" href="$classps_1_1MoveRightAction.html" title=" " alt="" coords="355,208,499,235"/>
+<area shape="rect" id="node8" href="$classps_1_1MoveRightDownAction.html" title=" " alt="" coords="337,259,516,285"/>
+<area shape="rect" id="node9" href="$classps_1_1MoveUpAction.html" title=" " alt="" coords="361,309,492,336"/>
+<area shape="rect" id="node10" href="$classps_1_1MoveUpRightAction.html" title=" " alt="" coords="346,360,507,387"/>
+<area shape="rect" id="node2" href="$classps_1_1Action.html" title=" " alt="" coords="5,183,87,209"/>
+</map>

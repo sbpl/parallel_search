@@ -1,0 +1,116 @@
+\hypertarget{classps_1_1InsatNav2dAction}{}\doxysection{ps\+::Insat\+Nav2d\+Action Class Reference}
+\label{classps_1_1InsatNav2dAction}\index{ps::InsatNav2dAction@{ps::InsatNav2dAction}}
+
+
+Inheritance diagram for ps\+::Insat\+Nav2d\+Action\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classps_1_1InsatNav2dAction__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for ps\+::Insat\+Nav2d\+Action\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=191pt]{classps_1_1InsatNav2dAction__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1InsatNav2dAction_a660c3af2cfe80ea275ed2b6186b65897}\label{classps_1_1InsatNav2dAction_a660c3af2cfe80ea275ed2b6186b65897}} 
+typedef std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classps_1_1InsatNav2dAction}{Insat\+Nav2d\+Action}} $>$ {\bfseries Ptr}
+\item 
+\mbox{\Hypertarget{classps_1_1InsatNav2dAction_afe3efc2acce3959382b5222e6937970f}\label{classps_1_1InsatNav2dAction_afe3efc2acce3959382b5222e6937970f}} 
+typedef \mbox{\hyperlink{classps_1_1DummyOpt}{Dummy\+Opt}} {\bfseries Opt\+Type}
+\item 
+\mbox{\Hypertarget{classps_1_1InsatNav2dAction_a406ae7b5060a85e0cff2ffaae481e36e}\label{classps_1_1InsatNav2dAction_a406ae7b5060a85e0cff2ffaae481e36e}} 
+typedef std\+::vector$<$ \mbox{\hyperlink{classps_1_1DummyOpt}{Opt\+Type}} $>$ {\bfseries Opt\+Vec\+Type}
+\item 
+\mbox{\Hypertarget{classps_1_1InsatNav2dAction_a944d962258770ef4920f51ae8fcd7294}\label{classps_1_1InsatNav2dAction_a944d962258770ef4920f51ae8fcd7294}} 
+typedef std\+::shared\+\_\+ptr$<$ Opt\+Vec\+Type $>$ {\bfseries Opt\+Vec\+Ptr\+Type}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1InsatNav2dAction_a4b4815c3e4012afbe63be129caf5b281}\label{classps_1_1InsatNav2dAction_a4b4815c3e4012afbe63be129caf5b281}} 
+{\bfseries Insat\+Nav2d\+Action} (const std\+::string \&type, Params\+Type params, std\+::vector$<$ std\+::vector$<$ int $>$$>$ \&map, Opt\+Vec\+Ptr\+Type \&opt, bool is\+\_\+expensive=true)
+\item 
+\mbox{\Hypertarget{classps_1_1InsatNav2dAction_a41405d951933fe01cc8794d120ecb741}\label{classps_1_1InsatNav2dAction_a41405d951933fe01cc8794d120ecb741}} 
+virtual bool {\bfseries Check\+Preconditions} (const State\+Vars\+Type \&state)
+\item 
+\mbox{\Hypertarget{classps_1_1InsatNav2dAction_a8c64eca90ab57d4dee77ae5a0c53eaca}\label{classps_1_1InsatNav2dAction_a8c64eca90ab57d4dee77ae5a0c53eaca}} 
+\mbox{\hyperlink{structps_1_1ActionSuccessor}{Action\+Successor}} {\bfseries Get\+Successor} (const State\+Vars\+Type \&state\+\_\+vars, int thread\+\_\+id)
+\item 
+\mbox{\Hypertarget{classps_1_1InsatNav2dAction_acc1ca9f42baa27fe938bf78f146a9d1c}\label{classps_1_1InsatNav2dAction_acc1ca9f42baa27fe938bf78f146a9d1c}} 
+\mbox{\hyperlink{structps_1_1ActionSuccessor}{Action\+Successor}} {\bfseries Get\+Successor\+Lazy} (const State\+Vars\+Type \&state\+\_\+vars, int thread\+\_\+id)
+\item 
+\mbox{\Hypertarget{classps_1_1InsatNav2dAction_a071e4e8da6dfa119baf24386e0db4a3f}\label{classps_1_1InsatNav2dAction_a071e4e8da6dfa119baf24386e0db4a3f}} 
+\mbox{\hyperlink{structps_1_1ActionSuccessor}{Action\+Successor}} {\bfseries Evaluate} (const State\+Vars\+Type \&parent\+\_\+state\+\_\+vars, const State\+Vars\+Type \&child\+\_\+state\+\_\+vars, int thread\+\_\+id=0)
+\item 
+\mbox{\Hypertarget{classps_1_1InsatNav2dAction_adde03cbc125e977481eb81d56f036aff}\label{classps_1_1InsatNav2dAction_adde03cbc125e977481eb81d56f036aff}} 
+bool {\bfseries is\+Valid\+Cell} (int x, int y) const
+\item 
+\mbox{\Hypertarget{classps_1_1InsatNav2dAction_a944dfa88ff70d93f2615ad9fc3a0782b}\label{classps_1_1InsatNav2dAction_a944dfa88ff70d93f2615ad9fc3a0782b}} 
+bool {\bfseries in\+Range} (int x, int y)
+\item 
+\mbox{\Hypertarget{classps_1_1InsatNav2dAction_a71997ae8e5531b77a1c21169c3898b04}\label{classps_1_1InsatNav2dAction_a71997ae8e5531b77a1c21169c3898b04}} 
+std\+::vector$<$ std\+::pair$<$ int, int $>$ $>$ {\bfseries get\+Foot\+Print\+Rectangular} (int x, int y, int footprint\+\_\+size)
+\item 
+\mbox{\Hypertarget{classps_1_1InsatNav2dAction_a060e078b2466e3a0427a206f7daf406c}\label{classps_1_1InsatNav2dAction_a060e078b2466e3a0427a206f7daf406c}} 
+void {\bfseries set\+Opt} (Opt\+Vec\+Ptr\+Type \&opt)
+\item 
+\mbox{\Hypertarget{classps_1_1InsatNav2dAction_a46d442743f421f7e507a728bac3a117d}\label{classps_1_1InsatNav2dAction_a46d442743f421f7e507a728bac3a117d}} 
+bool {\bfseries is\+Feasible} (Mat\+Df \&traj, int thread\+\_\+id) const
+\item 
+\mbox{\Hypertarget{classps_1_1InsatNav2dAction_a72ccdda3de949ac31c548946451060b3}\label{classps_1_1InsatNav2dAction_a72ccdda3de949ac31c548946451060b3}} 
+\mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} {\bfseries optimize} (const State\+Vars\+Type \&s1, const State\+Vars\+Type \&s2, int thread\+\_\+id) const
+\item 
+\mbox{\Hypertarget{classps_1_1InsatNav2dAction_a4d787569e08e13294ad4a0dc9e2f753a}\label{classps_1_1InsatNav2dAction_a4d787569e08e13294ad4a0dc9e2f753a}} 
+\mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} {\bfseries warm\+Optimize} (const \mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} \&t1, const \mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} \&t2, int thread\+\_\+id) const
+\item 
+\mbox{\Hypertarget{classps_1_1InsatNav2dAction_a84565f1aff89374e2f3025004697174a}\label{classps_1_1InsatNav2dAction_a84565f1aff89374e2f3025004697174a}} 
+\mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} {\bfseries warm\+Optimize} (const \mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} \&t, int thread\+\_\+id) const
+\item 
+\mbox{\Hypertarget{classps_1_1InsatNav2dAction_ad53a9e77209968679ac32b843328f8a0}\label{classps_1_1InsatNav2dAction_ad53a9e77209968679ac32b843328f8a0}} 
+virtual \mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} {\bfseries optimize} (const \mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} \&incoming\+\_\+traj, const State\+Vars\+Type \&s1, const State\+Vars\+Type \&s2, int thread\+\_\+id=0)
+\item 
+\mbox{\Hypertarget{classps_1_1InsatNav2dAction_a375363268b889d8664f87ea558dad438}\label{classps_1_1InsatNav2dAction_a375363268b889d8664f87ea558dad438}} 
+virtual \mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} {\bfseries optimize} (const \mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} \&incoming\+\_\+traj, const std\+::vector$<$ State\+Vars\+Type $>$ \&ancestors, const State\+Vars\+Type \&successor, int thread\+\_\+id=0)
+\item 
+\mbox{\Hypertarget{classps_1_1InsatNav2dAction_af5bb7de410dac187f0c421be52c4ba2a}\label{classps_1_1InsatNav2dAction_af5bb7de410dac187f0c421be52c4ba2a}} 
+double {\bfseries get\+Cost} (const \mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} \&traj, int thread\+\_\+id=0) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1InsatNav2dAction_a024c01cfb355f87c350b28059e50a585}\label{classps_1_1InsatNav2dAction_a024c01cfb355f87c350b28059e50a585}} 
+std\+::vector$<$ double $>$ {\bfseries move\+\_\+dir\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1InsatNav2dAction_a6e33d0706a8ce9a41f815ebccf47526c}\label{classps_1_1InsatNav2dAction_a6e33d0706a8ce9a41f815ebccf47526c}} 
+std\+::vector$<$ std\+::vector$<$ int $>$ $>$ {\bfseries map\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1InsatNav2dAction_a8482d053bd83265b7e1bfcf4eb02838d}\label{classps_1_1InsatNav2dAction_a8482d053bd83265b7e1bfcf4eb02838d}} 
+std\+::vector$<$ std\+::pair$<$ int, int $>$ $>$ {\bfseries footprint\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1InsatNav2dAction_a7f21885d71e240c1beb095072b454d42}\label{classps_1_1InsatNav2dAction_a7f21885d71e240c1beb095072b454d42}} 
+Lock\+Type {\bfseries lock\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1InsatNav2dAction_a95783e78cf6507eef751bf49328d9933}\label{classps_1_1InsatNav2dAction_a95783e78cf6507eef751bf49328d9933}} 
+Opt\+Vec\+Ptr\+Type {\bfseries opt\+\_\+}
+\end{DoxyCompactItemize}
+\doxysubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1InsatNav2dAction_aaa8bf484bf7768e2fc3d4d1df3f31f85}\label{classps_1_1InsatNav2dAction_aaa8bf484bf7768e2fc3d4d1df3f31f85}} 
+class {\bfseries Dummy\+Opt}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+examples/insat/robot\+\_\+nav\+\_\+2d/Insat\+Nav2d\+Actions.\+hpp\item 
+examples/insat/robot\+\_\+nav\+\_\+2d/Insat\+Nav2d\+Actions.\+cpp\end{DoxyCompactItemize}

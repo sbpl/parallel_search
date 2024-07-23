@@ -1,0 +1,12 @@
+<map id="ps::Config" name="ps::Config">
+<area shape="rect" id="node1" title=" " alt="" coords="405,199,488,225"/>
+<area shape="rect" id="node2" href="$structmjData__.html" title=" " alt="" coords="267,95,338,121"/>
+<area shape="rect" id="node3" href="$structmjSolverStat__.html" title=" " alt="" coords="5,5,109,32"/>
+<area shape="rect" id="node4" href="$structmjTimerStat__.html" title=" " alt="" coords="134,5,234,32"/>
+<area shape="rect" id="node5" href="$structmjContact__.html" title=" " alt="" coords="258,5,347,32"/>
+<area shape="rect" id="node6" href="$structmjWarningStat__.html" title=" " alt="" coords="372,5,487,32"/>
+<area shape="rect" id="node7" href="$structmjModel__.html" title=" " alt="" coords="566,95,645,121"/>
+<area shape="rect" id="node8" href="$structmjVisual__.html" title=" " alt="" coords="511,5,590,32"/>
+<area shape="rect" id="node9" href="$structmjStatistic__.html" title=" " alt="" coords="615,5,705,32"/>
+<area shape="rect" id="node10" href="$structmjOption__.html" title=" " alt="" coords="730,5,811,32"/>
+</map>

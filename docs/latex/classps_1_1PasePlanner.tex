@@ -1,0 +1,81 @@
+\hypertarget{classps_1_1PasePlanner}{}\doxysection{ps\+::Pase\+Planner Class Reference}
+\label{classps_1_1PasePlanner}\index{ps::PasePlanner@{ps::PasePlanner}}
+
+
+Inheritance diagram for ps\+::Pase\+Planner\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=169pt]{classps_1_1PasePlanner__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for ps\+::Pase\+Planner\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classps_1_1PasePlanner__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1PasePlanner_a302b64cc916c2e5944987187d7a20dbe}\label{classps_1_1PasePlanner_a302b64cc916c2e5944987187d7a20dbe}} 
+{\bfseries Pase\+Planner} (Params\+Type planner\+\_\+params)
+\item 
+\mbox{\Hypertarget{classps_1_1PasePlanner_a741037d95b50f075b74363422bbac392}\label{classps_1_1PasePlanner_a741037d95b50f075b74363422bbac392}} 
+bool {\bfseries Plan} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1PasePlanner_a6d95887914aba87b064a6781e3524332}\label{classps_1_1PasePlanner_a6d95887914aba87b064a6781e3524332}} 
+void {\bfseries initialize} ()
+\item 
+\mbox{\Hypertarget{classps_1_1PasePlanner_a57b707871537394b3c1320ddef780057}\label{classps_1_1PasePlanner_a57b707871537394b3c1320ddef780057}} 
+void {\bfseries pase\+Thread} (int thread\+\_\+id)
+\item 
+\mbox{\Hypertarget{classps_1_1PasePlanner_aa244d5896b6b7d1071d882c9f2a62b49}\label{classps_1_1PasePlanner_aa244d5896b6b7d1071d882c9f2a62b49}} 
+void {\bfseries expand\+State} (\mbox{\hyperlink{classps_1_1State}{State\+Ptr\+Type}} state\+\_\+ptr, int thread\+\_\+id)
+\item 
+\mbox{\Hypertarget{classps_1_1PasePlanner_abf899a074ba0fa035c6b1cb0ab1cec81}\label{classps_1_1PasePlanner_abf899a074ba0fa035c6b1cb0ab1cec81}} 
+void {\bfseries exit} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1PasePlanner_a96f689584a6a5c1e0ebb6d9ee8bac94a}\label{classps_1_1PasePlanner_a96f689584a6a5c1e0ebb6d9ee8bac94a}} 
+\mbox{\hyperlink{classsmpl_1_1intrusive__heap}{State\+Queue\+Min\+Type}} {\bfseries state\+\_\+open\+\_\+list\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1PasePlanner_ac28da096005d3382a77552b0610f5565}\label{classps_1_1PasePlanner_ac28da096005d3382a77552b0610f5565}} 
+std\+::vector$<$ \mbox{\hyperlink{classps_1_1State}{State\+Ptr\+Type}} $>$ {\bfseries being\+\_\+expanded\+\_\+states\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1PasePlanner_a1d77a0c0c86f723f5f2c1bd1051f3dbc}\label{classps_1_1PasePlanner_a1d77a0c0c86f723f5f2c1bd1051f3dbc}} 
+int {\bfseries num\+\_\+threads\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1PasePlanner_a53bb724ce534c541a98f334cebc0df16}\label{classps_1_1PasePlanner_a53bb724ce534c541a98f334cebc0df16}} 
+Lock\+Type {\bfseries lock\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1PasePlanner_a97e21707edb58f9f80979e7982d23391}\label{classps_1_1PasePlanner_a97e21707edb58f9f80979e7982d23391}} 
+std\+::vector$<$ Lock\+Type $>$ {\bfseries lock\+\_\+vec\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1PasePlanner_a12c1f83d3d813595ee9a4335493c4e81}\label{classps_1_1PasePlanner_a12c1f83d3d813595ee9a4335493c4e81}} 
+std\+::vector$<$ std\+::future$<$ void $>$ $>$ {\bfseries state\+\_\+expansion\+\_\+futures\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1PasePlanner_ada723695d9f877846f4129246cdf63f4}\label{classps_1_1PasePlanner_ada723695d9f877846f4129246cdf63f4}} 
+std\+::atomic$<$ bool $>$ {\bfseries recheck\+\_\+flag\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1PasePlanner_a054a00d35c4d1af705ade8e0100a3273}\label{classps_1_1PasePlanner_a054a00d35c4d1af705ade8e0100a3273}} 
+std\+::atomic$<$ bool $>$ {\bfseries terminate\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1PasePlanner_a613cd0edeb0a6a6ecdca9b3eca74a7c2}\label{classps_1_1PasePlanner_a613cd0edeb0a6a6ecdca9b3eca74a7c2}} 
+std\+::atomic$<$ bool $>$ {\bfseries plan\+\_\+found\+\_\+}
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/planners/Pase\+Planner.\+hpp\item 
+src/planners/Pase\+Planner.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,72 @@
+\hypertarget{classps_1_1RrtConnectPlanner}{}\doxysection{ps\+::Rrt\+Connect\+Planner Class Reference}
+\label{classps_1_1RrtConnectPlanner}\index{ps::RrtConnectPlanner@{ps::RrtConnectPlanner}}
+
+
+Inheritance diagram for ps\+::Rrt\+Connect\+Planner\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=196pt]{classps_1_1RrtConnectPlanner__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for ps\+::Rrt\+Connect\+Planner\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classps_1_1RrtConnectPlanner__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1RrtConnectPlanner_a811276cbdcf42e9cdf9c60bcc6bbdc8f}\label{classps_1_1RrtConnectPlanner_a811276cbdcf42e9cdf9c60bcc6bbdc8f}} 
+{\bfseries Rrt\+Connect\+Planner} (Params\+Type planner\+\_\+params)
+\item 
+\mbox{\Hypertarget{classps_1_1RrtConnectPlanner_a0f11f8f787255b9f916886c2aedaa084}\label{classps_1_1RrtConnectPlanner_a0f11f8f787255b9f916886c2aedaa084}} 
+void {\bfseries Set\+Goal\+State} (const State\+Vars\+Type \&state\+\_\+vars)
+\item 
+\mbox{\Hypertarget{classps_1_1RrtConnectPlanner_a45f94d2ea19a1f8eff54077d23f0d2e3}\label{classps_1_1RrtConnectPlanner_a45f94d2ea19a1f8eff54077d23f0d2e3}} 
+bool {\bfseries Plan} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1RrtConnectPlanner_acf6d6a5224e7e4c90d6c4760f6b3a2a6}\label{classps_1_1RrtConnectPlanner_acf6d6a5224e7e4c90d6c4760f6b3a2a6}} 
+void {\bfseries initialize} ()
+\item 
+\mbox{\Hypertarget{classps_1_1RrtConnectPlanner_ab4c610297f36c1a66b8ff80eb20203b4}\label{classps_1_1RrtConnectPlanner_ab4c610297f36c1a66b8ff80eb20203b4}} 
+void {\bfseries construct\+Plan} (\mbox{\hyperlink{classps_1_1State}{State\+Ptr\+Type}} \&connected\+\_\+state\+\_\+start, \mbox{\hyperlink{classps_1_1State}{State\+Ptr\+Type}} \&connected\+\_\+state\+\_\+goal)
+\item 
+\mbox{\Hypertarget{classps_1_1RrtConnectPlanner_a48496013f4976b5cab31219b899ceb58}\label{classps_1_1RrtConnectPlanner_a48496013f4976b5cab31219b899ceb58}} 
+bool {\bfseries connect} (\mbox{\hyperlink{classps_1_1State}{State\+Ptr\+Type}} state\+\_\+ptr, State\+Ptr\+Map\+Type \&state\+\_\+map, Edge\+Ptr\+Map\+Type \&edge\+\_\+map, int thread\+\_\+id, \mbox{\hyperlink{classps_1_1State}{State\+Ptr\+Type}} \&connected\+\_\+state)
+\item 
+\mbox{\Hypertarget{classps_1_1RrtConnectPlanner_a116bbde372f347bbe5deb43fcbf38498}\label{classps_1_1RrtConnectPlanner_a116bbde372f347bbe5deb43fcbf38498}} 
+void {\bfseries rrt\+Thread} (int thread\+\_\+id)
+\item 
+\mbox{\Hypertarget{classps_1_1RrtConnectPlanner_aa95a8870da5e1c9c61ad4f535b55ce27}\label{classps_1_1RrtConnectPlanner_aa95a8870da5e1c9c61ad4f535b55ce27}} 
+void {\bfseries exit\+Threads} ()
+\item 
+\mbox{\Hypertarget{classps_1_1RrtConnectPlanner_af4aeb76ebebb8e6e8923c684c5ba0641}\label{classps_1_1RrtConnectPlanner_af4aeb76ebebb8e6e8923c684c5ba0641}} 
+void {\bfseries exit} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1RrtConnectPlanner_a549d164ec3478dc15a82e6736d3a1e7c}\label{classps_1_1RrtConnectPlanner_a549d164ec3478dc15a82e6736d3a1e7c}} 
+State\+Ptr\+Map\+Type {\bfseries state\+\_\+map\+\_\+goal\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1RrtConnectPlanner_ac977c54ef75dc9d562853ea038f8febc}\label{classps_1_1RrtConnectPlanner_ac977c54ef75dc9d562853ea038f8febc}} 
+Edge\+Ptr\+Map\+Type {\bfseries edge\+\_\+map\+\_\+goal\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1RrtConnectPlanner_aa28c66d047c4b8e4e2a51cee9f4b9888}\label{classps_1_1RrtConnectPlanner_aa28c66d047c4b8e4e2a51cee9f4b9888}} 
+std\+::vector$<$ int $>$ {\bfseries start\+\_\+goal\+\_\+flag\+\_\+}
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/planners/Rrt\+Connect\+Planner.\+hpp\item 
+src/planners/Rrt\+Connect\+Planner.\+cpp\end{DoxyCompactItemize}

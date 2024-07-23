@@ -1,0 +1,104 @@
+\hypertarget{classps_1_1GepasePlanner}{}\doxysection{ps\+::Gepase\+Planner Class Reference}
+\label{classps_1_1GepasePlanner}\index{ps::GepasePlanner@{ps::GepasePlanner}}
+
+
+Inheritance diagram for ps\+::Gepase\+Planner\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=286pt]{classps_1_1GepasePlanner__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for ps\+::Gepase\+Planner\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classps_1_1GepasePlanner__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1GepasePlanner_ad541be0b609367d99076527e1a4ad299}\label{classps_1_1GepasePlanner_ad541be0b609367d99076527e1a4ad299}} 
+typedef \mbox{\hyperlink{classsmpl_1_1intrusive__heap}{smpl\+::intrusive\+\_\+heap}}$<$ \mbox{\hyperlink{classps_1_1State}{State}}, \mbox{\hyperlink{classps_1_1IsLesserState}{Is\+Lesser\+State}} $>$ {\bfseries BEType}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1GepasePlanner_a9507693c347595858bf5612b08a23208}\label{classps_1_1GepasePlanner_a9507693c347595858bf5612b08a23208}} 
+{\bfseries Gepase\+Planner} (Params\+Type planner\+\_\+params)
+\item 
+\mbox{\Hypertarget{classps_1_1GepasePlanner_a584c80a2be42abcda827732a6765b729}\label{classps_1_1GepasePlanner_a584c80a2be42abcda827732a6765b729}} 
+virtual bool {\bfseries Plan} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1GepasePlanner_ad53f61789bddcef49c86949baba2ef3f}\label{classps_1_1GepasePlanner_ad53f61789bddcef49c86949baba2ef3f}} 
+void {\bfseries initialize} ()
+\item 
+\mbox{\Hypertarget{classps_1_1GepasePlanner_a32b3277e212150e98f3cee177d4740cc}\label{classps_1_1GepasePlanner_a32b3277e212150e98f3cee177d4740cc}} 
+void {\bfseries notify\+Main\+Thread} ()
+\item 
+\mbox{\Hypertarget{classps_1_1GepasePlanner_ad113c3cf89d9feeb4a55cf52dbab1ba2}\label{classps_1_1GepasePlanner_ad113c3cf89d9feeb4a55cf52dbab1ba2}} 
+void {\bfseries expand\+Edge\+Loop} (int thread\+\_\+id)
+\item 
+\mbox{\Hypertarget{classps_1_1GepasePlanner_a3e892394f7ef3a03316094ad97eeea8a}\label{classps_1_1GepasePlanner_a3e892394f7ef3a03316094ad97eeea8a}} 
+void {\bfseries expand} (\mbox{\hyperlink{classps_1_1Edge}{Edge\+Ptr\+Type}} edge\+\_\+ptr, int thread\+\_\+id)
+\item 
+\mbox{\Hypertarget{classps_1_1GepasePlanner_adecd35e78d4826e2836da9d9ad1a4c4c}\label{classps_1_1GepasePlanner_adecd35e78d4826e2836da9d9ad1a4c4c}} 
+void {\bfseries expand\+Edge} (\mbox{\hyperlink{classps_1_1Edge}{Edge\+Ptr\+Type}} edge\+\_\+ptr, int thread\+\_\+id)
+\item 
+\mbox{\Hypertarget{classps_1_1GepasePlanner_aad99490cd6c0f6ea32f15591266f4abc}\label{classps_1_1GepasePlanner_aad99490cd6c0f6ea32f15591266f4abc}} 
+void {\bfseries exit} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1GepasePlanner_a4be763ec2fdd091f86e65eb5659cecc7}\label{classps_1_1GepasePlanner_a4be763ec2fdd091f86e65eb5659cecc7}} 
+\mbox{\hyperlink{classsmpl_1_1intrusive__heap}{Edge\+Queue\+Min\+Type}} {\bfseries edge\+\_\+open\+\_\+list\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1GepasePlanner_acd37f56622570000950da800a9c1034a}\label{classps_1_1GepasePlanner_acd37f56622570000950da800a9c1034a}} 
+\mbox{\hyperlink{classsmpl_1_1intrusive__heap}{BEType}} {\bfseries being\+\_\+expanded\+\_\+states\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1GepasePlanner_a3d73cb6474687eed28f62ac2d9038ad1}\label{classps_1_1GepasePlanner_a3d73cb6474687eed28f62ac2d9038ad1}} 
+int {\bfseries num\+\_\+threads\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1GepasePlanner_a1a9c016346068be6bd567071a6b6f707}\label{classps_1_1GepasePlanner_a1a9c016346068be6bd567071a6b6f707}} 
+Lock\+Type {\bfseries lock\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1GepasePlanner_a16caac14ff9d365f5df6ee6e6916dfb2}\label{classps_1_1GepasePlanner_a16caac14ff9d365f5df6ee6e6916dfb2}} 
+std\+::vector$<$ Lock\+Type $>$ {\bfseries lock\+\_\+vec\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1GepasePlanner_a47adb64f3d65d64b164c790e34e73ffb}\label{classps_1_1GepasePlanner_a47adb64f3d65d64b164c790e34e73ffb}} 
+std\+::vector$<$ std\+::future$<$ void $>$ $>$ {\bfseries edge\+\_\+expansion\+\_\+futures\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1GepasePlanner_ae2d6bfc03e521e382e15eb4266d4f402}\label{classps_1_1GepasePlanner_ae2d6bfc03e521e382e15eb4266d4f402}} 
+std\+::vector$<$ \mbox{\hyperlink{classps_1_1Edge}{Edge\+Ptr\+Type}} $>$ {\bfseries edge\+\_\+expansion\+\_\+vec\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1GepasePlanner_a7cb9fef6c64dfe62a98019a8373c63df}\label{classps_1_1GepasePlanner_a7cb9fef6c64dfe62a98019a8373c63df}} 
+std\+::vector$<$ int $>$ {\bfseries edge\+\_\+expansion\+\_\+status\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1GepasePlanner_a12bf9e975388b61ffadd21d368a0d9bc}\label{classps_1_1GepasePlanner_a12bf9e975388b61ffadd21d368a0d9bc}} 
+std\+::vector$<$ std\+::condition\+\_\+variable $>$ {\bfseries cv\+\_\+vec\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1GepasePlanner_af3f87e235194be7a68bd5aa88d3e20d4}\label{classps_1_1GepasePlanner_af3f87e235194be7a68bd5aa88d3e20d4}} 
+std\+::condition\+\_\+variable {\bfseries cv\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1GepasePlanner_a5f8a11930513eff97d9faa199fabc6bd}\label{classps_1_1GepasePlanner_a5f8a11930513eff97d9faa199fabc6bd}} 
+std\+::atomic$<$ bool $>$ {\bfseries recheck\+\_\+flag\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1GepasePlanner_adfe37ccc075f532bb5f68cc4c55817db}\label{classps_1_1GepasePlanner_adfe37ccc075f532bb5f68cc4c55817db}} 
+std\+::atomic$<$ bool $>$ {\bfseries terminate\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1GepasePlanner_a200c3bed20ce89c9f1dfc6ff828193c8}\label{classps_1_1GepasePlanner_a200c3bed20ce89c9f1dfc6ff828193c8}} 
+Action\+Ptr\+Type {\bfseries dummy\+\_\+action\+\_\+ptr\+\_\+}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/planners/Gepase\+Planner.\+hpp\item 
+src/planners/Gepase\+Planner.\+cpp\end{DoxyCompactItemize}

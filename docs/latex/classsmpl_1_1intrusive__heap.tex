@@ -1,0 +1,115 @@
+\hypertarget{classsmpl_1_1intrusive__heap}{}\doxysection{smpl\+::intrusive\+\_\+heap$<$ T, Compare $>$ Class Template Reference}
+\label{classsmpl_1_1intrusive__heap}\index{smpl::intrusive\_heap$<$ T, Compare $>$@{smpl::intrusive\_heap$<$ T, Compare $>$}}
+
+
+{\ttfamily \#include $<$intrusive\+\_\+heap.\+h$>$}
+
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classsmpl_1_1intrusive__heap_a18762fff3a284b4a93bffc0a6fdc506d}\label{classsmpl_1_1intrusive__heap_a18762fff3a284b4a93bffc0a6fdc506d}} 
+typedef Compare {\bfseries compare}
+\item 
+\mbox{\Hypertarget{classsmpl_1_1intrusive__heap_abcf4184b1f6d8916c73c93875b96b029}\label{classsmpl_1_1intrusive__heap_abcf4184b1f6d8916c73c93875b96b029}} 
+typedef std\+::vector$<$ T $\ast$ $>$ {\bfseries container\+\_\+type}
+\item 
+\mbox{\Hypertarget{classsmpl_1_1intrusive__heap_a036cf17cf0b00573b5af5429e8327a53}\label{classsmpl_1_1intrusive__heap_a036cf17cf0b00573b5af5429e8327a53}} 
+typedef container\+\_\+type\+::size\+\_\+type {\bfseries size\+\_\+type}
+\item 
+\mbox{\Hypertarget{classsmpl_1_1intrusive__heap_a4e1d96b89543d7ffe2bfc118ef59d6af}\label{classsmpl_1_1intrusive__heap_a4e1d96b89543d7ffe2bfc118ef59d6af}} 
+typedef container\+\_\+type\+::iterator {\bfseries iterator}
+\item 
+\mbox{\Hypertarget{classsmpl_1_1intrusive__heap_af61d7444c55591bf51dfbe1cdaf7a7c8}\label{classsmpl_1_1intrusive__heap_af61d7444c55591bf51dfbe1cdaf7a7c8}} 
+typedef container\+\_\+type\+::const\+\_\+iterator {\bfseries const\+\_\+iterator}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classsmpl_1_1intrusive__heap_a8f29833a3d3b73e399dee92b3ac99c4b}\label{classsmpl_1_1intrusive__heap_a8f29833a3d3b73e399dee92b3ac99c4b}} 
+{\bfseries intrusive\+\_\+heap} (const compare \&comp=compare())
+\item 
+\mbox{\Hypertarget{classsmpl_1_1intrusive__heap_adc59c7fca45c1b2ed1b401e50b77e843}\label{classsmpl_1_1intrusive__heap_adc59c7fca45c1b2ed1b401e50b77e843}} 
+{\footnotesize template$<$class Input\+It $>$ }\\{\bfseries intrusive\+\_\+heap} (Input\+It first, Input\+It last)
+\item 
+\mbox{\Hypertarget{classsmpl_1_1intrusive__heap_a0cbaf9fdb9894cafe97fdc9b21d7abe5}\label{classsmpl_1_1intrusive__heap_a0cbaf9fdb9894cafe97fdc9b21d7abe5}} 
+{\footnotesize template$<$class Input\+It $>$ }\\{\bfseries intrusive\+\_\+heap} (const compare \&comp, Input\+It first, Input\+It last)
+\item 
+\mbox{\Hypertarget{classsmpl_1_1intrusive__heap_a3d1b4bad965356d468783c96b42695b7}\label{classsmpl_1_1intrusive__heap_a3d1b4bad965356d468783c96b42695b7}} 
+{\bfseries intrusive\+\_\+heap} (const \mbox{\hyperlink{classsmpl_1_1intrusive__heap}{intrusive\+\_\+heap}} \&)=delete
+\item 
+\mbox{\Hypertarget{classsmpl_1_1intrusive__heap_a8ada9f9c1ebfc2ca4ec1c2a8801bf833}\label{classsmpl_1_1intrusive__heap_a8ada9f9c1ebfc2ca4ec1c2a8801bf833}} 
+{\bfseries intrusive\+\_\+heap} (\mbox{\hyperlink{classsmpl_1_1intrusive__heap}{intrusive\+\_\+heap}} \&\&o)
+\item 
+\mbox{\Hypertarget{classsmpl_1_1intrusive__heap_ad01a0f38b76abee3c1b5f0c8f638e4cb}\label{classsmpl_1_1intrusive__heap_ad01a0f38b76abee3c1b5f0c8f638e4cb}} 
+\mbox{\hyperlink{classsmpl_1_1intrusive__heap}{intrusive\+\_\+heap}} \& {\bfseries operator=} (const \mbox{\hyperlink{classsmpl_1_1intrusive__heap}{intrusive\+\_\+heap}} \&)=delete
+\item 
+\mbox{\Hypertarget{classsmpl_1_1intrusive__heap_ac39add195c0a3b6c91bf3a3e82dbbd6f}\label{classsmpl_1_1intrusive__heap_ac39add195c0a3b6c91bf3a3e82dbbd6f}} 
+\mbox{\hyperlink{classsmpl_1_1intrusive__heap}{intrusive\+\_\+heap}} \& {\bfseries operator=} (\mbox{\hyperlink{classsmpl_1_1intrusive__heap}{intrusive\+\_\+heap}} \&\&rhs)
+\item 
+\mbox{\Hypertarget{classsmpl_1_1intrusive__heap_a1a3b3b46b721284c1f84dda81f6844ac}\label{classsmpl_1_1intrusive__heap_a1a3b3b46b721284c1f84dda81f6844ac}} 
+T $\ast$ {\bfseries min} () const
+\item 
+\mbox{\Hypertarget{classsmpl_1_1intrusive__heap_a288b6187eaa1b6570d6776edab8ea066}\label{classsmpl_1_1intrusive__heap_a288b6187eaa1b6570d6776edab8ea066}} 
+const\+\_\+iterator {\bfseries begin} () const
+\item 
+\mbox{\Hypertarget{classsmpl_1_1intrusive__heap_afc24aa7096dd024a4cf2e2f0eb8c4825}\label{classsmpl_1_1intrusive__heap_afc24aa7096dd024a4cf2e2f0eb8c4825}} 
+const\+\_\+iterator {\bfseries end} () const
+\item 
+\mbox{\Hypertarget{classsmpl_1_1intrusive__heap_a6b8b0e9b9e2a2547423d150fc0644db3}\label{classsmpl_1_1intrusive__heap_a6b8b0e9b9e2a2547423d150fc0644db3}} 
+bool {\bfseries empty} () const
+\item 
+\mbox{\Hypertarget{classsmpl_1_1intrusive__heap_a47eb75b88060bcc67d034f29df63e5ed}\label{classsmpl_1_1intrusive__heap_a47eb75b88060bcc67d034f29df63e5ed}} 
+size\+\_\+type {\bfseries size} () const
+\item 
+\mbox{\Hypertarget{classsmpl_1_1intrusive__heap_ac030cc4f781eb12cc508ba9878de304d}\label{classsmpl_1_1intrusive__heap_ac030cc4f781eb12cc508ba9878de304d}} 
+size\+\_\+type {\bfseries max\+\_\+size} () const
+\item 
+\mbox{\Hypertarget{classsmpl_1_1intrusive__heap_a539a52ec36d534f7824b22be45c2d67a}\label{classsmpl_1_1intrusive__heap_a539a52ec36d534f7824b22be45c2d67a}} 
+void {\bfseries reserve} (size\+\_\+type new\+\_\+cap)
+\item 
+\mbox{\Hypertarget{classsmpl_1_1intrusive__heap_adf9a101be69ac74210ffcd078df92b44}\label{classsmpl_1_1intrusive__heap_adf9a101be69ac74210ffcd078df92b44}} 
+void {\bfseries clear} ()
+\item 
+\mbox{\Hypertarget{classsmpl_1_1intrusive__heap_aba1947fe93c06c826a826fe3c0342e17}\label{classsmpl_1_1intrusive__heap_aba1947fe93c06c826a826fe3c0342e17}} 
+void {\bfseries push} (T $\ast$e)
+\item 
+\mbox{\Hypertarget{classsmpl_1_1intrusive__heap_af9a66cd588631d225b144eb2e86cecd7}\label{classsmpl_1_1intrusive__heap_af9a66cd588631d225b144eb2e86cecd7}} 
+void {\bfseries pop} ()
+\item 
+\mbox{\Hypertarget{classsmpl_1_1intrusive__heap_a364cf7e5ae31cb3b284c56eb775bc489}\label{classsmpl_1_1intrusive__heap_a364cf7e5ae31cb3b284c56eb775bc489}} 
+bool {\bfseries contains} (T $\ast$e)
+\item 
+\mbox{\Hypertarget{classsmpl_1_1intrusive__heap_ac0917f47557ddc631e61967db1bffbc9}\label{classsmpl_1_1intrusive__heap_ac0917f47557ddc631e61967db1bffbc9}} 
+void {\bfseries update} (T $\ast$e)
+\item 
+\mbox{\Hypertarget{classsmpl_1_1intrusive__heap_aec53de772da484f7a8933cfb71f8b898}\label{classsmpl_1_1intrusive__heap_aec53de772da484f7a8933cfb71f8b898}} 
+void {\bfseries increase} (T $\ast$e)
+\item 
+\mbox{\Hypertarget{classsmpl_1_1intrusive__heap_a9598eabfa950425fcc6756704b9a43fc}\label{classsmpl_1_1intrusive__heap_a9598eabfa950425fcc6756704b9a43fc}} 
+void {\bfseries decrease} (T $\ast$e)
+\item 
+\mbox{\Hypertarget{classsmpl_1_1intrusive__heap_a24d3a4688b86325c20bc706ea9fee44f}\label{classsmpl_1_1intrusive__heap_a24d3a4688b86325c20bc706ea9fee44f}} 
+void {\bfseries erase} (T $\ast$e)
+\item 
+\mbox{\Hypertarget{classsmpl_1_1intrusive__heap_a25a82954900bbb983605eef9a54522c3}\label{classsmpl_1_1intrusive__heap_a25a82954900bbb983605eef9a54522c3}} 
+void {\bfseries make} ()
+\item 
+\mbox{\Hypertarget{classsmpl_1_1intrusive__heap_ac9e9b72f2a8a7dd0dc22d0dc7c277234}\label{classsmpl_1_1intrusive__heap_ac9e9b72f2a8a7dd0dc22d0dc7c277234}} 
+void {\bfseries swap} (\mbox{\hyperlink{classsmpl_1_1intrusive__heap}{intrusive\+\_\+heap}} \&o)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$class T, class Compare$>$\newline
+class smpl\+::intrusive\+\_\+heap$<$ T, Compare $>$}
+
+Provides an intrusive binary heap implementation. Objects inserted into the heap must derive from the {\ttfamily \mbox{\hyperlink{structsmpl_1_1heap__element}{heap\+\_\+element}}} class to implement efficient mutability. The implementation stores pointers to inserted objects, which must remain valid throughout the lifetime of the heap.
+
+The binary heap data structure provides constant time access to the minimum element of the heap, logarithmic insertion and erasure of elements, logarithmic updates of element priorities, and linear time construction from a new set of elements. All times are proportional to the number of elements in the heap.
+
+Priorities of elements in the heap are not explicitly stored, but determined from the result of calling the {\ttfamily Compare} function object on two elements. If the priorities of multiple elements are implicitly changed (via external modification of the function object), the heap may be reordered in-\/place in linear time by calling the make() member function. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/common/intrusive\+\_\+heap.\+h\item 
+include/common/intrusive\+\_\+heap.\+hpp\end{DoxyCompactItemize}

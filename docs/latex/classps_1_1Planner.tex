@@ -1,0 +1,188 @@
+\hypertarget{classps_1_1Planner}{}\doxysection{ps\+::Planner Class Reference}
+\label{classps_1_1Planner}\index{ps::Planner@{ps::Planner}}
+
+
+Inheritance diagram for ps\+::Planner\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classps_1_1Planner__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for ps\+::Planner\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classps_1_1Planner__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_a85da65a2d0d98c72670d9eac7d3c1836}\label{classps_1_1Planner_a85da65a2d0d98c72670d9eac7d3c1836}} 
+typedef std\+::unordered\+\_\+map$<$ size\+\_\+t, \mbox{\hyperlink{classps_1_1State}{State\+Ptr\+Type}} $>$ {\bfseries State\+Ptr\+Map\+Type}
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_a741123db862824a6842a648061fb0c58}\label{classps_1_1Planner_a741123db862824a6842a648061fb0c58}} 
+typedef \mbox{\hyperlink{classsmpl_1_1intrusive__heap}{smpl\+::intrusive\+\_\+heap}}$<$ \mbox{\hyperlink{classps_1_1State}{State}}, \mbox{\hyperlink{classps_1_1IsLesserState}{Is\+Lesser\+State}} $>$ {\bfseries State\+Queue\+Min\+Type}
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_a8cc6b261873f528f5cf33661f111200b}\label{classps_1_1Planner_a8cc6b261873f528f5cf33661f111200b}} 
+typedef std\+::unordered\+\_\+map$<$ size\+\_\+t, \mbox{\hyperlink{classps_1_1Edge}{Edge\+Ptr\+Type}} $>$ {\bfseries Edge\+Ptr\+Map\+Type}
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_adbceceef753d4e5c3578204b02f42271}\label{classps_1_1Planner_adbceceef753d4e5c3578204b02f42271}} 
+typedef \mbox{\hyperlink{classsmpl_1_1intrusive__heap}{smpl\+::intrusive\+\_\+heap}}$<$ \mbox{\hyperlink{classps_1_1Edge}{Edge}}, \mbox{\hyperlink{classps_1_1IsGreaterEdge}{Is\+Greater\+Edge}} $>$ {\bfseries Edge\+Queue\+Max\+Type}
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_a043913c51c5cfd4a7220db2354ac5645}\label{classps_1_1Planner_a043913c51c5cfd4a7220db2354ac5645}} 
+typedef \mbox{\hyperlink{classsmpl_1_1intrusive__heap}{smpl\+::intrusive\+\_\+heap}}$<$ \mbox{\hyperlink{classps_1_1Edge}{Edge}}, \mbox{\hyperlink{classps_1_1IsLesserEdge}{Is\+Lesser\+Edge}} $>$ {\bfseries Edge\+Queue\+Min\+Type}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_aeff814bda5b960536db95af382f3bd2a}\label{classps_1_1Planner_aeff814bda5b960536db95af382f3bd2a}} 
+{\bfseries Planner} (Params\+Type planner\+\_\+params)
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_a8576900247b20201deb8010c1248c090}\label{classps_1_1Planner_a8576900247b20201deb8010c1248c090}} 
+virtual bool {\bfseries Plan} ()=0
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_a4369531de9bae6153e37fd6e6ebb7246}\label{classps_1_1Planner_a4369531de9bae6153e37fd6e6ebb7246}} 
+std\+::vector$<$ \mbox{\hyperlink{structps_1_1PlanElement}{Plan\+Element}} $>$ {\bfseries Get\+Plan} () const
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_a3995d8596073fc3ece9da720b76c98ca}\label{classps_1_1Planner_a3995d8596073fc3ece9da720b76c98ca}} 
+\mbox{\hyperlink{structps_1_1PlannerStats}{Planner\+Stats}} {\bfseries Get\+Stats} () const
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_a6e3cc97e559c65dd389a1bc4764fc6ea}\label{classps_1_1Planner_a6e3cc97e559c65dd389a1bc4764fc6ea}} 
+void {\bfseries Set\+Actions} (std\+::vector$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classps_1_1Action}{Action}} $>$$>$ actions\+\_\+ptrs)
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_accadc9b07c1423f165056ed124bbc333}\label{classps_1_1Planner_accadc9b07c1423f165056ed124bbc333}} 
+virtual void {\bfseries Set\+Start\+State} (const State\+Vars\+Type \&state\+\_\+vars)
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_ad79cb86c85016172d691351af49b861e}\label{classps_1_1Planner_ad79cb86c85016172d691351af49b861e}} 
+virtual void {\bfseries Set\+Goal\+State} (const State\+Vars\+Type \&state\+\_\+vars)
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_a79fce21c32ea7e0f67bfbc69250036c5}\label{classps_1_1Planner_a79fce21c32ea7e0f67bfbc69250036c5}} 
+void {\bfseries Set\+Goal\+Checker} (std\+::function$<$ bool(const State\+Vars\+Type \&)$>$ callback)
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_a7ea2b33fe17085dfd843979ce0a34093}\label{classps_1_1Planner_a7ea2b33fe17085dfd843979ce0a34093}} 
+void {\bfseries Set\+State\+Map\+Key\+Generator} (std\+::function$<$ std\+::size\+\_\+t(const State\+Vars\+Type \&)$>$ callback)
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_af3da02b9e17a0591360c37844b30ac34}\label{classps_1_1Planner_af3da02b9e17a0591360c37844b30ac34}} 
+void {\bfseries Set\+Edge\+Key\+Generator} (std\+::function$<$ std\+::size\+\_\+t(const \mbox{\hyperlink{classps_1_1Edge}{Edge\+Ptr\+Type}} \&)$>$ callback)
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_a3f887aa64b15100b48f9892558f0a499}\label{classps_1_1Planner_a3f887aa64b15100b48f9892558f0a499}} 
+void {\bfseries Set\+Heuristic\+Generator} (std\+::function$<$ double(const State\+Vars\+Type \&)$>$ callback)
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_aee8b97b8276b3ef20eb3d283a32f19f2}\label{classps_1_1Planner_aee8b97b8276b3ef20eb3d283a32f19f2}} 
+void {\bfseries Set\+State\+To\+State\+Heuristic\+Generator} (std\+::function$<$ double(const State\+Vars\+Type \&, const State\+Vars\+Type \&)$>$ callback)
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_ac56f81b543f6db3dfb3fe23aedf6cbce}\label{classps_1_1Planner_ac56f81b543f6db3dfb3fe23aedf6cbce}} 
+void {\bfseries Set\+Post\+Processor} (std\+::function$<$ void(std\+::vector$<$ \mbox{\hyperlink{structps_1_1PlanElement}{Plan\+Element}} $>$ \&, double \&, double)$>$ callback)
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_a89896f92e01fb247acc2fbf43c595d8a}\label{classps_1_1Planner_a89896f92e01fb247acc2fbf43c595d8a}} 
+State\+Ptr\+Map\+Type {\bfseries Get\+State\+Map} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_aabffc160aaf30e0f0ca73fd5ed7f2fd9}\label{classps_1_1Planner_aabffc160aaf30e0f0ca73fd5ed7f2fd9}} 
+virtual void {\bfseries initialize} ()
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_ad375d41ce802f01bb633158ffd26717b}\label{classps_1_1Planner_ad375d41ce802f01bb633158ffd26717b}} 
+void {\bfseries start\+Timer} ()
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_a4e9889d0127b5f9ff7b342da974e93ce}\label{classps_1_1Planner_a4e9889d0127b5f9ff7b342da974e93ce}} 
+bool {\bfseries check\+Timeout} ()
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_ae5229f4cc9f2a5c448d952b968ee599d}\label{classps_1_1Planner_ae5229f4cc9f2a5c448d952b968ee599d}} 
+virtual void {\bfseries reset\+States} ()
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_a1a19774a39fcae6535c14043fc38ba0e}\label{classps_1_1Planner_a1a19774a39fcae6535c14043fc38ba0e}} 
+\mbox{\hyperlink{classps_1_1State}{State\+Ptr\+Type}} {\bfseries construct\+State} (const State\+Vars\+Type \&state)
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_a289dd84bf23cfe7f6db6e57d43ece0f2}\label{classps_1_1Planner_a289dd84bf23cfe7f6db6e57d43ece0f2}} 
+size\+\_\+t {\bfseries get\+Edge\+Key} (const \mbox{\hyperlink{classps_1_1Edge}{Edge\+Ptr\+Type}} \&edge\+\_\+ptr)
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_a9e90e760b98fc908e0ca1df6816d04c3}\label{classps_1_1Planner_a9e90e760b98fc908e0ca1df6816d04c3}} 
+double {\bfseries compute\+Heuristic} (const \mbox{\hyperlink{classps_1_1State}{State\+Ptr\+Type}} \&state\+\_\+ptr)
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_a45fe2742f3fb6229aa96cc31b9e4244b}\label{classps_1_1Planner_a45fe2742f3fb6229aa96cc31b9e4244b}} 
+double {\bfseries compute\+Heuristic} (const \mbox{\hyperlink{classps_1_1State}{State\+Ptr\+Type}} \&state\+\_\+ptr\+\_\+1, const \mbox{\hyperlink{classps_1_1State}{State\+Ptr\+Type}} \&state\+\_\+ptr\+\_\+2)
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_a9d9929527f2709b55804f01d29a8d200}\label{classps_1_1Planner_a9d9929527f2709b55804f01d29a8d200}} 
+bool {\bfseries is\+Goal\+State} (const \mbox{\hyperlink{classps_1_1State}{State\+Ptr\+Type}} \&state\+\_\+ptr)
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_a575de0ac6f4ec8f9e104d7267061983a}\label{classps_1_1Planner_a575de0ac6f4ec8f9e104d7267061983a}} 
+void {\bfseries construct\+Plan} (\mbox{\hyperlink{classps_1_1State}{State\+Ptr\+Type}} \&state\+\_\+ptr)
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_a9fb9a1188345cb253512c658a0b83cab}\label{classps_1_1Planner_a9fb9a1188345cb253512c658a0b83cab}} 
+{\footnotesize template$<$typename T $>$ }\\bool {\bfseries is\+Future\+Ready} (T \&future)
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_a6627838908dcc2612d5a627a03cf33eb}\label{classps_1_1Planner_a6627838908dcc2612d5a627a03cf33eb}} 
+double {\bfseries round\+Off} (double value, int prec=3)
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_a4721976204d952898be40ded4cdf4494}\label{classps_1_1Planner_a4721976204d952898be40ded4cdf4494}} 
+void {\bfseries clean\+Up} ()
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_a5de99270a6875cb69ebe54160bfe721b}\label{classps_1_1Planner_a5de99270a6875cb69ebe54160bfe721b}} 
+virtual void {\bfseries exit} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_ad571f0e918690bec3b72758a080e8318}\label{classps_1_1Planner_ad571f0e918690bec3b72758a080e8318}} 
+std\+::unordered\+\_\+map$<$ std\+::string, double $>$ {\bfseries planner\+\_\+params\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_a1e4b62a7a0c8ed4f7b134b640b335700}\label{classps_1_1Planner_a1e4b62a7a0c8ed4f7b134b640b335700}} 
+std\+::vector$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classps_1_1Action}{Action}} $>$ $>$ {\bfseries actions\+\_\+ptrs\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_acf5458f535924962a001bd460e87c050}\label{classps_1_1Planner_acf5458f535924962a001bd460e87c050}} 
+State\+Ptr\+Map\+Type {\bfseries state\+\_\+map\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_aebb0c863571f8b2f7e18db82efc3e592}\label{classps_1_1Planner_aebb0c863571f8b2f7e18db82efc3e592}} 
+Edge\+Ptr\+Map\+Type {\bfseries edge\+\_\+map\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_aae679f717692127472ed9e0f27dd25e6}\label{classps_1_1Planner_aae679f717692127472ed9e0f27dd25e6}} 
+\mbox{\hyperlink{classps_1_1State}{State\+Ptr\+Type}} {\bfseries start\+\_\+state\+\_\+ptr\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_ab130da604e6adcafb83fd02b9d307d5c}\label{classps_1_1Planner_ab130da604e6adcafb83fd02b9d307d5c}} 
+\mbox{\hyperlink{classps_1_1State}{State\+Ptr\+Type}} {\bfseries goal\+\_\+state\+\_\+ptr\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_a281732f141aea2aeb9ed4c473619fb74}\label{classps_1_1Planner_a281732f141aea2aeb9ed4c473619fb74}} 
+double {\bfseries heuristic\+\_\+w\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_a6a4437d7b969a998821065a8f1172615}\label{classps_1_1Planner_a6a4437d7b969a998821065a8f1172615}} 
+std\+::function$<$ std\+::size\+\_\+t(const State\+Vars\+Type \&)$>$ {\bfseries state\+\_\+key\+\_\+generator\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_a147f42da3abde5c97add253d22d07778}\label{classps_1_1Planner_a147f42da3abde5c97add253d22d07778}} 
+std\+::function$<$ std\+::size\+\_\+t(const \mbox{\hyperlink{classps_1_1Edge}{Edge\+Ptr\+Type}} \&)$>$ {\bfseries edge\+\_\+key\+\_\+generator\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_a5671c54e87059cd915110ac6a2171035}\label{classps_1_1Planner_a5671c54e87059cd915110ac6a2171035}} 
+std\+::function$<$ double(const State\+Vars\+Type \&)$>$ {\bfseries unary\+\_\+heuristic\+\_\+generator\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_a930d216c2ce076bb71b3f5985311afa4}\label{classps_1_1Planner_a930d216c2ce076bb71b3f5985311afa4}} 
+std\+::function$<$ double(const State\+Vars\+Type \&, const State\+Vars\+Type \&)$>$ {\bfseries binary\+\_\+heuristic\+\_\+generator\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_a5efdf353a84103959c9bcdc3c1751d71}\label{classps_1_1Planner_a5efdf353a84103959c9bcdc3c1751d71}} 
+std\+::function$<$ double(const State\+Vars\+Type \&)$>$ {\bfseries goal\+\_\+checker\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_a0efbbeaf192f96503dafc1ed2fa66f7a}\label{classps_1_1Planner_a0efbbeaf192f96503dafc1ed2fa66f7a}} 
+std\+::function$<$ void(std\+::vector$<$ \mbox{\hyperlink{structps_1_1PlanElement}{Plan\+Element}} $>$ \&, double \&, double)$>$ {\bfseries post\+\_\+processor\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_ad59aa0a962352204deedd02e395c2458}\label{classps_1_1Planner_ad59aa0a962352204deedd02e395c2458}} 
+std\+::vector$<$ \mbox{\hyperlink{structps_1_1PlanElement}{Plan\+Element}} $>$ {\bfseries plan\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_a396b2eea6e6c212490fed8acef51e683}\label{classps_1_1Planner_a396b2eea6e6c212490fed8acef51e683}} 
+\mbox{\hyperlink{structps_1_1PlannerStats}{Planner\+Stats}} {\bfseries planner\+\_\+stats\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_ac065423011a6723e9434fcdbafccb7d9}\label{classps_1_1Planner_ac065423011a6723e9434fcdbafccb7d9}} 
+double {\bfseries h\+\_\+val\+\_\+min\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1Planner_a0599d94b0f40cd77f7d9e0ba0df75dd4}\label{classps_1_1Planner_a0599d94b0f40cd77f7d9e0ba0df75dd4}} 
+std\+::chrono\+::time\+\_\+point$<$ std\+::chrono\+::steady\+\_\+clock $>$ {\bfseries t\+\_\+start\+\_\+}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/planners/Planner.\+hpp\item 
+src/planners/Planner.\+cpp\end{DoxyCompactItemize}

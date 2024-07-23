@@ -1,0 +1,116 @@
+\hypertarget{classps_1_1InsatPlanner}{}\doxysection{ps\+::Insat\+Planner Class Reference}
+\label{classps_1_1InsatPlanner}\index{ps::InsatPlanner@{ps::InsatPlanner}}
+
+
+Inheritance diagram for ps\+::Insat\+Planner\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=174pt]{classps_1_1InsatPlanner__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for ps\+::Insat\+Planner\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classps_1_1InsatPlanner__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1InsatPlanner_ab67dd43cff54bce5eb7847f94f077eb9}\label{classps_1_1InsatPlanner_ab67dd43cff54bce5eb7847f94f077eb9}} 
+typedef std\+::unordered\+\_\+map$<$ size\+\_\+t, \mbox{\hyperlink{classps_1_1InsatState}{Insat\+State\+Ptr\+Type}} $>$ {\bfseries Insat\+State\+Ptr\+Map\+Type}
+\item 
+\mbox{\Hypertarget{classps_1_1InsatPlanner_ab11b789661721e5baf99916cf65976c4}\label{classps_1_1InsatPlanner_ab11b789661721e5baf99916cf65976c4}} 
+typedef \mbox{\hyperlink{classsmpl_1_1intrusive__heap}{smpl\+::intrusive\+\_\+heap}}$<$ \mbox{\hyperlink{classps_1_1InsatState}{Insat\+State}}, \mbox{\hyperlink{classps_1_1IsLesserState}{Is\+Lesser\+State}} $>$ {\bfseries Insat\+State\+Queue\+Min\+Type}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1InsatPlanner_aa08f1b58765c362f4edec9ec5966a1d3}\label{classps_1_1InsatPlanner_aa08f1b58765c362f4edec9ec5966a1d3}} 
+{\bfseries Insat\+Planner} (Params\+Type planner\+\_\+params)
+\item 
+\mbox{\Hypertarget{classps_1_1InsatPlanner_a0b560a18ae0f1ed823bc6f0f8852366a}\label{classps_1_1InsatPlanner_a0b560a18ae0f1ed823bc6f0f8852366a}} 
+void {\bfseries Set\+Start\+State} (const State\+Vars\+Type \&state\+\_\+vars)
+\item 
+\mbox{\Hypertarget{classps_1_1InsatPlanner_af1dea6b448ae1ec19441e7e332eed048}\label{classps_1_1InsatPlanner_af1dea6b448ae1ec19441e7e332eed048}} 
+bool {\bfseries Plan} ()
+\item 
+\mbox{\Hypertarget{classps_1_1InsatPlanner_af4aaf0f899c4e4026f88248a04acb0a5}\label{classps_1_1InsatPlanner_af4aaf0f899c4e4026f88248a04acb0a5}} 
+\mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} {\bfseries get\+Solution\+Traj} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1InsatPlanner_a03194bed87335d945e16f4703bc89ce8}\label{classps_1_1InsatPlanner_a03194bed87335d945e16f4703bc89ce8}} 
+void {\bfseries initialize} ()
+\item 
+\mbox{\Hypertarget{classps_1_1InsatPlanner_a38abbeb72792e06db796f84c0533bc2f}\label{classps_1_1InsatPlanner_a38abbeb72792e06db796f84c0533bc2f}} 
+std\+::vector$<$ \mbox{\hyperlink{classps_1_1InsatState}{Insat\+State\+Ptr\+Type}} $>$ {\bfseries get\+State\+Ancestors} (const \mbox{\hyperlink{classps_1_1InsatState}{Insat\+State\+Ptr\+Type}} state\+\_\+ptr, bool reverse=false) const
+\item 
+\mbox{\Hypertarget{classps_1_1InsatPlanner_aa6854d5b2d0240dccf8ab3a91674a340}\label{classps_1_1InsatPlanner_aa6854d5b2d0240dccf8ab3a91674a340}} 
+void {\bfseries expand\+State} (\mbox{\hyperlink{classps_1_1InsatState}{Insat\+State\+Ptr\+Type}} state\+\_\+ptr)
+\item 
+void \mbox{\hyperlink{classps_1_1InsatPlanner_aad24fcd9907e2d9415dc4c51aa204c45}{update\+State}} (\mbox{\hyperlink{classps_1_1InsatState}{Insat\+State\+Ptr\+Type}} \&state\+\_\+ptr, std\+::vector$<$ \mbox{\hyperlink{classps_1_1InsatState}{Insat\+State\+Ptr\+Type}} $>$ \&ancestors, Insat\+Action\+Ptr\+Type \&action\+\_\+ptr, \mbox{\hyperlink{structps_1_1ActionSuccessor}{Action\+Successor}} \&action\+\_\+successor)
+\item 
+\mbox{\Hypertarget{classps_1_1InsatPlanner_a114fbae99a708a78e7440b5803a94b64}\label{classps_1_1InsatPlanner_a114fbae99a708a78e7440b5803a94b64}} 
+void {\bfseries construct\+Insat\+Actions} ()
+\item 
+\mbox{\Hypertarget{classps_1_1InsatPlanner_a6bfdbffca468a4be483e8493782a5789}\label{classps_1_1InsatPlanner_a6bfdbffca468a4be483e8493782a5789}} 
+\mbox{\hyperlink{classps_1_1InsatState}{Insat\+State\+Ptr\+Type}} {\bfseries construct\+Insat\+State} (const State\+Vars\+Type \&state)
+\item 
+\mbox{\Hypertarget{classps_1_1InsatPlanner_a85271559b6707ba059c28e104c316a53}\label{classps_1_1InsatPlanner_a85271559b6707ba059c28e104c316a53}} 
+void {\bfseries clean\+Up} ()
+\item 
+\mbox{\Hypertarget{classps_1_1InsatPlanner_af0e8e717b82fbb46f992edee147825ca}\label{classps_1_1InsatPlanner_af0e8e717b82fbb46f992edee147825ca}} 
+void {\bfseries reset\+States} ()
+\item 
+\mbox{\Hypertarget{classps_1_1InsatPlanner_ab945601ac07ff40522add44dadf008f8}\label{classps_1_1InsatPlanner_ab945601ac07ff40522add44dadf008f8}} 
+void {\bfseries construct\+Plan} (\mbox{\hyperlink{classps_1_1InsatState}{Insat\+State\+Ptr\+Type}} \&insat\+\_\+state\+\_\+ptr)
+\item 
+\mbox{\Hypertarget{classps_1_1InsatPlanner_aba07520a017dee2b3d69763b912597ba}\label{classps_1_1InsatPlanner_aba07520a017dee2b3d69763b912597ba}} 
+void {\bfseries exit} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1InsatPlanner_a3743b3ea612bf465806ffc125ac8d31a}\label{classps_1_1InsatPlanner_a3743b3ea612bf465806ffc125ac8d31a}} 
+std\+::vector$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classps_1_1InsatAction}{Insat\+Action}} $>$ $>$ {\bfseries insat\+\_\+actions\+\_\+ptrs\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1InsatPlanner_a11b3000aa47e58e6d701272c7a5f0363}\label{classps_1_1InsatPlanner_a11b3000aa47e58e6d701272c7a5f0363}} 
+\mbox{\hyperlink{classps_1_1InsatState}{Insat\+State\+Ptr\+Type}} {\bfseries start\+\_\+state\+\_\+ptr\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1InsatPlanner_ae8e7a474922c76cddbc80e1dfd36357f}\label{classps_1_1InsatPlanner_ae8e7a474922c76cddbc80e1dfd36357f}} 
+\mbox{\hyperlink{classps_1_1InsatState}{Insat\+State\+Ptr\+Type}} {\bfseries goal\+\_\+state\+\_\+ptr\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1InsatPlanner_ae28e9a588e6987efae51fc238ad26610}\label{classps_1_1InsatPlanner_ae28e9a588e6987efae51fc238ad26610}} 
+\mbox{\hyperlink{classsmpl_1_1intrusive__heap}{Insat\+State\+Queue\+Min\+Type}} {\bfseries insat\+\_\+state\+\_\+open\+\_\+list\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1InsatPlanner_af9510b6f1c9800340c5fca9f1fb387b2}\label{classps_1_1InsatPlanner_af9510b6f1c9800340c5fca9f1fb387b2}} 
+Insat\+State\+Ptr\+Map\+Type {\bfseries insat\+\_\+state\+\_\+map\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1InsatPlanner_ad9f30700d8a921c76634492191d280ab}\label{classps_1_1InsatPlanner_ad9f30700d8a921c76634492191d280ab}} 
+\mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} {\bfseries soln\+\_\+traj\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classps_1_1InsatPlanner_aad24fcd9907e2d9415dc4c51aa204c45}\label{classps_1_1InsatPlanner_aad24fcd9907e2d9415dc4c51aa204c45}} 
+\index{ps::InsatPlanner@{ps::InsatPlanner}!updateState@{updateState}}
+\index{updateState@{updateState}!ps::InsatPlanner@{ps::InsatPlanner}}
+\doxysubsubsection{\texorpdfstring{updateState()}{updateState()}}
+{\footnotesize\ttfamily void ps\+::\+Insat\+Planner\+::update\+State (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classps_1_1InsatState}{Insat\+State\+Ptr\+Type}} \&}]{state\+\_\+ptr,  }\item[{std\+::vector$<$ \mbox{\hyperlink{classps_1_1InsatState}{Insat\+State\+Ptr\+Type}} $>$ \&}]{ancestors,  }\item[{Insat\+Action\+Ptr\+Type \&}]{action\+\_\+ptr,  }\item[{\mbox{\hyperlink{structps_1_1ActionSuccessor}{Action\+Successor}} \&}]{action\+\_\+successor }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+When anc is not start
+
+When anc is not start
+
+When anc is not start
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/planners/insat/Insat\+Planner.\+hpp\item 
+src/planners/insat/\mbox{\hyperlink{InsatPlanner_8cpp}{Insat\+Planner.\+cpp}}\end{DoxyCompactItemize}

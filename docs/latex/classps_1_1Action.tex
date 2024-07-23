@@ -1,0 +1,64 @@
+\hypertarget{classps_1_1Action}{}\doxysection{ps\+::Action Class Reference}
+\label{classps_1_1Action}\index{ps::Action@{ps::Action}}
+
+
+Inheritance diagram for ps\+::Action\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classps_1_1Action__inherit__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1Action_a712055b042d5c50ac567a17c1650ef33}\label{classps_1_1Action_a712055b042d5c50ac567a17c1650ef33}} 
+{\bfseries Action} (const std\+::string \&type, Params\+Type params=Params\+Type(), bool is\+\_\+expensive=true)
+\item 
+\mbox{\Hypertarget{classps_1_1Action_a8c6c5eac7623a2f8a286cb85c6b7d9ad}\label{classps_1_1Action_a8c6c5eac7623a2f8a286cb85c6b7d9ad}} 
+virtual bool {\bfseries Check\+Preconditions} (const State\+Vars\+Type \&state)=0
+\item 
+\mbox{\Hypertarget{classps_1_1Action_a22d3e98fa194891ebeada0a13d7bcec7}\label{classps_1_1Action_a22d3e98fa194891ebeada0a13d7bcec7}} 
+virtual bool {\bfseries Is\+Feasible} (const State\+Vars\+Type \&state, int thread\+\_\+id=0)
+\item 
+\mbox{\Hypertarget{classps_1_1Action_a826a7bbbfcfc84a0ac313e0fb349054c}\label{classps_1_1Action_a826a7bbbfcfc84a0ac313e0fb349054c}} 
+virtual State\+Vars\+Type {\bfseries Sample\+Feasible\+State} (int thread\+\_\+id=0)
+\item 
+\mbox{\Hypertarget{classps_1_1Action_a257169e51e5b5eed55eec6773fc2104e}\label{classps_1_1Action_a257169e51e5b5eed55eec6773fc2104e}} 
+virtual double {\bfseries Get\+Cost\+To\+Successor} (const State\+Vars\+Type \&current\+\_\+state, const State\+Vars\+Type \&successor\+\_\+state, int thread\+\_\+id)
+\item 
+\mbox{\Hypertarget{classps_1_1Action_ab954744d852e02b72957325e593e7d16}\label{classps_1_1Action_ab954744d852e02b72957325e593e7d16}} 
+virtual \mbox{\hyperlink{structps_1_1ActionSuccessor}{Action\+Successor}} {\bfseries Get\+Successor} (const State\+Vars\+Type \&state\+\_\+vars, int thread\+\_\+id=0)=0
+\item 
+\mbox{\Hypertarget{classps_1_1Action_a485f3f896d666e9cb4087287e3537e2e}\label{classps_1_1Action_a485f3f896d666e9cb4087287e3537e2e}} 
+virtual \mbox{\hyperlink{structps_1_1ActionSuccessor}{Action\+Successor}} {\bfseries Get\+Successor\+Lazy} (const State\+Vars\+Type \&state\+\_\+vars, int thread\+\_\+id=0)
+\item 
+\mbox{\Hypertarget{classps_1_1Action_ac1ecc8a0c3c4197a27d34cf054b7382c}\label{classps_1_1Action_ac1ecc8a0c3c4197a27d34cf054b7382c}} 
+virtual \mbox{\hyperlink{structps_1_1ActionSuccessor}{Action\+Successor}} {\bfseries Evaluate} (const State\+Vars\+Type \&parent\+\_\+state\+\_\+vars, const State\+Vars\+Type \&child\+\_\+state\+\_\+vars, int thread\+\_\+id=0)
+\item 
+\mbox{\Hypertarget{classps_1_1Action_ae22aed2fe6ef2b078a751ede993dcc9b}\label{classps_1_1Action_ae22aed2fe6ef2b078a751ede993dcc9b}} 
+std\+::string {\bfseries Get\+Type} () const
+\item 
+\mbox{\Hypertarget{classps_1_1Action_ad663a086dcdba96eddd2547501d22092}\label{classps_1_1Action_ad663a086dcdba96eddd2547501d22092}} 
+bool {\bfseries Is\+Expensive} () const
+\item 
+\mbox{\Hypertarget{classps_1_1Action_af423a4841c2834d2ba387fa934488a3b}\label{classps_1_1Action_af423a4841c2834d2ba387fa934488a3b}} 
+bool {\bfseries operator==} (const \mbox{\hyperlink{classps_1_1Action}{Action}} \&other\+\_\+action) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1Action_aec177a2b50a2f8a78dd7d95abfe0f4eb}\label{classps_1_1Action_aec177a2b50a2f8a78dd7d95abfe0f4eb}} 
+std\+::string {\bfseries type\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1Action_a1addd4dd6b5850285a7a201866820df2}\label{classps_1_1Action_a1addd4dd6b5850285a7a201866820df2}} 
+Params\+Type {\bfseries params\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1Action_acaa2d80573c4f3c0c80caec83d24842a}\label{classps_1_1Action_acaa2d80573c4f3c0c80caec83d24842a}} 
+bool {\bfseries is\+\_\+expensive\+\_\+}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/common/Action.\+hpp\end{DoxyCompactItemize}

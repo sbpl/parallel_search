@@ -1,0 +1,136 @@
+\hypertarget{classps_1_1ManipulationMoveitInterface}{}\doxysection{ps\+::Manipulation\+Moveit\+Interface Class Reference}
+\label{classps_1_1ManipulationMoveitInterface}\index{ps::ManipulationMoveitInterface@{ps::ManipulationMoveitInterface}}
+
+
+Collaboration diagram for ps\+::Manipulation\+Moveit\+Interface\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classps_1_1ManipulationMoveitInterface__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{classps_1_1ManipulationMoveitInterface_a857e3c3bc5c1e13beae932c89b8b8387}{init}} (const char $\ast$planner\+\_\+name, std\+::string \&model\+\_\+dir, std\+::string \&mprim\+\_\+dir, int num\+\_\+threads=1)
+\item 
+bool \mbox{\hyperlink{classps_1_1ManipulationMoveitInterface_abf71837e74ef035cc5f8272c169371b7}{solve}} (moveit\+\_\+msgs\+::\+Planning\+Scene \&planning\+\_\+scene, moveit\+\_\+msgs\+::\+Motion\+Plan\+Request \&req, moveit\+\_\+msgs\+::\+Motion\+Plan\+Response \&res)
+\item 
+std\+::map$<$ std\+::string, double $>$ \mbox{\hyperlink{classps_1_1ManipulationMoveitInterface_ac834c4e7d4130fffb7e8274238667885}{get\+Planner\+Stats}} ()
+\begin{DoxyCompactList}\small\item\em Return planning statistics from the last call to solve. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classps_1_1ManipulationMoveitInterface_add58e24c3431fbb3f304c7b5d27b28ff}\label{classps_1_1ManipulationMoveitInterface_add58e24c3431fbb3f304c7b5d27b28ff}} 
+double {\bfseries round\+Off} (double value, unsigned char prec)
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationMoveitInterface_a432cffe57b3760544db406a563f6f4e1}\label{classps_1_1ManipulationMoveitInterface_a432cffe57b3760544db406a563f6f4e1}} 
+void {\bfseries initialize\+BFS} (int length, int width, int height, std\+::vector$<$ std\+::vector$<$ int $>$$>$ occupied\+\_\+cells)
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationMoveitInterface_a0f0e43590b33993d03fb75169bce0e9a}\label{classps_1_1ManipulationMoveitInterface_a0f0e43590b33993d03fb75169bce0e9a}} 
+void {\bfseries setup\+Smpl\+BFS} ()
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationMoveitInterface_a18487612f497d98c8d613e18fb88f428}\label{classps_1_1ManipulationMoveitInterface_a18487612f497d98c8d613e18fb88f428}} 
+void {\bfseries recompute\+BFS} ()
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationMoveitInterface_adb8b35b123f52a94d8c4393e9fff807a}\label{classps_1_1ManipulationMoveitInterface_adb8b35b123f52a94d8c4393e9fff807a}} 
+void {\bfseries setup\+Mujoco} (\mbox{\hyperlink{structmjModel__}{mj\+Model}} $\ast$$\ast$m, \mbox{\hyperlink{structmjData__}{mj\+Data}} $\ast$$\ast$d, std\+::string modelpath)
+\item 
+Mat\+Df \mbox{\hyperlink{classps_1_1ManipulationMoveitInterface_aa6167f73d9ac5075cb294679452de7e2}{load\+MPrims}} (std\+::string mprim\+\_\+file)
+\item 
+void \mbox{\hyperlink{classps_1_1ManipulationMoveitInterface_a999f895205de10a88d079eba5a506a02}{construct\+Actions}} (std\+::vector$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classps_1_1Action}{Action}} $>$$>$ \&action\+\_\+ptrs, Params\+Type \&action\+\_\+params, std\+::string \&mj\+\_\+modelpath, std\+::string \&mprimpath, Manipulation\+Action\+::\+Opt\+Vec\+Ptr\+Type \&opt, int num\+\_\+threads)
+\item 
+void \mbox{\hyperlink{classps_1_1ManipulationMoveitInterface_a5597ca3b151ad937bfd11736441f396a}{construct\+BFSActions}} (std\+::vector$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classps_1_1Action}{Action}} $>$$>$ \&action\+\_\+ptrs, Params\+Type \&action\+\_\+params, std\+::string \&mj\+\_\+modelpath, std\+::string \&mprimpath, int num\+\_\+threads)
+\item 
+void \mbox{\hyperlink{classps_1_1ManipulationMoveitInterface_ae97d8f88f87f8aa8ac001aa16bb1c6fc}{construct\+Planner}} (std\+::string planner\+\_\+name, std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classps_1_1Planner}{Planner}} $>$ \&planner\+\_\+ptr, std\+::vector$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classps_1_1Action}{Action}} $>$$>$ \&action\+\_\+ptrs, Params\+Type \&planner\+\_\+params, Params\+Type \&action\+\_\+params, \mbox{\hyperlink{classps_1_1BSplineOpt}{BSpline\+Opt}} \&opt)
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationMoveitInterface_ad79cddb212ad7b9b3ab9650ac6b6f962}\label{classps_1_1ManipulationMoveitInterface_ad79cddb212ad7b9b3ab9650ac6b6f962}} 
+Mat\+Df {\bfseries sample\+Trajectory} (const drake\+::trajectories\+::\+Bspline\+Trajectory$<$ double $>$ \&traj, double dt=1e-\/1)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1ManipulationMoveitInterface_a073c281f99dad951c63b6bef9ad4cf48}\label{classps_1_1ManipulationMoveitInterface_a073c281f99dad951c63b6bef9ad4cf48}} 
+static \mbox{\hyperlink{structps_1_1Config}{Config}} {\bfseries config\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classps_1_1ManipulationMoveitInterface_a999f895205de10a88d079eba5a506a02}\label{classps_1_1ManipulationMoveitInterface_a999f895205de10a88d079eba5a506a02}} 
+\index{ps::ManipulationMoveitInterface@{ps::ManipulationMoveitInterface}!constructActions@{constructActions}}
+\index{constructActions@{constructActions}!ps::ManipulationMoveitInterface@{ps::ManipulationMoveitInterface}}
+\doxysubsubsection{\texorpdfstring{constructActions()}{constructActions()}}
+{\footnotesize\ttfamily void ps\+::\+Manipulation\+Moveit\+Interface\+::construct\+Actions (\begin{DoxyParamCaption}\item[{std\+::vector$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classps_1_1Action}{Action}} $>$$>$ \&}]{action\+\_\+ptrs,  }\item[{Params\+Type \&}]{action\+\_\+params,  }\item[{std\+::string \&}]{mj\+\_\+modelpath,  }\item[{std\+::string \&}]{mprimpath,  }\item[{Manipulation\+Action\+::\+Opt\+Vec\+Ptr\+Type \&}]{opt,  }\item[{int}]{num\+\_\+threads }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Vectorize simulator handle
+
+Load mprims
+
+Input is in degrees. Convert to radians\mbox{\Hypertarget{classps_1_1ManipulationMoveitInterface_a5597ca3b151ad937bfd11736441f396a}\label{classps_1_1ManipulationMoveitInterface_a5597ca3b151ad937bfd11736441f396a}} 
+\index{ps::ManipulationMoveitInterface@{ps::ManipulationMoveitInterface}!constructBFSActions@{constructBFSActions}}
+\index{constructBFSActions@{constructBFSActions}!ps::ManipulationMoveitInterface@{ps::ManipulationMoveitInterface}}
+\doxysubsubsection{\texorpdfstring{constructBFSActions()}{constructBFSActions()}}
+{\footnotesize\ttfamily void ps\+::\+Manipulation\+Moveit\+Interface\+::construct\+BFSActions (\begin{DoxyParamCaption}\item[{std\+::vector$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classps_1_1Action}{Action}} $>$$>$ \&}]{action\+\_\+ptrs,  }\item[{Params\+Type \&}]{action\+\_\+params,  }\item[{std\+::string \&}]{mj\+\_\+modelpath,  }\item[{std\+::string \&}]{mprimpath,  }\item[{int}]{num\+\_\+threads }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Vectorize simulator handle
+
+Load mprims\mbox{\Hypertarget{classps_1_1ManipulationMoveitInterface_ae97d8f88f87f8aa8ac001aa16bb1c6fc}\label{classps_1_1ManipulationMoveitInterface_ae97d8f88f87f8aa8ac001aa16bb1c6fc}} 
+\index{ps::ManipulationMoveitInterface@{ps::ManipulationMoveitInterface}!constructPlanner@{constructPlanner}}
+\index{constructPlanner@{constructPlanner}!ps::ManipulationMoveitInterface@{ps::ManipulationMoveitInterface}}
+\doxysubsubsection{\texorpdfstring{constructPlanner()}{constructPlanner()}}
+{\footnotesize\ttfamily void ps\+::\+Manipulation\+Moveit\+Interface\+::construct\+Planner (\begin{DoxyParamCaption}\item[{std\+::string}]{planner\+\_\+name,  }\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classps_1_1Planner}{Planner}} $>$ \&}]{planner\+\_\+ptr,  }\item[{std\+::vector$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classps_1_1Action}{Action}} $>$$>$ \&}]{action\+\_\+ptrs,  }\item[{Params\+Type \&}]{planner\+\_\+params,  }\item[{Params\+Type \&}]{action\+\_\+params,  }\item[{\mbox{\hyperlink{classps_1_1BSplineOpt}{BSpline\+Opt}} \&}]{opt }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Heuristic
+
+Goal checker
+
+PP\mbox{\Hypertarget{classps_1_1ManipulationMoveitInterface_ac834c4e7d4130fffb7e8274238667885}\label{classps_1_1ManipulationMoveitInterface_ac834c4e7d4130fffb7e8274238667885}} 
+\index{ps::ManipulationMoveitInterface@{ps::ManipulationMoveitInterface}!getPlannerStats@{getPlannerStats}}
+\index{getPlannerStats@{getPlannerStats}!ps::ManipulationMoveitInterface@{ps::ManipulationMoveitInterface}}
+\doxysubsubsection{\texorpdfstring{getPlannerStats()}{getPlannerStats()}}
+{\footnotesize\ttfamily std\+::map$<$std\+::string, double$>$ ps\+::\+Manipulation\+Moveit\+Interface\+::get\+Planner\+Stats (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Return planning statistics from the last call to solve. 
+
+Possible keys to statistics include\+: \char`\"{}initial solution planning time\char`\"{} \char`\"{}initial epsilon\char`\"{} \char`\"{}initial solution expansions\char`\"{} \char`\"{}final epsilon planning time\char`\"{} \char`\"{}final epsilon\char`\"{} \char`\"{}solution epsilon\char`\"{} \char`\"{}expansions\char`\"{} \char`\"{}solution cost\char`\"{}
+
+\begin{DoxyReturn}{Returns}
+The statistics 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classps_1_1ManipulationMoveitInterface_a857e3c3bc5c1e13beae932c89b8b8387}\label{classps_1_1ManipulationMoveitInterface_a857e3c3bc5c1e13beae932c89b8b8387}} 
+\index{ps::ManipulationMoveitInterface@{ps::ManipulationMoveitInterface}!init@{init}}
+\index{init@{init}!ps::ManipulationMoveitInterface@{ps::ManipulationMoveitInterface}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily bool ps\+::\+Manipulation\+Moveit\+Interface\+::init (\begin{DoxyParamCaption}\item[{const char $\ast$}]{planner\+\_\+name,  }\item[{std\+::string \&}]{model\+\_\+dir,  }\item[{std\+::string \&}]{mprim\+\_\+dir,  }\item[{int}]{num\+\_\+threads = {\ttfamily 1} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Load Mu\+Jo\+Co model
+
+Set at the solve function
+
+SMPL bfs3d\mbox{\Hypertarget{classps_1_1ManipulationMoveitInterface_aa6167f73d9ac5075cb294679452de7e2}\label{classps_1_1ManipulationMoveitInterface_aa6167f73d9ac5075cb294679452de7e2}} 
+\index{ps::ManipulationMoveitInterface@{ps::ManipulationMoveitInterface}!loadMPrims@{loadMPrims}}
+\index{loadMPrims@{loadMPrims}!ps::ManipulationMoveitInterface@{ps::ManipulationMoveitInterface}}
+\doxysubsubsection{\texorpdfstring{loadMPrims()}{loadMPrims()}}
+{\footnotesize\ttfamily Mat\+Df ps\+::\+Manipulation\+Moveit\+Interface\+::load\+MPrims (\begin{DoxyParamCaption}\item[{std\+::string}]{mprim\+\_\+file }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Load input prims
+
+Input prims contain only one direction. Flip the sign for adding prims in the other direction\mbox{\Hypertarget{classps_1_1ManipulationMoveitInterface_abf71837e74ef035cc5f8272c169371b7}\label{classps_1_1ManipulationMoveitInterface_abf71837e74ef035cc5f8272c169371b7}} 
+\index{ps::ManipulationMoveitInterface@{ps::ManipulationMoveitInterface}!solve@{solve}}
+\index{solve@{solve}!ps::ManipulationMoveitInterface@{ps::ManipulationMoveitInterface}}
+\doxysubsubsection{\texorpdfstring{solve()}{solve()}}
+{\footnotesize\ttfamily bool ps\+::\+Manipulation\+Moveit\+Interface\+::solve (\begin{DoxyParamCaption}\item[{moveit\+\_\+msgs\+::\+Planning\+Scene \&}]{planning\+\_\+scene,  }\item[{moveit\+\_\+msgs\+::\+Motion\+Plan\+Request \&}]{req,  }\item[{moveit\+\_\+msgs\+::\+Motion\+Plan\+Response \&}]{res }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Call SMPL bfs3d after updating ee goal
+
+Clear heuristic cache
+
+track logs
+
+Saving sampled trajectory
+
+Save control points
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+examples/manipulation/\mbox{\hyperlink{MoveitInterface_8hpp}{Moveit\+Interface.\+hpp}}\item 
+examples/manipulation/\mbox{\hyperlink{MoveitInterface_8cpp}{Moveit\+Interface.\+cpp}}\end{DoxyCompactItemize}

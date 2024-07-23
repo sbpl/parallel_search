@@ -1,0 +1,25 @@
+\label{index_md_README}%
+\Hypertarget{index_md_README}%
+ This software equips INSAT \href{https://arxiv.org/abs/2101.12548}{\texttt{ \mbox{[}1\mbox{]}}}, \href{https://arxiv.org/abs/2210.08627}{\texttt{ \mbox{[}2\mbox{]}}} with parallel processing capability, namely \href{https://arxiv.org/abs/2401.08948}{\texttt{ {\itshape PINSAT}}}, using the ideas developed in \href{https://arxiv.org/abs/2203.01369}{\texttt{ e\+PA$\ast$\+SE}}.
+
+This particular fork catkinizes the workspace to be able to build with ROS and implements \href{https://github.com/sbpl/parallel_search/blob/catkin/examples/manipulation/MoveitInterface.hpp}{\texttt{ wrapper functions}} to be used by the \href{https://github.com/sbpl/shield_planner/}{\texttt{ Shield Planner}}\hypertarget{index_autotoc_md1}{}\doxysubsection{Dependencies}\label{index_autotoc_md1}
+The planning code only uses C++ standard libraries and has no external dependencies. However, the robot\+\_\+nav\+\_\+2d example has the following dependencies\+:
+\begin{DoxyEnumerate}
+\item \href{https://www.boost.org/}{\texttt{ Boost C++}}
+\item Open\+CV C++ for visualization
+\item \href{https://github.com/sbpl/sbpl}{\texttt{ sbpl package}}
+\end{DoxyEnumerate}
+
+For the readme of pure search algorithms in this repository, please visit \href{https://github.com/shohinm/parallel_search}{\texttt{ here}}.
+
+If you use PINSAT, please cite 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{@article\{natarajan2024pinsat,}
+\DoxyCodeLine{  title=\{PINSAT: Parallelized Interleaving of Graph Search and Trajectory Optimization for Kinodynamic Motion Planning\},}
+\DoxyCodeLine{  author=\{Natarajan, Ramkumar and Mukherjee, Shohin and Choset, Howie and Likhachev, Maxim\},}
+\DoxyCodeLine{  journal=\{IEEE/RSJ International Conference on Intelligent Robots and Systems\},}
+\DoxyCodeLine{  year=\{2024\}}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+ 

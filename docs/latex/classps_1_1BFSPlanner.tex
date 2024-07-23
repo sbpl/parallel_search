@@ -1,0 +1,65 @@
+\hypertarget{classps_1_1BFSPlanner}{}\doxysection{ps\+::BFSPlanner Class Reference}
+\label{classps_1_1BFSPlanner}\index{ps::BFSPlanner@{ps::BFSPlanner}}
+
+
+Inheritance diagram for ps\+::BFSPlanner\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=166pt]{classps_1_1BFSPlanner__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for ps\+::BFSPlanner\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classps_1_1BFSPlanner__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1BFSPlanner_a1c902b0291ac0dde18674daf955cbab1}\label{classps_1_1BFSPlanner_a1c902b0291ac0dde18674daf955cbab1}} 
+typedef std\+::deque$<$ \mbox{\hyperlink{classps_1_1State}{State\+Ptr\+Type}} $>$ \mbox{\hyperlink{classps_1_1BFSPlanner_a1c902b0291ac0dde18674daf955cbab1}{State\+Dequeue\+Type}}
+\begin{DoxyCompactList}\small\item\em Typedefs. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1BFSPlanner_a843d83ac6840ee30d12e0f5f1157d139}\label{classps_1_1BFSPlanner_a843d83ac6840ee30d12e0f5f1157d139}} 
+{\bfseries BFSPlanner} (Params\+Type planner\+\_\+params)
+\item 
+\mbox{\Hypertarget{classps_1_1BFSPlanner_aa8f55dd36160562045762032c50f16ee}\label{classps_1_1BFSPlanner_aa8f55dd36160562045762032c50f16ee}} 
+bool {\bfseries Plan} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1BFSPlanner_ab2f58e404e580c61bfcad2152c3cec50}\label{classps_1_1BFSPlanner_ab2f58e404e580c61bfcad2152c3cec50}} 
+void {\bfseries initialize} ()
+\item 
+\mbox{\Hypertarget{classps_1_1BFSPlanner_af7e620d592ef55150180b0c40a3765fa}\label{classps_1_1BFSPlanner_af7e620d592ef55150180b0c40a3765fa}} 
+void {\bfseries expand\+State} (\mbox{\hyperlink{classps_1_1State}{State\+Ptr\+Type}} state\+\_\+ptr)
+\item 
+\mbox{\Hypertarget{classps_1_1BFSPlanner_ac38d01e1f951f90085596bac0f8d113d}\label{classps_1_1BFSPlanner_ac38d01e1f951f90085596bac0f8d113d}} 
+void {\bfseries update\+State} (\mbox{\hyperlink{classps_1_1State}{State\+Ptr\+Type}} \&state\+\_\+ptr, Action\+Ptr\+Type \&action\+\_\+ptr, \mbox{\hyperlink{structps_1_1ActionSuccessor}{Action\+Successor}} \&action\+\_\+successor)
+\item 
+\mbox{\Hypertarget{classps_1_1BFSPlanner_ad984a46a8ad6b37df1516139801d8ce7}\label{classps_1_1BFSPlanner_ad984a46a8ad6b37df1516139801d8ce7}} 
+void {\bfseries exit} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1BFSPlanner_a4ebd53dfcc9383512eb7985bb0ba31cd}\label{classps_1_1BFSPlanner_a4ebd53dfcc9383512eb7985bb0ba31cd}} 
+int {\bfseries num\+\_\+threads\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1BFSPlanner_afa7ab4cc3f841283ff7464fb1b95a419}\label{classps_1_1BFSPlanner_afa7ab4cc3f841283ff7464fb1b95a419}} 
+\mbox{\hyperlink{classps_1_1BFSPlanner_a1c902b0291ac0dde18674daf955cbab1}{State\+Dequeue\+Type}} {\bfseries state\+\_\+open\+\_\+list\+\_\+}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/planners/\mbox{\hyperlink{BFSPlanner_8hpp}{BFSPlanner.\+hpp}}\item 
+src/planners/\mbox{\hyperlink{BFSPlanner_8cpp}{BFSPlanner.\+cpp}}\end{DoxyCompactItemize}

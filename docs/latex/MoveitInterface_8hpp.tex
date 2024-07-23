@@ -1,0 +1,105 @@
+\hypertarget{MoveitInterface_8hpp}{}\doxysection{examples/manipulation/\+Moveit\+Interface.hpp File Reference}
+\label{MoveitInterface_8hpp}\index{examples/manipulation/MoveitInterface.hpp@{examples/manipulation/MoveitInterface.hpp}}
+{\ttfamily \#include $<$cmath$>$}\newline
+{\ttfamily \#include $<$cstdlib$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$fstream$>$}\newline
+{\ttfamily \#include $<$numeric$>$}\newline
+{\ttfamily \#include $<$boost/functional/hash.\+hpp$>$}\newline
+{\ttfamily \#include $<$drake/math/matrix\+\_\+util.\+h$>$}\newline
+{\ttfamily \#include $<$planners/insat/\+Insat\+Planner.\+hpp$>$}\newline
+{\ttfamily \#include $<$planners/insat/\+Pinsat\+Planner.\+hpp$>$}\newline
+{\ttfamily \#include $<$planners/\+Rrt\+Planner.\+hpp$>$}\newline
+{\ttfamily \#include $<$planners/\+Rrt\+Connect\+Planner.\+hpp$>$}\newline
+{\ttfamily \#include $<$planners/\+Epase\+Planner.\+hpp$>$}\newline
+{\ttfamily \#include $<$planners/\+Gepase\+Planner.\+hpp$>$}\newline
+{\ttfamily \#include $<$planners/\+Wastar\+Planner.\+hpp$>$}\newline
+{\ttfamily \#include $<$planners/\+BFSPlanner.\+hpp$>$}\newline
+{\ttfamily \#include \char`\"{}Manipulation\+Actions.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}mujoco/mujoco.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}bfs3d.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}planners/insat/opt/\+BSpline\+Opt.\+hpp\char`\"{}}\newline
+{\ttfamily \#include $<$boost/filesystem.\+hpp$>$}\newline
+{\ttfamily \#include $<$ros/console.\+h$>$}\newline
+{\ttfamily \#include $<$moveit\+\_\+msgs/\+Motion\+Plan\+Request.\+h$>$}\newline
+{\ttfamily \#include $<$moveit\+\_\+msgs/\+Motion\+Plan\+Response.\+h$>$}\newline
+{\ttfamily \#include $<$moveit\+\_\+msgs/\+Planning\+Scene.\+h$>$}\newline
+Include dependency graph for Moveit\+Interface.\+hpp\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{MoveitInterface_8hpp__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=330pt]{MoveitInterface_8hpp__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structps_1_1Config}{ps\+::\+Config}}
+\item 
+class \mbox{\hyperlink{classps_1_1ManipulationMoveitInterface}{ps\+::\+Manipulation\+Moveit\+Interface}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{MoveitInterface_8hpp_aca9905cf23388b02d71b87a3fe898bcc}\label{MoveitInterface_8hpp_aca9905cf23388b02d71b87a3fe898bcc}} 
+\#define {\bfseries TERMINATION\+\_\+\+DIST}~0.\+1
+\item 
+\mbox{\Hypertarget{MoveitInterface_8hpp_a4bef9fae584b803546db83796b6e4f09}\label{MoveitInterface_8hpp_a4bef9fae584b803546db83796b6e4f09}} 
+\#define {\bfseries BFS\+\_\+\+DISCRETIZATION}~0.\+01
+\item 
+\mbox{\Hypertarget{MoveitInterface_8hpp_acfe7f803def309845954f8411e1cea95}\label{MoveitInterface_8hpp_acfe7f803def309845954f8411e1cea95}} 
+\#define {\bfseries DISCRETIZATION}~0.\+05
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{MoveitInterface_8hpp_a83ac339e0c07f3f5453251a5e9f92a0b}\label{MoveitInterface_8hpp_a83ac339e0c07f3f5453251a5e9f92a0b}} 
+enum class {\bfseries Heuristic\+Mode} \{ \newline
+{\bfseries EUCLIDEAN} = 0
+, {\bfseries LOS}
+, {\bfseries SHIELD}
+, {\bfseries SMPL\+\_\+\+BFS}
+, \newline
+{\bfseries EE}
+, {\bfseries EUCLIDEAN} = 0
+, {\bfseries LOS}
+, {\bfseries SHIELD}
+, \newline
+{\bfseries SMPL\+\_\+\+BFS}
+, {\bfseries EE}
+ \}
+\item 
+\mbox{\Hypertarget{MoveitInterface_8hpp_a3b8073cc625cbdf537374d22a976027f}\label{MoveitInterface_8hpp_a3b8073cc625cbdf537374d22a976027f}} 
+enum class {\bfseries Goal\+Checker\+Mode} \{ {\bfseries CSPACE} = 0
+, {\bfseries EE}
+, {\bfseries CSPACE} = 0
+, {\bfseries EE}
+ \}
+\item 
+\mbox{\Hypertarget{MoveitInterface_8hpp_a25d3ec33a7c8fb0be1ba5b7924bb2974}\label{MoveitInterface_8hpp_a25d3ec33a7c8fb0be1ba5b7924bb2974}} 
+enum class {\bfseries PPMode} \{ \newline
+{\bfseries NONE} = 0
+, {\bfseries CONTROLPT}
+, {\bfseries WAYPT}
+, {\bfseries NONE} = 0
+, \newline
+{\bfseries CONTROLPT}
+, {\bfseries WAYPT}
+ \}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+Ramkumar Natarajan (\href{mailto:rnataraj@cs.cmu.edu}{\texttt{ rnataraj@cs.\+cmu.\+edu}}) 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+9/6/23 
+\end{DoxyDate}

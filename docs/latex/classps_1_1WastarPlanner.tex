@@ -1,0 +1,60 @@
+\hypertarget{classps_1_1WastarPlanner}{}\doxysection{ps\+::Wastar\+Planner Class Reference}
+\label{classps_1_1WastarPlanner}\index{ps::WastarPlanner@{ps::WastarPlanner}}
+
+
+Inheritance diagram for ps\+::Wastar\+Planner\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=182pt]{classps_1_1WastarPlanner__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for ps\+::Wastar\+Planner\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classps_1_1WastarPlanner__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1WastarPlanner_a6a4b29b79f2d37d2eaafa98af3d82fd0}\label{classps_1_1WastarPlanner_a6a4b29b79f2d37d2eaafa98af3d82fd0}} 
+{\bfseries Wastar\+Planner} (Params\+Type planner\+\_\+params)
+\item 
+\mbox{\Hypertarget{classps_1_1WastarPlanner_a7f4b6d2e4468a52b98586c42f4a4cff0}\label{classps_1_1WastarPlanner_a7f4b6d2e4468a52b98586c42f4a4cff0}} 
+bool {\bfseries Plan} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1WastarPlanner_a8419a492ed1ed63a67beb97e4ff63400}\label{classps_1_1WastarPlanner_a8419a492ed1ed63a67beb97e4ff63400}} 
+void {\bfseries initialize} ()
+\item 
+\mbox{\Hypertarget{classps_1_1WastarPlanner_a78c0759e9148bc4c32a5109458bbf0f0}\label{classps_1_1WastarPlanner_a78c0759e9148bc4c32a5109458bbf0f0}} 
+void {\bfseries expand\+State} (\mbox{\hyperlink{classps_1_1State}{State\+Ptr\+Type}} state\+\_\+ptr)
+\item 
+\mbox{\Hypertarget{classps_1_1WastarPlanner_a0da1e625c06ee2670c732b8383cbf25d}\label{classps_1_1WastarPlanner_a0da1e625c06ee2670c732b8383cbf25d}} 
+void {\bfseries update\+State} (\mbox{\hyperlink{classps_1_1State}{State\+Ptr\+Type}} \&state\+\_\+ptr, Action\+Ptr\+Type \&action\+\_\+ptr, \mbox{\hyperlink{structps_1_1ActionSuccessor}{Action\+Successor}} \&action\+\_\+successor)
+\item 
+\mbox{\Hypertarget{classps_1_1WastarPlanner_ae885d182fd107ef1f4a5ebec69da9cf5}\label{classps_1_1WastarPlanner_ae885d182fd107ef1f4a5ebec69da9cf5}} 
+void {\bfseries exit} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1WastarPlanner_ab604018fc2e07b7a579df11644bff8a8}\label{classps_1_1WastarPlanner_ab604018fc2e07b7a579df11644bff8a8}} 
+int {\bfseries num\+\_\+threads\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1WastarPlanner_aaf24d2fbfd8a3d964a86f7761eabd49d}\label{classps_1_1WastarPlanner_aaf24d2fbfd8a3d964a86f7761eabd49d}} 
+\mbox{\hyperlink{classsmpl_1_1intrusive__heap}{State\+Queue\+Min\+Type}} {\bfseries state\+\_\+open\+\_\+list\+\_\+}
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/planners/Wastar\+Planner.\+hpp\item 
+src/planners/Wastar\+Planner.\+cpp\end{DoxyCompactItemize}

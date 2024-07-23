@@ -1,0 +1,56 @@
+\hypertarget{classps_1_1InsatAction}{}\doxysection{ps\+::Insat\+Action Class Reference}
+\label{classps_1_1InsatAction}\index{ps::InsatAction@{ps::InsatAction}}
+
+
+Inheritance diagram for ps\+::Insat\+Action\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classps_1_1InsatAction__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for ps\+::Insat\+Action\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=163pt]{classps_1_1InsatAction__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1InsatAction_a7ce0abcbf0c8e63c6adf9363feee159f}\label{classps_1_1InsatAction_a7ce0abcbf0c8e63c6adf9363feee159f}} 
+{\bfseries Insat\+Action} (const std\+::string \&type, Params\+Type params=Params\+Type(), bool is\+\_\+expensive=true)
+\item 
+\mbox{\Hypertarget{classps_1_1InsatAction_a6a52c8810d4b187e8f5da180a3e94140}\label{classps_1_1InsatAction_a6a52c8810d4b187e8f5da180a3e94140}} 
+virtual \mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} {\bfseries optimize} (const State\+Vars\+Type \&s1, const State\+Vars\+Type \&s2, int thread\+\_\+id=0) const =0
+\item 
+\mbox{\Hypertarget{classps_1_1InsatAction_a9514b1d4cf0b48204f80122bc8ef7df2}\label{classps_1_1InsatAction_a9514b1d4cf0b48204f80122bc8ef7df2}} 
+virtual \mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} {\bfseries warm\+Optimize} (const \mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} \&t1, const \mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} \&t2, int thread\+\_\+id=0) const =0
+\item 
+\mbox{\Hypertarget{classps_1_1InsatAction_a8e602f55bbf13e170cb590d1c9cc1747}\label{classps_1_1InsatAction_a8e602f55bbf13e170cb590d1c9cc1747}} 
+virtual \mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} {\bfseries warm\+Optimize} (const \mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} \&t, int thread\+\_\+id=0) const =0
+\item 
+\mbox{\Hypertarget{classps_1_1InsatAction_a79c4178756d98a1c5606c26fc29b1659}\label{classps_1_1InsatAction_a79c4178756d98a1c5606c26fc29b1659}} 
+virtual \mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} {\bfseries optimize} (const \mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} \&incoming\+\_\+traj, const State\+Vars\+Type \&s1, const State\+Vars\+Type \&s2, int thread\+\_\+id=0)=0
+\item 
+\mbox{\Hypertarget{classps_1_1InsatAction_aeb6c2a3a4d15b420a4386a0add26c9ed}\label{classps_1_1InsatAction_aeb6c2a3a4d15b420a4386a0add26c9ed}} 
+virtual \mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} {\bfseries optimize} (const \mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} \&incoming\+\_\+traj, const std\+::vector$<$ State\+Vars\+Type $>$ \&ancestors, const State\+Vars\+Type \&successor, int thread\+\_\+id=0)=0
+\item 
+\mbox{\Hypertarget{classps_1_1InsatAction_a833c15d36911eb251527036b9d307efd}\label{classps_1_1InsatAction_a833c15d36911eb251527036b9d307efd}} 
+virtual double {\bfseries get\+Cost} (const \mbox{\hyperlink{structps_1_1BSplineTraj}{Traj\+Type}} \&traj, int thread\+\_\+id=0) const =0
+\item 
+\mbox{\Hypertarget{classps_1_1InsatAction_acb911bb27352355a1f760d482a4a064a}\label{classps_1_1InsatAction_acb911bb27352355a1f760d482a4a064a}} 
+virtual bool {\bfseries is\+Feasible} (Mat\+Df \&traj, int thread\+\_\+id) const =0
+\item 
+\mbox{\Hypertarget{classps_1_1InsatAction_a5b8b097d3800aa8b8237339c7816e754}\label{classps_1_1InsatAction_a5b8b097d3800aa8b8237339c7816e754}} 
+virtual std\+::vector$<$ double $>$ {\bfseries Sample\+Feasible\+State} (int thread\+\_\+id)
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/common/insat/Insat\+Action.\+hpp\end{DoxyCompactItemize}

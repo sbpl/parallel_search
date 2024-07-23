@@ -1,0 +1,14 @@
+<map id="ps_drake::BSplineOpt" name="ps_drake::BSplineOpt">
+<area shape="rect" id="node1" title=" " alt="" coords="253,184,403,211"/>
+<area shape="rect" id="node2" href="$structps__drake_1_1InsatParams.html" title=" " alt="" coords="5,95,163,121"/>
+<area shape="rect" id="node3" href="$structps__drake_1_1ABBParams.html" title=" " alt="" coords="187,95,341,121"/>
+<area shape="rect" id="node4" href="$structmjData__.html" title=" " alt="" coords="366,95,437,121"/>
+<area shape="rect" id="node5" href="$structmjSolverStat__.html" title=" " alt="" coords="104,5,208,32"/>
+<area shape="rect" id="node6" href="$structmjTimerStat__.html" title=" " alt="" coords="233,5,333,32"/>
+<area shape="rect" id="node7" href="$structmjContact__.html" title=" " alt="" coords="357,5,446,32"/>
+<area shape="rect" id="node8" href="$structmjWarningStat__.html" title=" " alt="" coords="471,5,585,32"/>
+<area shape="rect" id="node9" href="$structmjModel__.html" title=" " alt="" coords="665,95,743,121"/>
+<area shape="rect" id="node10" href="$structmjVisual__.html" title=" " alt="" coords="610,5,689,32"/>
+<area shape="rect" id="node11" href="$structmjStatistic__.html" title=" " alt="" coords="713,5,804,32"/>
+<area shape="rect" id="node12" href="$structmjOption__.html" title=" " alt="" coords="829,5,910,32"/>
+</map>

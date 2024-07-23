@@ -1,0 +1,107 @@
+\hypertarget{classps_1_1Edge}{}\doxysection{ps\+::Edge Class Reference}
+\label{classps_1_1Edge}\index{ps::Edge@{ps::Edge}}
+
+
+Inheritance diagram for ps\+::Edge\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=184pt]{classps_1_1Edge__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for ps\+::Edge\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=276pt]{classps_1_1Edge__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1Edge_a2f1e88ee9d0968c5e806ed0535ba26d7}\label{classps_1_1Edge_a2f1e88ee9d0968c5e806ed0535ba26d7}} 
+{\bfseries Edge} (\mbox{\hyperlink{classps_1_1State}{State\+Ptr\+Type}} parent\+\_\+ptr, Action\+Ptr\+Type action\+\_\+ptr, \mbox{\hyperlink{classps_1_1State}{State\+Ptr\+Type}} child\+\_\+ptr=NULL)
+\item 
+\mbox{\Hypertarget{classps_1_1Edge_a093a6e393069128c97d980da162b5120}\label{classps_1_1Edge_a093a6e393069128c97d980da162b5120}} 
+{\bfseries Edge} (const \mbox{\hyperlink{classps_1_1Edge}{Edge}} \&other\+\_\+edge)
+\item 
+\mbox{\Hypertarget{classps_1_1Edge_a692801bc77c6fbd773c524bf573e115e}\label{classps_1_1Edge_a692801bc77c6fbd773c524bf573e115e}} 
+virtual \mbox{\hyperlink{classps_1_1Edge}{Edge}} \& {\bfseries operator=} (const \mbox{\hyperlink{classps_1_1Edge}{Edge}} \&other\+\_\+edge)
+\item 
+\mbox{\Hypertarget{classps_1_1Edge_a6892eec535711b533374b8280b534c65}\label{classps_1_1Edge_a6892eec535711b533374b8280b534c65}} 
+virtual bool {\bfseries operator==} (const \mbox{\hyperlink{classps_1_1Edge}{Edge}} \&other\+\_\+edge) const
+\item 
+\mbox{\Hypertarget{classps_1_1Edge_a80a7ee88d6da61ae4fb64f5a83af7609}\label{classps_1_1Edge_a80a7ee88d6da61ae4fb64f5a83af7609}} 
+void {\bfseries Set\+Cost} (double cost)
+\item 
+\mbox{\Hypertarget{classps_1_1Edge_a7392dc3d711a8aeec719b30e8b765544}\label{classps_1_1Edge_a7392dc3d711a8aeec719b30e8b765544}} 
+double {\bfseries Get\+Cost} () const
+\item 
+\mbox{\Hypertarget{classps_1_1Edge_a0a991c0ac6fc8f189ceed8b6147babb3}\label{classps_1_1Edge_a0a991c0ac6fc8f189ceed8b6147babb3}} 
+void {\bfseries Print} (std\+::string str=\char`\"{}\char`\"{})
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1Edge_a7f82e58c6447b7e0db9a4b9dd2989098}\label{classps_1_1Edge_a7f82e58c6447b7e0db9a4b9dd2989098}} 
+static void {\bfseries Reset\+State\+IDCounter} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1Edge_ae328e9049e58fd59602ca66198b69981}\label{classps_1_1Edge_ae328e9049e58fd59602ca66198b69981}} 
+std\+::size\+\_\+t {\bfseries edge\+\_\+id\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1Edge_a926845c6247a06105e6467ce1bae603b}\label{classps_1_1Edge_a926845c6247a06105e6467ce1bae603b}} 
+\mbox{\hyperlink{classps_1_1State}{State\+Ptr\+Type}} {\bfseries parent\+\_\+state\+\_\+ptr\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1Edge_a2817430028371d1e848e896ea6de5bd1}\label{classps_1_1Edge_a2817430028371d1e848e896ea6de5bd1}} 
+\mbox{\hyperlink{classps_1_1State}{State\+Ptr\+Type}} {\bfseries child\+\_\+state\+\_\+ptr\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1Edge_a161da705699997d0284eaa01b8e57bc5}\label{classps_1_1Edge_a161da705699997d0284eaa01b8e57bc5}} 
+Action\+Ptr\+Type {\bfseries action\+\_\+ptr\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1Edge_a5ca025d2876af3f5759e11088bb3a141}\label{classps_1_1Edge_a5ca025d2876af3f5759e11088bb3a141}} 
+double {\bfseries expansion\+\_\+priority\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1Edge_a466c56eb61d160c349089c17368a079d}\label{classps_1_1Edge_a466c56eb61d160c349089c17368a079d}} 
+double {\bfseries evaluation\+\_\+priority\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1Edge_a1020eef0d3d022bcf6c66dfce675a7b6}\label{classps_1_1Edge_a1020eef0d3d022bcf6c66dfce675a7b6}} 
+std\+::atomic$<$ bool $>$ {\bfseries is\+\_\+closed\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1Edge_a070219bd5cae136cc00f369851dc548d}\label{classps_1_1Edge_a070219bd5cae136cc00f369851dc548d}} 
+std\+::atomic$<$ bool $>$ {\bfseries is\+\_\+eval\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1Edge_adb5890008f601fa063a475434b3bb90c}\label{classps_1_1Edge_adb5890008f601fa063a475434b3bb90c}} 
+std\+::atomic$<$ bool $>$ {\bfseries is\+\_\+invalid\+\_\+}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1Edge_a89ebd55aabb11dc7200522bd10576d52}\label{classps_1_1Edge_a89ebd55aabb11dc7200522bd10576d52}} 
+static std\+::size\+\_\+t {\bfseries id\+\_\+counter\+\_\+} = 0
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1Edge_a44b65f7acd78c1c510db8bc5bb2d78eb}\label{classps_1_1Edge_a44b65f7acd78c1c510db8bc5bb2d78eb}} 
+double {\bfseries round\+Off} (double value, int prec=3)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1Edge_ad6d315dcf209e92207d9d09ab236fddd}\label{classps_1_1Edge_ad6d315dcf209e92207d9d09ab236fddd}} 
+double {\bfseries cost\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1Edge_acb602f7f428dc1789387a599b5d6910d}\label{classps_1_1Edge_acb602f7f428dc1789387a599b5d6910d}} 
+std\+::mutex {\bfseries lock\+\_\+}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/common/Edge.\+hpp\item 
+src/common/Edge.\+cpp\end{DoxyCompactItemize}

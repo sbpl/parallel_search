@@ -1,0 +1,71 @@
+\hypertarget{classps_1_1RobotNav2dAction}{}\doxysection{ps\+::Robot\+Nav2d\+Action Class Reference}
+\label{classps_1_1RobotNav2dAction}\index{ps::RobotNav2dAction@{ps::RobotNav2dAction}}
+
+
+Inheritance diagram for ps\+::Robot\+Nav2d\+Action\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classps_1_1RobotNav2dAction__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for ps\+::Robot\+Nav2d\+Action\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=196pt]{classps_1_1RobotNav2dAction__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1RobotNav2dAction_a7a987caf435a3bce4fa01c0f62717857}\label{classps_1_1RobotNav2dAction_a7a987caf435a3bce4fa01c0f62717857}} 
+{\bfseries Robot\+Nav2d\+Action} (const std\+::string \&type, Params\+Type params, std\+::vector$<$ std\+::vector$<$ int $>$$>$ map, bool is\+\_\+expensive=true)
+\item 
+\mbox{\Hypertarget{classps_1_1RobotNav2dAction_a2e778794264a033055dd6775e6a9c833}\label{classps_1_1RobotNav2dAction_a2e778794264a033055dd6775e6a9c833}} 
+bool {\bfseries Check\+Preconditions} (const State\+Vars\+Type \&state)
+\item 
+\mbox{\Hypertarget{classps_1_1RobotNav2dAction_a0f37f4bf78060d6b6cb06faf4421a8d2}\label{classps_1_1RobotNav2dAction_a0f37f4bf78060d6b6cb06faf4421a8d2}} 
+\mbox{\hyperlink{structps_1_1ActionSuccessor}{Action\+Successor}} {\bfseries Get\+Successor} (const State\+Vars\+Type \&state\+\_\+vars, int thread\+\_\+id)
+\item 
+\mbox{\Hypertarget{classps_1_1RobotNav2dAction_af989972e9733a53a1f2c9e55455215fd}\label{classps_1_1RobotNav2dAction_af989972e9733a53a1f2c9e55455215fd}} 
+\mbox{\hyperlink{structps_1_1ActionSuccessor}{Action\+Successor}} {\bfseries Get\+Successor\+Lazy} (const State\+Vars\+Type \&state\+\_\+vars, int thread\+\_\+id)
+\item 
+\mbox{\Hypertarget{classps_1_1RobotNav2dAction_a496ccd7214eee721933d61307d206d8f}\label{classps_1_1RobotNav2dAction_a496ccd7214eee721933d61307d206d8f}} 
+\mbox{\hyperlink{structps_1_1ActionSuccessor}{Action\+Successor}} {\bfseries Evaluate} (const State\+Vars\+Type \&parent\+\_\+state\+\_\+vars, const State\+Vars\+Type \&child\+\_\+state\+\_\+vars, int thread\+\_\+id=0)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1RobotNav2dAction_a5f271c67cbc6eeace1ed7eaacac93f65}\label{classps_1_1RobotNav2dAction_a5f271c67cbc6eeace1ed7eaacac93f65}} 
+bool {\bfseries is\+Valid\+Cell} (int x, int y)
+\item 
+\mbox{\Hypertarget{classps_1_1RobotNav2dAction_a6f1b836b853c0f8973ec053dc6bd55a7}\label{classps_1_1RobotNav2dAction_a6f1b836b853c0f8973ec053dc6bd55a7}} 
+bool {\bfseries in\+Range} (int x, int y)
+\item 
+\mbox{\Hypertarget{classps_1_1RobotNav2dAction_af65768d9f0363ec648e5269e19a97660}\label{classps_1_1RobotNav2dAction_af65768d9f0363ec648e5269e19a97660}} 
+std\+::vector$<$ std\+::pair$<$ int, int $>$ $>$ {\bfseries get\+Foot\+Print\+Rectangular} (int x, int y, int footprint\+\_\+size)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1RobotNav2dAction_ad471b30dc5b8807ef5c9e0ae329a0b10}\label{classps_1_1RobotNav2dAction_ad471b30dc5b8807ef5c9e0ae329a0b10}} 
+std\+::vector$<$ double $>$ {\bfseries move\+\_\+dir\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1RobotNav2dAction_acc7e49ec733182983c5e766f7eb82140}\label{classps_1_1RobotNav2dAction_acc7e49ec733182983c5e766f7eb82140}} 
+std\+::vector$<$ std\+::vector$<$ int $>$ $>$ {\bfseries map\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1RobotNav2dAction_a2d21678a6fc5b338dce39075d84e2807}\label{classps_1_1RobotNav2dAction_a2d21678a6fc5b338dce39075d84e2807}} 
+std\+::vector$<$ std\+::pair$<$ int, int $>$ $>$ {\bfseries footprint\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1RobotNav2dAction_abdc6e8fb0c7d2f86db9ff86b95f6a724}\label{classps_1_1RobotNav2dAction_abdc6e8fb0c7d2f86db9ff86b95f6a724}} 
+Lock\+Type {\bfseries lock\+\_\+}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+examples/robot\+\_\+nav\+\_\+2d/Robot\+Nav2d\+Actions.\+hpp\item 
+examples/robot\+\_\+nav\+\_\+2d/Robot\+Nav2d\+Actions.\+cpp\end{DoxyCompactItemize}

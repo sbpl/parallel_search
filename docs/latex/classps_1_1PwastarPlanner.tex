@@ -1,0 +1,72 @@
+\hypertarget{classps_1_1PwastarPlanner}{}\doxysection{ps\+::Pwastar\+Planner Class Reference}
+\label{classps_1_1PwastarPlanner}\index{ps::PwastarPlanner@{ps::PwastarPlanner}}
+
+
+Inheritance diagram for ps\+::Pwastar\+Planner\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=182pt]{classps_1_1PwastarPlanner__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for ps\+::Pwastar\+Planner\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classps_1_1PwastarPlanner__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1PwastarPlanner_a860c8966de0baf54ed78adedc48b16e4}\label{classps_1_1PwastarPlanner_a860c8966de0baf54ed78adedc48b16e4}} 
+{\bfseries Pwastar\+Planner} (Params\+Type planner\+\_\+params)
+\item 
+\mbox{\Hypertarget{classps_1_1PwastarPlanner_a94df693de80bd60b53ac233fa0eabf8b}\label{classps_1_1PwastarPlanner_a94df693de80bd60b53ac233fa0eabf8b}} 
+bool {\bfseries Plan} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1PwastarPlanner_aca02af6efe73875a37f9f338938cc792}\label{classps_1_1PwastarPlanner_aca02af6efe73875a37f9f338938cc792}} 
+void {\bfseries initialize} ()
+\item 
+\mbox{\Hypertarget{classps_1_1PwastarPlanner_ab34f577b4942cec6045fd13d3fe9487c}\label{classps_1_1PwastarPlanner_ab34f577b4942cec6045fd13d3fe9487c}} 
+void {\bfseries expand\+State} (\mbox{\hyperlink{classps_1_1State}{State\+Ptr\+Type}} state\+\_\+ptr)
+\item 
+\mbox{\Hypertarget{classps_1_1PwastarPlanner_a54149b34f5c4b94e9cb12f96a5cecc09}\label{classps_1_1PwastarPlanner_a54149b34f5c4b94e9cb12f96a5cecc09}} 
+void {\bfseries evaluate\+Edge\+Thread} (int thread\+\_\+idx)
+\item 
+\mbox{\Hypertarget{classps_1_1PwastarPlanner_a53dd9b749cd71bc6e63899b7b11a9a11}\label{classps_1_1PwastarPlanner_a53dd9b749cd71bc6e63899b7b11a9a11}} 
+void {\bfseries exit} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1PwastarPlanner_a4f2c9a604e4c936b5baac4d15887b6ee}\label{classps_1_1PwastarPlanner_a4f2c9a604e4c936b5baac4d15887b6ee}} 
+std\+::vector$<$ Lock\+Type $>$ {\bfseries lock\+\_\+vec\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1PwastarPlanner_a93fb04df9d0d08d9d15772ace51b1c9c}\label{classps_1_1PwastarPlanner_a93fb04df9d0d08d9d15772ace51b1c9c}} 
+std\+::vector$<$ std\+::future$<$ void $>$ $>$ {\bfseries edge\+\_\+evaluation\+\_\+futures\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1PwastarPlanner_a495f6ab46fe2b5e34cf6d2c5f8bf205d}\label{classps_1_1PwastarPlanner_a495f6ab46fe2b5e34cf6d2c5f8bf205d}} 
+std\+::vector$<$ \mbox{\hyperlink{classps_1_1Edge}{Edge\+Ptr\+Type}} $>$ {\bfseries edge\+\_\+evaluation\+\_\+vec\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1PwastarPlanner_a54b5997c63140028434a677fdbef47e1}\label{classps_1_1PwastarPlanner_a54b5997c63140028434a677fdbef47e1}} 
+std\+::vector$<$ int $>$ {\bfseries edge\+\_\+evaluation\+\_\+status\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1PwastarPlanner_a3ca3944cb2a9a0263350e5c75247ea63}\label{classps_1_1PwastarPlanner_a3ca3944cb2a9a0263350e5c75247ea63}} 
+std\+::vector$<$ std\+::vector$<$ std\+::pair$<$ Action\+Ptr\+Type, \mbox{\hyperlink{structps_1_1ActionSuccessor}{Action\+Successor}} $>$ $>$ $>$ {\bfseries all\+\_\+successors\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1PwastarPlanner_adbad376c1619517d031e546b8fe9504d}\label{classps_1_1PwastarPlanner_adbad376c1619517d031e546b8fe9504d}} 
+bool {\bfseries terminate\+\_\+}
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/planners/Pwastar\+Planner.\+hpp\item 
+src/planners/Pwastar\+Planner.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,328 @@
+\hypertarget{classmujoco_1_1Simulate}{}\doxysection{mujoco\+::Simulate Class Reference}
+\label{classmujoco_1_1Simulate}\index{mujoco::Simulate@{mujoco::Simulate}}
+
+
+Collaboration diagram for mujoco\+::Simulate\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classmujoco_1_1Simulate__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a6836317ea1e0895b5b3368116a1026dd}\label{classmujoco_1_1Simulate_a6836317ea1e0895b5b3368116a1026dd}} 
+using {\bfseries Clock} = std\+::chrono\+::steady\+\_\+clock
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a9042462aaf41d7c3a76e19f5b94a8407}\label{classmujoco_1_1Simulate_a9042462aaf41d7c3a76e19f5b94a8407}} 
+{\bfseries Simulate} (std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classmujoco_1_1PlatformUIAdapter}{Platform\+UIAdapter}} $>$ platform\+\_\+ui\+\_\+adapter)
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a6c306d72dfe30710f6434bc9d3930072}\label{classmujoco_1_1Simulate_a6c306d72dfe30710f6434bc9d3930072}} 
+void {\bfseries applyposepertubations} (int flg\+\_\+paused)
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a62438cfcd210bb6fdd201ded10a7d230}\label{classmujoco_1_1Simulate_a62438cfcd210bb6fdd201ded10a7d230}} 
+void {\bfseries applyforceperturbations} ()
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a959e15f89bc7d2453dfaedc10fdd2fdb}\label{classmujoco_1_1Simulate_a959e15f89bc7d2453dfaedc10fdd2fdb}} 
+void {\bfseries load} (const char $\ast$file, \mbox{\hyperlink{structmjModel__}{mj\+Model}} $\ast$m, \mbox{\hyperlink{structmjData__}{mj\+Data}} $\ast$d)
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_aea3210abd13b2c37b40344507054d0cc}\label{classmujoco_1_1Simulate_aea3210abd13b2c37b40344507054d0cc}} 
+void {\bfseries loadmodel} ()
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a5dbe5fba8e5c2135b9c48b058979ab66}\label{classmujoco_1_1Simulate_a5dbe5fba8e5c2135b9c48b058979ab66}} 
+void {\bfseries prepare} ()
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_ae29b696f8a113b8c8984ddeb753c89bb}\label{classmujoco_1_1Simulate_ae29b696f8a113b8c8984ddeb753c89bb}} 
+void {\bfseries render} ()
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a336b49978f368a7d6e8ee9da00e45427}\label{classmujoco_1_1Simulate_a336b49978f368a7d6e8ee9da00e45427}} 
+void {\bfseries renderloop} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a4289f2eab8720f454200c2480abf0ceb}\label{classmujoco_1_1Simulate_a4289f2eab8720f454200c2480abf0ceb}} 
+\mbox{\hyperlink{structmjModel__}{mj\+Model}} $\ast$ {\bfseries mnew} = nullptr
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a6d72745ca44f34ad3bfc0f256d90fc6e}\label{classmujoco_1_1Simulate_a6d72745ca44f34ad3bfc0f256d90fc6e}} 
+\mbox{\hyperlink{structmjData__}{mj\+Data}} $\ast$ {\bfseries dnew} = nullptr
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_aacf997380e42b4fdffc838f123d1274f}\label{classmujoco_1_1Simulate_aacf997380e42b4fdffc838f123d1274f}} 
+\mbox{\hyperlink{structmjModel__}{mj\+Model}} $\ast$ {\bfseries m} = nullptr
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a753cf4fa2631b000231bbb9d228641dd}\label{classmujoco_1_1Simulate_a753cf4fa2631b000231bbb9d228641dd}} 
+\mbox{\hyperlink{structmjData__}{mj\+Data}} $\ast$ {\bfseries d} = nullptr
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a5343eb797fc4b6cac7c6f61c47ea896a}\label{classmujoco_1_1Simulate_a5343eb797fc4b6cac7c6f61c47ea896a}} 
+std\+::mutex {\bfseries mtx}
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_aacb0aa780b881bae816780a4d78ca6ab}\label{classmujoco_1_1Simulate_aacb0aa780b881bae816780a4d78ca6ab}} 
+std\+::condition\+\_\+variable {\bfseries cond\+\_\+loadrequest}
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a69d39fb0c4a3176d44d985edadc2da31}\label{classmujoco_1_1Simulate_a69d39fb0c4a3176d44d985edadc2da31}} 
+int {\bfseries spacing} = 0
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a0729843833dd98eb31938f9cc809f241}\label{classmujoco_1_1Simulate_a0729843833dd98eb31938f9cc809f241}} 
+int {\bfseries color} = 0
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_ac238f658261711804eb6e9547fcf864f}\label{classmujoco_1_1Simulate_ac238f658261711804eb6e9547fcf864f}} 
+int {\bfseries font} = 0
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a567655642d675d1eb8c9cbe5a6952f4c}\label{classmujoco_1_1Simulate_a567655642d675d1eb8c9cbe5a6952f4c}} 
+int {\bfseries ui0\+\_\+enable} = 1
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a722b571c651768c628636791e9d3f3bd}\label{classmujoco_1_1Simulate_a722b571c651768c628636791e9d3f3bd}} 
+int {\bfseries ui1\+\_\+enable} = 1
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a8a199e861478a5c814de69a0c23feade}\label{classmujoco_1_1Simulate_a8a199e861478a5c814de69a0c23feade}} 
+int {\bfseries help} = 0
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a0272022b43b1fbb5298df58f0ceaf647}\label{classmujoco_1_1Simulate_a0272022b43b1fbb5298df58f0ceaf647}} 
+int {\bfseries info} = 0
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_afbc27b6514abbad25a7ed653f787636b}\label{classmujoco_1_1Simulate_afbc27b6514abbad25a7ed653f787636b}} 
+int {\bfseries profiler} = 0
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a56b3151f58f904538650d9fd8b28392b}\label{classmujoco_1_1Simulate_a56b3151f58f904538650d9fd8b28392b}} 
+int {\bfseries sensor} = 0
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a4e4b909248571346ea41f3936e0081f8}\label{classmujoco_1_1Simulate_a4e4b909248571346ea41f3936e0081f8}} 
+int {\bfseries fullscreen} = 0
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_ab12fb9af742a982275f5ecfaa5f9700a}\label{classmujoco_1_1Simulate_ab12fb9af742a982275f5ecfaa5f9700a}} 
+int {\bfseries vsync} = 1
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a154d3cef8f2b5f71533a007fa5c02a2c}\label{classmujoco_1_1Simulate_a154d3cef8f2b5f71533a007fa5c02a2c}} 
+int {\bfseries busywait} = 0
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a0c73834fdb762e099c8ec2b94eac2688}\label{classmujoco_1_1Simulate_a0c73834fdb762e099c8ec2b94eac2688}} 
+int {\bfseries key} = 0
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_abfe6e2c265d5fa11dd93ff0104d7f551}\label{classmujoco_1_1Simulate_abfe6e2c265d5fa11dd93ff0104d7f551}} 
+int {\bfseries run} = 1
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a43e3b6e9a021e0bebefd05a4e40e1b4c}\label{classmujoco_1_1Simulate_a43e3b6e9a021e0bebefd05a4e40e1b4c}} 
+std\+::atomic\+\_\+int {\bfseries exitrequest} = false
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a990dcd8bc3c27e07facf86ccdbb5160e}\label{classmujoco_1_1Simulate_a990dcd8bc3c27e07facf86ccdbb5160e}} 
+std\+::atomic\+\_\+int {\bfseries droploadrequest} = false
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a9cef15794d746e06f24ba2b1e807a7ee}\label{classmujoco_1_1Simulate_a9cef15794d746e06f24ba2b1e807a7ee}} 
+std\+::atomic\+\_\+int {\bfseries screenshotrequest} = false
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a0b37d663e762dd6686caa4cb79e7bdb1}\label{classmujoco_1_1Simulate_a0b37d663e762dd6686caa4cb79e7bdb1}} 
+std\+::atomic\+\_\+int {\bfseries uiloadrequest} = 0
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a6e4fde7f8b0124fb16da6c85fa1f8617}\label{classmujoco_1_1Simulate_a6e4fde7f8b0124fb16da6c85fa1f8617}} 
+int {\bfseries loadrequest} = 0
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_acddf10433b449db567ce62795c2e7061}\label{classmujoco_1_1Simulate_acddf10433b449db567ce62795c2e7061}} 
+char {\bfseries load\+Error} \mbox{[}k\+Max\+Filename\+Length\mbox{]} = \char`\"{}\char`\"{}
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_ae47dbd9a00213c5f44bc7b95360c3370}\label{classmujoco_1_1Simulate_ae47dbd9a00213c5f44bc7b95360c3370}} 
+char {\bfseries dropfilename} \mbox{[}k\+Max\+Filename\+Length\mbox{]} = \char`\"{}\char`\"{}
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a211d2e01a45b171555044cce0e4b08bf}\label{classmujoco_1_1Simulate_a211d2e01a45b171555044cce0e4b08bf}} 
+char {\bfseries filename} \mbox{[}k\+Max\+Filename\+Length\mbox{]} = \char`\"{}\char`\"{}
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_aa9e44a105e14c8ac2b57f202710fe7ad}\label{classmujoco_1_1Simulate_aa9e44a105e14c8ac2b57f202710fe7ad}} 
+char {\bfseries previous\+\_\+filename} \mbox{[}k\+Max\+Filename\+Length\mbox{]} = \char`\"{}\char`\"{}
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a6c3f7c21f7a6513207e49d8e64f43f6d}\label{classmujoco_1_1Simulate_a6c3f7c21f7a6513207e49d8e64f43f6d}} 
+int {\bfseries real\+Time\+Index}
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_aeb62534eabc8684010aa6aaee612a272}\label{classmujoco_1_1Simulate_aeb62534eabc8684010aa6aaee612a272}} 
+bool {\bfseries speed\+Changed} = true
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a68a28c10960759fdbb835644525ce7ac}\label{classmujoco_1_1Simulate_a68a28c10960759fdbb835644525ce7ac}} 
+float {\bfseries measured\+Slowdown} = 1.\+0
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_afc20e51582b14fdba7ce1e0c33b6f1a0}\label{classmujoco_1_1Simulate_afc20e51582b14fdba7ce1e0c33b6f1a0}} 
+double {\bfseries ctrlnoisestd} = 0.\+0
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_ac0404f5379881d02f2cabb4190ef3b5f}\label{classmujoco_1_1Simulate_ac0404f5379881d02f2cabb4190ef3b5f}} 
+double {\bfseries ctrlnoiserate} = 0.\+0
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_ab215fa04eeba00766313e1caefc50ca6}\label{classmujoco_1_1Simulate_ab215fa04eeba00766313e1caefc50ca6}} 
+char {\bfseries field} \mbox{[}mj\+MAXUITEXT\mbox{]} = \char`\"{}qpos\char`\"{}
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_ac6a0c4c3dcef480ba5e2f8a68a2f12e9}\label{classmujoco_1_1Simulate_ac6a0c4c3dcef480ba5e2f8a68a2f12e9}} 
+int {\bfseries index} = 0
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a6ad32d62495accccfe22cd430341d3a5}\label{classmujoco_1_1Simulate_a6ad32d62495accccfe22cd430341d3a5}} 
+int {\bfseries disable} \mbox{[}mj\+NDISABLE\mbox{]} = \{0\}
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a368c73667ecd271fa4cb36f9a82042d5}\label{classmujoco_1_1Simulate_a368c73667ecd271fa4cb36f9a82042d5}} 
+int {\bfseries enable} \mbox{[}mj\+NENABLE\mbox{]} = \{0\}
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_ae221e07201f94dfa3854b26447055440}\label{classmujoco_1_1Simulate_ae221e07201f94dfa3854b26447055440}} 
+int {\bfseries camera} = 0
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_ad5a0269fcf6b8c4d232f56a5a96fd16d}\label{classmujoco_1_1Simulate_ad5a0269fcf6b8c4d232f56a5a96fd16d}} 
+\mbox{\hyperlink{structmjvScene__}{mjv\+Scene}} {\bfseries scn} = \{\}
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a3c6c68135706056ca3277ac8846298bc}\label{classmujoco_1_1Simulate_a3c6c68135706056ca3277ac8846298bc}} 
+\mbox{\hyperlink{structmjvCamera__}{mjv\+Camera}} {\bfseries cam} = \{\}
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_abcc99a12fd2de91520eb1fe4235786e5}\label{classmujoco_1_1Simulate_abcc99a12fd2de91520eb1fe4235786e5}} 
+\mbox{\hyperlink{structmjvOption__}{mjv\+Option}} {\bfseries vopt} = \{\}
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a167804859d674f435e61b9e64fd1e7f4}\label{classmujoco_1_1Simulate_a167804859d674f435e61b9e64fd1e7f4}} 
+\mbox{\hyperlink{structmjvPerturb__}{mjv\+Perturb}} {\bfseries pert} = \{\}
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a1076b0f7775aa7ab8b850902a21b41b2}\label{classmujoco_1_1Simulate_a1076b0f7775aa7ab8b850902a21b41b2}} 
+\mbox{\hyperlink{structmjvFigure__}{mjv\+Figure}} {\bfseries figconstraint} = \{\}
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a9353071c2ba6bda993cd01965526be75}\label{classmujoco_1_1Simulate_a9353071c2ba6bda993cd01965526be75}} 
+\mbox{\hyperlink{structmjvFigure__}{mjv\+Figure}} {\bfseries figcost} = \{\}
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a17813153e4b6bcb61ef4194389e93ced}\label{classmujoco_1_1Simulate_a17813153e4b6bcb61ef4194389e93ced}} 
+\mbox{\hyperlink{structmjvFigure__}{mjv\+Figure}} {\bfseries figtimer} = \{\}
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_acf910b81109cb491d66c5783c7ca1faf}\label{classmujoco_1_1Simulate_acf910b81109cb491d66c5783c7ca1faf}} 
+\mbox{\hyperlink{structmjvFigure__}{mjv\+Figure}} {\bfseries figsize} = \{\}
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a65cdea5db2f2e9b4bc783e4888e703c8}\label{classmujoco_1_1Simulate_a65cdea5db2f2e9b4bc783e4888e703c8}} 
+\mbox{\hyperlink{structmjvFigure__}{mjv\+Figure}} {\bfseries figsensor} = \{\}
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a7351257c8029393cd06ab55649cfe19a}\label{classmujoco_1_1Simulate_a7351257c8029393cd06ab55649cfe19a}} 
+int {\bfseries refresh\+Rate} = 60
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_ae9e14604290bc1ba42e73ff60fe45a60}\label{classmujoco_1_1Simulate_ae9e14604290bc1ba42e73ff60fe45a60}} 
+int {\bfseries windowpos} \mbox{[}2\mbox{]} = \{0\}
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_aab4bab9929926831bdafde83a07397bb}\label{classmujoco_1_1Simulate_aab4bab9929926831bdafde83a07397bb}} 
+int {\bfseries windowsize} \mbox{[}2\mbox{]} = \{0\}
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a695cd9655282af4e497fac3b25adc732}\label{classmujoco_1_1Simulate_a695cd9655282af4e497fac3b25adc732}} 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classmujoco_1_1PlatformUIAdapter}{Platform\+UIAdapter}} $>$ {\bfseries platform\+\_\+ui}
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_aff7f88315b2c06823b360d16e49fc053}\label{classmujoco_1_1Simulate_aff7f88315b2c06823b360d16e49fc053}} 
+\mbox{\hyperlink{structmjuiState__}{mjui\+State}} \& {\bfseries uistate}
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a2fca2496f657423d87cf0aba8c8ba15e}\label{classmujoco_1_1Simulate_a2fca2496f657423d87cf0aba8c8ba15e}} 
+\mbox{\hyperlink{structmjUI__}{mj\+UI}} {\bfseries ui0} = \{\}
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a7366725a121b7acf43d1bb77b480ca33}\label{classmujoco_1_1Simulate_a7366725a121b7acf43d1bb77b480ca33}} 
+\mbox{\hyperlink{structmjUI__}{mj\+UI}} {\bfseries ui1} = \{\}
+\item 
+const \mbox{\hyperlink{structmjuiDef__}{mjui\+Def}} {\bfseries def\+Option} \mbox{[}14\mbox{]}
+\item 
+const \mbox{\hyperlink{structmjuiDef__}{mjui\+Def}} {\bfseries def\+Simulation} \mbox{[}12\mbox{]}
+\item 
+const \mbox{\hyperlink{structmjuiDef__}{mjui\+Def}} {\bfseries def\+Watch} \mbox{[}5\mbox{]}
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_ae15ec5efa6dd25db02b888acbc2e153d}\label{classmujoco_1_1Simulate_ae15ec5efa6dd25db02b888acbc2e153d}} 
+char {\bfseries info\+\_\+title} \mbox{[}Simulate\+::k\+Max\+Filename\+Length\mbox{]} = \{0\}
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a6246af2954bbe5e7904fdcc2bad376df}\label{classmujoco_1_1Simulate_a6246af2954bbe5e7904fdcc2bad376df}} 
+char {\bfseries info\+\_\+content} \mbox{[}Simulate\+::k\+Max\+Filename\+Length\mbox{]} = \{0\}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a87264939c82977711457718005bdb150}\label{classmujoco_1_1Simulate_a87264939c82977711457718005bdb150}} 
+static constexpr int {\bfseries k\+Max\+Filename\+Length} = 1000
+\item 
+static constexpr float {\bfseries percent\+Real\+Time} \mbox{[}$\,$\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a48857455112b40a109dd946857d8031c}\label{classmujoco_1_1Simulate_a48857455112b40a109dd946857d8031c}} 
+\index{mujoco::Simulate@{mujoco::Simulate}!defOption@{defOption}}
+\index{defOption@{defOption}!mujoco::Simulate@{mujoco::Simulate}}
+\doxysubsubsection{\texorpdfstring{defOption}{defOption}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{structmjuiDef__}{mjui\+Def}} mujoco\+::\+Simulate\+::def\+Option\mbox{[}14\mbox{]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{= \{}
+\DoxyCodeLine{    \{mjITEM\_SECTION,  \textcolor{stringliteral}{"{}Option"{}},        1, \textcolor{keyword}{nullptr},           \textcolor{stringliteral}{"{}AO"{}}\},}
+\DoxyCodeLine{    \{mjITEM\_SELECT,   \textcolor{stringliteral}{"{}Spacing"{}},       1, \&this-\/>spacing,    \textcolor{stringliteral}{"{}Tight\(\backslash\)nWide"{}}\},}
+\DoxyCodeLine{    \{mjITEM\_SELECT,   \textcolor{stringliteral}{"{}Color"{}},         1, \&this-\/>color,      \textcolor{stringliteral}{"{}Default\(\backslash\)nOrange\(\backslash\)nWhite\(\backslash\)nBlack"{}}\},}
+\DoxyCodeLine{    \{mjITEM\_SELECT,   \textcolor{stringliteral}{"{}Font"{}},          1, \&this-\/>font,       \textcolor{stringliteral}{"{}50 \%\(\backslash\)n100 \%\(\backslash\)n150 \%\(\backslash\)n200 \%\(\backslash\)n250 \%\(\backslash\)n300 \%"{}}\},}
+\DoxyCodeLine{    \{mjITEM\_CHECKINT, \textcolor{stringliteral}{"{}Left UI (Tab)"{}}, 1, \&this-\/>ui0\_enable, \textcolor{stringliteral}{"{} \#258"{}}\},}
+\DoxyCodeLine{    \{mjITEM\_CHECKINT, \textcolor{stringliteral}{"{}Right UI"{}},      1, \&this-\/>ui1\_enable, \textcolor{stringliteral}{"{}S\#258"{}}\},}
+\DoxyCodeLine{    \{mjITEM\_CHECKINT, \textcolor{stringliteral}{"{}Help"{}},          2, \&this-\/>help,       \textcolor{stringliteral}{"{} \#290"{}}\},}
+\DoxyCodeLine{    \{mjITEM\_CHECKINT, \textcolor{stringliteral}{"{}Info"{}},          2, \&this-\/>info,       \textcolor{stringliteral}{"{} \#291"{}}\},}
+\DoxyCodeLine{    \{mjITEM\_CHECKINT, \textcolor{stringliteral}{"{}Profiler"{}},      2, \&this-\/>profiler,   \textcolor{stringliteral}{"{} \#292"{}}\},}
+\DoxyCodeLine{    \{mjITEM\_CHECKINT, \textcolor{stringliteral}{"{}Sensor"{}},        2, \&this-\/>sensor,     \textcolor{stringliteral}{"{} \#293"{}}\},}
+\DoxyCodeLine{}
+\DoxyCodeLine{}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \{mjITEM\_CHECKINT, \textcolor{stringliteral}{"{}Fullscreen"{}},    1, \&this-\/>fullscreen, \textcolor{stringliteral}{"{} \#294"{}}\},}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \{mjITEM\_CHECKINT, \textcolor{stringliteral}{"{}Vertical Sync"{}}, 1, \&this-\/>vsync,      \textcolor{stringliteral}{"{}"{}}\},}
+\DoxyCodeLine{    \{mjITEM\_CHECKINT, \textcolor{stringliteral}{"{}Busy Wait"{}},     1, \&this-\/>busywait,   \textcolor{stringliteral}{"{}"{}}\},}
+\DoxyCodeLine{    \{mjITEM\_END\}}
+\DoxyCodeLine{  \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classmujoco_1_1Simulate_ad401de009eb6eb1ad58baa4781c7ba57}\label{classmujoco_1_1Simulate_ad401de009eb6eb1ad58baa4781c7ba57}} 
+\index{mujoco::Simulate@{mujoco::Simulate}!defSimulation@{defSimulation}}
+\index{defSimulation@{defSimulation}!mujoco::Simulate@{mujoco::Simulate}}
+\doxysubsubsection{\texorpdfstring{defSimulation}{defSimulation}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{structmjuiDef__}{mjui\+Def}} mujoco\+::\+Simulate\+::def\+Simulation\mbox{[}12\mbox{]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{= \{}
+\DoxyCodeLine{    \{mjITEM\_SECTION,   \textcolor{stringliteral}{"{}Simulation"{}},    1, \textcolor{keyword}{nullptr},              \textcolor{stringliteral}{"{}AS"{}}\},}
+\DoxyCodeLine{    \{mjITEM\_RADIO,     \textcolor{stringliteral}{"{}"{}},              2, \&this-\/>run,           \textcolor{stringliteral}{"{}Pause\(\backslash\)nRun"{}}\},}
+\DoxyCodeLine{    \{mjITEM\_BUTTON,    \textcolor{stringliteral}{"{}Reset"{}},         2, \textcolor{keyword}{nullptr},              \textcolor{stringliteral}{"{} \#259"{}}\},}
+\DoxyCodeLine{    \{mjITEM\_BUTTON,    \textcolor{stringliteral}{"{}Reload"{}},        2, \textcolor{keyword}{nullptr},              \textcolor{stringliteral}{"{}CL"{}}\},}
+\DoxyCodeLine{    \{mjITEM\_BUTTON,    \textcolor{stringliteral}{"{}Align"{}},         2, \textcolor{keyword}{nullptr},              \textcolor{stringliteral}{"{}CA"{}}\},}
+\DoxyCodeLine{    \{mjITEM\_BUTTON,    \textcolor{stringliteral}{"{}Copy pose"{}},     2, \textcolor{keyword}{nullptr},              \textcolor{stringliteral}{"{}CC"{}}\},}
+\DoxyCodeLine{    \{mjITEM\_SLIDERINT, \textcolor{stringliteral}{"{}Key"{}},           3, \&this-\/>key,           \textcolor{stringliteral}{"{}0 0"{}}\},}
+\DoxyCodeLine{    \{mjITEM\_BUTTON,    \textcolor{stringliteral}{"{}Load key"{}},      3\},}
+\DoxyCodeLine{    \{mjITEM\_BUTTON,    \textcolor{stringliteral}{"{}Save key"{}},      3\},}
+\DoxyCodeLine{    \{mjITEM\_SLIDERNUM, \textcolor{stringliteral}{"{}Noise scale"{}},   2, \&this-\/>ctrlnoisestd,  \textcolor{stringliteral}{"{}0 2"{}}\},}
+\DoxyCodeLine{    \{mjITEM\_SLIDERNUM, \textcolor{stringliteral}{"{}Noise rate"{}},    2, \&this-\/>ctrlnoiserate, \textcolor{stringliteral}{"{}0 2"{}}\},}
+\DoxyCodeLine{    \{mjITEM\_END\}}
+\DoxyCodeLine{  \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a91df19eb34b45cedaa780412112c4548}\label{classmujoco_1_1Simulate_a91df19eb34b45cedaa780412112c4548}} 
+\index{mujoco::Simulate@{mujoco::Simulate}!defWatch@{defWatch}}
+\index{defWatch@{defWatch}!mujoco::Simulate@{mujoco::Simulate}}
+\doxysubsubsection{\texorpdfstring{defWatch}{defWatch}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{structmjuiDef__}{mjui\+Def}} mujoco\+::\+Simulate\+::def\+Watch\mbox{[}5\mbox{]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{= \{}
+\DoxyCodeLine{    \{mjITEM\_SECTION,   \textcolor{stringliteral}{"{}Watch"{}},         0, \textcolor{keyword}{nullptr},              \textcolor{stringliteral}{"{}AW"{}}\},}
+\DoxyCodeLine{    \{mjITEM\_EDITTXT,   \textcolor{stringliteral}{"{}Field"{}},         2, this-\/>field,          \textcolor{stringliteral}{"{}qpos"{}}\},}
+\DoxyCodeLine{    \{mjITEM\_EDITINT,   \textcolor{stringliteral}{"{}Index"{}},         2, \&this-\/>index,         \textcolor{stringliteral}{"{}1"{}}\},}
+\DoxyCodeLine{    \{mjITEM\_STATIC,    \textcolor{stringliteral}{"{}Value"{}},         2, \textcolor{keyword}{nullptr},              \textcolor{stringliteral}{"{} "{}}\},}
+\DoxyCodeLine{    \{mjITEM\_END\}}
+\DoxyCodeLine{  \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classmujoco_1_1Simulate_a35bcd0430e2531a7678281224d362f33}\label{classmujoco_1_1Simulate_a35bcd0430e2531a7678281224d362f33}} 
+\index{mujoco::Simulate@{mujoco::Simulate}!percentRealTime@{percentRealTime}}
+\index{percentRealTime@{percentRealTime}!mujoco::Simulate@{mujoco::Simulate}}
+\doxysubsubsection{\texorpdfstring{percentRealTime}{percentRealTime}}
+{\footnotesize\ttfamily constexpr float mujoco\+::\+Simulate\+::percent\+Real\+Time\mbox{[}$\,$\mbox{]}\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{= \{}
+\DoxyCodeLine{      100, 80, 66,  50,  40, 33,  25,  20, 16,  13,}
+\DoxyCodeLine{      10,  8,  6.6, 5.0, 4,  3.3, 2.5, 2,  1.6, 1.3,}
+\DoxyCodeLine{      1,  .8, .66, .5,  .4, .33, .25, .2, .16, .13,}
+\DoxyCodeLine{     .1}
+\DoxyCodeLine{  \}}
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+third\+\_\+party/mujoco-\/2.\+3.\+2/simulate/simulate.\+h\item 
+third\+\_\+party/mujoco-\/2.\+3.\+2/simulate/simulate.\+cc\end{DoxyCompactItemize}

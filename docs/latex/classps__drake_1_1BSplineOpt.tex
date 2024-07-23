@@ -1,0 +1,131 @@
+\hypertarget{classps__drake_1_1BSplineOpt}{}\doxysection{ps\+\_\+drake\+::BSpline\+Opt Class Reference}
+\label{classps__drake_1_1BSplineOpt}\index{ps\_drake::BSplineOpt@{ps\_drake::BSplineOpt}}
+
+
+Collaboration diagram for ps\+\_\+drake\+::BSpline\+Opt\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classps__drake_1_1BSplineOpt__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structps__drake_1_1BSplineOpt_1_1Result}{Result}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps__drake_1_1BSplineOpt_ad65f644f9bc847a8a973c2a73249484f}\label{classps__drake_1_1BSplineOpt_ad65f644f9bc847a8a973c2a73249484f}} 
+typedef drake\+::planning\+::trajectory\+\_\+optimization\+::\+Kinematic\+Trajectory\+Optimization {\bfseries Opt\+Type}
+\item 
+\mbox{\Hypertarget{classps__drake_1_1BSplineOpt_aefa581afdc2af5acdfe4e2110b40e608}\label{classps__drake_1_1BSplineOpt_aefa581afdc2af5acdfe4e2110b40e608}} 
+typedef drake\+::solvers\+::\+Binding$<$ drake\+::solvers\+::\+Cost $>$ {\bfseries Cost\+Type}
+\item 
+\mbox{\Hypertarget{classps__drake_1_1BSplineOpt_a4733de42864125578eea536408c35486}\label{classps__drake_1_1BSplineOpt_a4733de42864125578eea536408c35486}} 
+typedef drake\+::solvers\+::\+Binding$<$ drake\+::solvers\+::\+Constraint $>$ {\bfseries Constraint\+Type}
+\item 
+\mbox{\Hypertarget{classps__drake_1_1BSplineOpt_a5e14ee6884c393f6b3f928479d2a7dc5}\label{classps__drake_1_1BSplineOpt_a5e14ee6884c393f6b3f928479d2a7dc5}} 
+typedef drake\+::solvers\+::\+Mathematical\+Program\+Result {\bfseries Opt\+Result}
+\item 
+\mbox{\Hypertarget{classps__drake_1_1BSplineOpt_ab141c6de3dabdb9b7adb757c4f3ee2c5}\label{classps__drake_1_1BSplineOpt_ab141c6de3dabdb9b7adb757c4f3ee2c5}} 
+typedef drake\+::trajectories\+::\+Bspline\+Trajectory$<$ double $>$ {\bfseries Traj\+Instance\+Type}
+\item 
+\mbox{\Hypertarget{classps__drake_1_1BSplineOpt_a61e67d26e8051c7c5b6ae9ee7d563e65}\label{classps__drake_1_1BSplineOpt_a61e67d26e8051c7c5b6ae9ee7d563e65}} 
+typedef \mbox{\hyperlink{structps__drake_1_1ABBParams}{ABBParams}} {\bfseries Robot\+Params\+Type}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps__drake_1_1BSplineOpt_a7989dc8648afac90546a6e1501deddbd}\label{classps__drake_1_1BSplineOpt_a7989dc8648afac90546a6e1501deddbd}} 
+{\bfseries BSpline\+Opt} (int num\+\_\+positions, int num\+\_\+control\+\_\+points, int spline\+\_\+order=4, double duration=1.\+0)
+\item 
+\mbox{\Hypertarget{classps__drake_1_1BSplineOpt_a5835a89da2e7f6f84ae9e3b7f5bc6245}\label{classps__drake_1_1BSplineOpt_a5835a89da2e7f6f84ae9e3b7f5bc6245}} 
+Opt\+Result {\bfseries optimize\+With\+Callback} ()
+\item 
+Opt\+Result \mbox{\hyperlink{classps__drake_1_1BSplineOpt_a5c71b8b3c146128eb9c266ee96a454b5}{optimize}} (const Vec\+Df \&s1, const Vec\+Df \&s2, bool log\+\_\+trace=false)
+\item 
+\mbox{\Hypertarget{classps__drake_1_1BSplineOpt_a7821c26be22a88786eb11c9147bf2623}\label{classps__drake_1_1BSplineOpt_a7821c26be22a88786eb11c9147bf2623}} 
+void {\bfseries optimize} (const Vec\+Df \&s1, const Vec\+Df \&s2, int N)
+\item 
+\mbox{\Hypertarget{classps__drake_1_1BSplineOpt_afab5eff1cf6016a44643c2652af79a2b}\label{classps__drake_1_1BSplineOpt_afab5eff1cf6016a44643c2652af79a2b}} 
+std\+::vector$<$ Traj\+Instance\+Type $>$ {\bfseries get\+Trace} ()
+\item 
+Mat\+Df \mbox{\hyperlink{classps__drake_1_1BSplineOpt_a157e6fa4a321820da8f857bc1966a745}{sample\+Trajectory}} (const drake\+::trajectories\+::\+Bspline\+Trajectory$<$ double $>$ \&traj)
+\item 
+\mbox{\Hypertarget{classps__drake_1_1BSplineOpt_a06075d54cd4098faef12c7fe9f421a79}\label{classps__drake_1_1BSplineOpt_a06075d54cd4098faef12c7fe9f421a79}} 
+bool \mbox{\hyperlink{classps__drake_1_1BSplineOpt_a06075d54cd4098faef12c7fe9f421a79}{is\+Collision\+Free}} (const Vec\+Df \&state) const
+\begin{DoxyCompactList}\small\item\em Mj. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classps__drake_1_1BSplineOpt_adc53f9014c7fc02e63a3f6369753faf3}\label{classps__drake_1_1BSplineOpt_adc53f9014c7fc02e63a3f6369753faf3}} 
+bool {\bfseries validate\+Joint\+Limits} (const Vec\+Df \&state) const
+\item 
+\mbox{\Hypertarget{classps__drake_1_1BSplineOpt_ab98bd36d16eb813a90420c19cfb729d1}\label{classps__drake_1_1BSplineOpt_ab98bd36d16eb813a90420c19cfb729d1}} 
+bool {\bfseries is\+Feasible} (Mat\+Df \&traj) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps__drake_1_1BSplineOpt_a66194f209127798ddcd4c5560c433fe1}\label{classps__drake_1_1BSplineOpt_a66194f209127798ddcd4c5560c433fe1}} 
+std\+::shared\+\_\+ptr$<$ Opt\+Type $>$ \mbox{\hyperlink{classps__drake_1_1BSplineOpt_a66194f209127798ddcd4c5560c433fe1}{opt\+\_\+}}
+\begin{DoxyCompactList}\small\item\em Optimizer. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classps__drake_1_1BSplineOpt_a9a171e773be4f469fe507307b43ef8df}\label{classps__drake_1_1BSplineOpt_a9a171e773be4f469fe507307b43ef8df}} 
+drake\+::solvers\+::\+Mathematical\+Program \& {\bfseries prog\+\_\+}
+\item 
+\mbox{\Hypertarget{classps__drake_1_1BSplineOpt_a16678b61efff2f47dbc37610cfed64f6}\label{classps__drake_1_1BSplineOpt_a16678b61efff2f47dbc37610cfed64f6}} 
+std\+::vector$<$ Traj\+Instance\+Type $>$ {\bfseries traj\+\_\+trace\+\_\+}
+\item 
+\mbox{\Hypertarget{classps__drake_1_1BSplineOpt_a70384875ad1fcb065fe0ca0a928f4d38}\label{classps__drake_1_1BSplineOpt_a70384875ad1fcb065fe0ca0a928f4d38}} 
+\mbox{\hyperlink{structps__drake_1_1InsatParams}{Insat\+Params}} {\bfseries insat\+\_\+params\+\_\+}
+\item 
+\mbox{\Hypertarget{classps__drake_1_1BSplineOpt_ab098197d64994e0ca13dfa8ff7f449f9}\label{classps__drake_1_1BSplineOpt_ab098197d64994e0ca13dfa8ff7f449f9}} 
+\mbox{\hyperlink{structps__drake_1_1ABBParams}{ABBParams}} {\bfseries robot\+\_\+params\+\_\+}
+\item 
+\mbox{\Hypertarget{classps__drake_1_1BSplineOpt_ab93d58f4bb42ef09b3bf464232a4f9ee}\label{classps__drake_1_1BSplineOpt_ab93d58f4bb42ef09b3bf464232a4f9ee}} 
+std\+::vector$<$ Cost\+Type $>$ {\bfseries costs\+\_\+}
+\item 
+\mbox{\Hypertarget{classps__drake_1_1BSplineOpt_a61a780dbaf1ae5a34ecf39c2cf45494f}\label{classps__drake_1_1BSplineOpt_a61a780dbaf1ae5a34ecf39c2cf45494f}} 
+std\+::vector$<$ Constraint\+Type $>$ {\bfseries constraints\+\_\+}
+\item 
+\mbox{\Hypertarget{classps__drake_1_1BSplineOpt_aa3f8cbeb45bba1670b6bcfecf972b868}\label{classps__drake_1_1BSplineOpt_aa3f8cbeb45bba1670b6bcfecf972b868}} 
+\mbox{\hyperlink{structmjModel__}{mj\+Model}} $\ast$ \mbox{\hyperlink{classps__drake_1_1BSplineOpt_aa3f8cbeb45bba1670b6bcfecf972b868}{m\+\_\+}}
+\begin{DoxyCompactList}\small\item\em MJ. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classps__drake_1_1BSplineOpt_ab5720d55bd3cd94b19809ce672bc2a1c}\label{classps__drake_1_1BSplineOpt_ab5720d55bd3cd94b19809ce672bc2a1c}} 
+\mbox{\hyperlink{structmjData__}{mj\+Data}} $\ast$ {\bfseries d\+\_\+} = nullptr
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classps__drake_1_1BSplineOpt_a5c71b8b3c146128eb9c266ee96a454b5}\label{classps__drake_1_1BSplineOpt_a5c71b8b3c146128eb9c266ee96a454b5}} 
+\index{ps\_drake::BSplineOpt@{ps\_drake::BSplineOpt}!optimize@{optimize}}
+\index{optimize@{optimize}!ps\_drake::BSplineOpt@{ps\_drake::BSplineOpt}}
+\doxysubsubsection{\texorpdfstring{optimize()}{optimize()}}
+{\footnotesize\ttfamily Opt\+Result ps\+\_\+drake\+::\+BSpline\+Opt\+::optimize (\begin{DoxyParamCaption}\item[{const Vec\+Df \&}]{s1,  }\item[{const Vec\+Df \&}]{s2,  }\item[{bool}]{log\+\_\+trace = {\ttfamily false} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Start constraint
+
+Goal constraint
+
+Cost
+
+Solve\mbox{\Hypertarget{classps__drake_1_1BSplineOpt_a157e6fa4a321820da8f857bc1966a745}\label{classps__drake_1_1BSplineOpt_a157e6fa4a321820da8f857bc1966a745}} 
+\index{ps\_drake::BSplineOpt@{ps\_drake::BSplineOpt}!sampleTrajectory@{sampleTrajectory}}
+\index{sampleTrajectory@{sampleTrajectory}!ps\_drake::BSplineOpt@{ps\_drake::BSplineOpt}}
+\doxysubsubsection{\texorpdfstring{sampleTrajectory()}{sampleTrajectory()}}
+{\footnotesize\ttfamily Mat\+Df ps\+\_\+drake\+::\+BSpline\+Opt\+::sample\+Trajectory (\begin{DoxyParamCaption}\item[{const drake\+::trajectories\+::\+Bspline\+Trajectory$<$ double $>$ \&}]{traj }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+save the init state
+
+loop over t
+
+adaptive dt called ddt
+
+keep decreasing adaptive t until distance is smaller than threshold
+
+once distance smaller than threshold collect the sample
+
+update t with adaptive t
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+examples/insat/opt/Drake\+Test.\+cpp\end{DoxyCompactItemize}

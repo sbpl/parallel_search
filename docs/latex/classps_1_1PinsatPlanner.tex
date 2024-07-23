@@ -1,0 +1,89 @@
+\hypertarget{classps_1_1PinsatPlanner}{}\doxysection{ps\+::Pinsat\+Planner Class Reference}
+\label{classps_1_1PinsatPlanner}\index{ps::PinsatPlanner@{ps::PinsatPlanner}}
+
+
+Inheritance diagram for ps\+::Pinsat\+Planner\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=286pt]{classps_1_1PinsatPlanner__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for ps\+::Pinsat\+Planner\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classps_1_1PinsatPlanner__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1PinsatPlanner_afca13a795c64ff0d0a8fa786fed7ea56}\label{classps_1_1PinsatPlanner_afca13a795c64ff0d0a8fa786fed7ea56}} 
+typedef \mbox{\hyperlink{classsmpl_1_1intrusive__heap}{smpl\+::intrusive\+\_\+heap}}$<$ \mbox{\hyperlink{classps_1_1InsatEdge}{Insat\+Edge}}, \mbox{\hyperlink{classps_1_1IsLesserEdge}{Is\+Lesser\+Edge}} $>$ {\bfseries Edge\+Queue\+Min\+Type}
+\item 
+\mbox{\Hypertarget{classps_1_1PinsatPlanner_a6e0f78dd703c6fc725ce0df4ee83e175}\label{classps_1_1PinsatPlanner_a6e0f78dd703c6fc725ce0df4ee83e175}} 
+typedef \mbox{\hyperlink{classsmpl_1_1intrusive__heap}{smpl\+::intrusive\+\_\+heap}}$<$ \mbox{\hyperlink{classps_1_1InsatState}{Insat\+State}}, \mbox{\hyperlink{classps_1_1IsLesserState}{Is\+Lesser\+State}} $>$ {\bfseries BEType}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1PinsatPlanner_a0999eaedd3972102feb4dc7dd4b1fcc9}\label{classps_1_1PinsatPlanner_a0999eaedd3972102feb4dc7dd4b1fcc9}} 
+{\bfseries Pinsat\+Planner} (Params\+Type planner\+\_\+params)
+\item 
+\mbox{\Hypertarget{classps_1_1PinsatPlanner_a6c5daee540df858ea1de4ba4113dcc4c}\label{classps_1_1PinsatPlanner_a6c5daee540df858ea1de4ba4113dcc4c}} 
+bool {\bfseries Plan} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1PinsatPlanner_a1b9ff25af52c5e7d0cfde46d7f550534}\label{classps_1_1PinsatPlanner_a1b9ff25af52c5e7d0cfde46d7f550534}} 
+void {\bfseries initialize} ()
+\item 
+\mbox{\Hypertarget{classps_1_1PinsatPlanner_a024d043798136ecff91b97cab350332e}\label{classps_1_1PinsatPlanner_a024d043798136ecff91b97cab350332e}} 
+void {\bfseries expand\+Edge\+Loop} (int thread\+\_\+id)
+\item 
+\mbox{\Hypertarget{classps_1_1PinsatPlanner_a88d6a29b129b15dbaa6f75de856434c9}\label{classps_1_1PinsatPlanner_a88d6a29b129b15dbaa6f75de856434c9}} 
+void {\bfseries expand} (\mbox{\hyperlink{classps_1_1InsatEdge}{Insat\+Edge\+Ptr\+Type}} edge\+\_\+ptr, int thread\+\_\+id)
+\item 
+void \mbox{\hyperlink{classps_1_1PinsatPlanner_a9b6b831fcc6078f90a4b41db0bed2541}{expand\+Edge}} (\mbox{\hyperlink{classps_1_1InsatEdge}{Insat\+Edge\+Ptr\+Type}} insat\+\_\+edge\+\_\+ptr, int thread\+\_\+id)
+\item 
+\mbox{\Hypertarget{classps_1_1PinsatPlanner_a40bb2768a4252895319f159b4ba8bcd7}\label{classps_1_1PinsatPlanner_a40bb2768a4252895319f159b4ba8bcd7}} 
+void {\bfseries exit} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classps_1_1PinsatPlanner_a139a1ae70073e361d554041409538ea3}\label{classps_1_1PinsatPlanner_a139a1ae70073e361d554041409538ea3}} 
+\mbox{\hyperlink{classsmpl_1_1intrusive__heap}{Edge\+Queue\+Min\+Type}} {\bfseries edge\+\_\+open\+\_\+list\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1PinsatPlanner_a0618fd24085fac571e9305f82e4d55ec}\label{classps_1_1PinsatPlanner_a0618fd24085fac571e9305f82e4d55ec}} 
+\mbox{\hyperlink{classsmpl_1_1intrusive__heap}{BEType}} {\bfseries being\+\_\+expanded\+\_\+states\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1PinsatPlanner_aaa826fb9da56226da444a9f0d890933c}\label{classps_1_1PinsatPlanner_aaa826fb9da56226da444a9f0d890933c}} 
+std\+::vector$<$ \mbox{\hyperlink{classps_1_1InsatEdge}{Insat\+Edge\+Ptr\+Type}} $>$ {\bfseries edge\+\_\+expansion\+\_\+vec\+\_\+}
+\item 
+\mbox{\Hypertarget{classps_1_1PinsatPlanner_a12830ef9b006bc495ede21fa684c37f8}\label{classps_1_1PinsatPlanner_a12830ef9b006bc495ede21fa684c37f8}} 
+Insat\+Action\+Ptr\+Type {\bfseries dummy\+\_\+action\+\_\+ptr\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classps_1_1PinsatPlanner_a9b6b831fcc6078f90a4b41db0bed2541}\label{classps_1_1PinsatPlanner_a9b6b831fcc6078f90a4b41db0bed2541}} 
+\index{ps::PinsatPlanner@{ps::PinsatPlanner}!expandEdge@{expandEdge}}
+\index{expandEdge@{expandEdge}!ps::PinsatPlanner@{ps::PinsatPlanner}}
+\doxysubsubsection{\texorpdfstring{expandEdge()}{expandEdge()}}
+{\footnotesize\ttfamily void Pinsat\+Planner\+::expand\+Edge (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classps_1_1InsatEdge}{Insat\+Edge\+Ptr\+Type}}}]{insat\+\_\+edge\+\_\+ptr,  }\item[{int}]{thread\+\_\+id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+When anc is not start
+
+When anc is not start
+
+When anc is not start
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/planners/insat/Pinsat\+Planner.\+hpp\item 
+src/planners/insat/Pinsat\+Planner.\+cpp\end{DoxyCompactItemize}

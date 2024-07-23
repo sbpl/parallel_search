@@ -1,0 +1,324 @@
+\hypertarget{run__manipulation_8cpp}{}\doxysection{examples/manipulation/run\+\_\+manipulation.cpp File Reference}
+\label{run__manipulation_8cpp}\index{examples/manipulation/run\_manipulation.cpp@{examples/manipulation/run\_manipulation.cpp}}
+{\ttfamily \#include $<$cmath$>$}\newline
+{\ttfamily \#include $<$cstdlib$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$fstream$>$}\newline
+{\ttfamily \#include $<$numeric$>$}\newline
+{\ttfamily \#include $<$filesystem$>$}\newline
+{\ttfamily \#include $<$boost/functional/hash.\+hpp$>$}\newline
+{\ttfamily \#include $<$drake/math/matrix\+\_\+util.\+h$>$}\newline
+{\ttfamily \#include $<$planners/insat/\+Insat\+Planner.\+hpp$>$}\newline
+{\ttfamily \#include $<$planners/insat/\+Pinsat\+Planner.\+hpp$>$}\newline
+{\ttfamily \#include $<$planners/\+Rrt\+Planner.\+hpp$>$}\newline
+{\ttfamily \#include $<$planners/\+Rrt\+Connect\+Planner.\+hpp$>$}\newline
+{\ttfamily \#include $<$planners/\+Epase\+Planner.\+hpp$>$}\newline
+{\ttfamily \#include $<$planners/\+Gepase\+Planner.\+hpp$>$}\newline
+{\ttfamily \#include $<$planners/\+Wastar\+Planner.\+hpp$>$}\newline
+{\ttfamily \#include $<$planners/\+BFSPlanner.\+hpp$>$}\newline
+{\ttfamily \#include \char`\"{}Manipulation\+Actions.\+hpp\char`\"{}}\newline
+{\ttfamily \#include $<$mujoco/mujoco.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}bfs3d.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$planners/insat/opt/\+BSpline\+Opt.\+hpp$>$}\newline
+Include dependency graph for run\+\_\+manipulation.\+cpp\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{run__manipulation_8cpp__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_aca9905cf23388b02d71b87a3fe898bcc}\label{run__manipulation_8cpp_aca9905cf23388b02d71b87a3fe898bcc}} 
+\#define {\bfseries TERMINATION\+\_\+\+DIST}~0.\+1
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_a4bef9fae584b803546db83796b6e4f09}\label{run__manipulation_8cpp_a4bef9fae584b803546db83796b6e4f09}} 
+\#define {\bfseries BFS\+\_\+\+DISCRETIZATION}~0.\+01
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_acfe7f803def309845954f8411e1cea95}\label{run__manipulation_8cpp_acfe7f803def309845954f8411e1cea95}} 
+\#define {\bfseries DISCRETIZATION}~0.\+05
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_aa6121b77276cb965e86f7ac437900f9f}\label{run__manipulation_8cpp_aa6121b77276cb965e86f7ac437900f9f}} 
+enum class {\bfseries Heuristic\+Mode} \{ \newline
+{\bfseries EUCLIDEAN} = 0
+, {\bfseries LOS}
+, {\bfseries SHIELD}
+, {\bfseries SMPL\+\_\+\+BFS}
+, \newline
+{\bfseries EE}
+ \}
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_a6d9ed4dede0802af42b96813deb2b37b}\label{run__manipulation_8cpp_a6d9ed4dede0802af42b96813deb2b37b}} 
+enum class {\bfseries Goal\+Checker\+Mode} \{ {\bfseries CSPACE} = 0
+, {\bfseries EE}
+ \}
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_a0b7771b225e0caa5d48009d80821d6e5}\label{run__manipulation_8cpp_a0b7771b225e0caa5d48009d80821d6e5}} 
+enum class {\bfseries PPMode} \{ {\bfseries NONE} = 0
+, {\bfseries CONTROLPT}
+, {\bfseries WAYPT}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_ac2397b2c4ac27c6f6c9c65a496d627e9}\label{run__manipulation_8cpp_ac2397b2c4ac27c6f6c9c65a496d627e9}} 
+double {\bfseries round\+Off} (double value, unsigned char prec)
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_ae57d4a3c08d9690aaa7db73ef46d77b3}\label{run__manipulation_8cpp_ae57d4a3c08d9690aaa7db73ef46d77b3}} 
+Vec3f {\bfseries get\+EEPosition} (const Vec\+Df \&state)
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_a46ab64eb6c2885270eb715d00ddceeff}\label{run__manipulation_8cpp_a46ab64eb6c2885270eb715d00ddceeff}} 
+Vec3f {\bfseries get\+EEPosition} (const State\+Vars\+Type \&state\+\_\+vars)
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_a170fdcd3329c6423dafd805fca7089eb}\label{run__manipulation_8cpp_a170fdcd3329c6423dafd805fca7089eb}} 
+Vec4f {\bfseries get\+EERotation} (const Vec\+Df \&state)
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_aadb09c6ab1e8f4c13e505daf8e7f52d0}\label{run__manipulation_8cpp_aadb09c6ab1e8f4c13e505daf8e7f52d0}} 
+Vec4f {\bfseries get\+EERotation} (const State\+Vars\+Type \&state\+\_\+vars)
+\item 
+bool \mbox{\hyperlink{run__manipulation_8cpp_a6f785979c9763a48df9a7a91e9e606dd}{is\+Goal\+State}} (const State\+Vars\+Type \&state\+\_\+vars, double dist\+\_\+thresh)
+\item 
+bool \mbox{\hyperlink{run__manipulation_8cpp_a51fa09b37dd5d8d3a19101a2c89f03b1}{is\+EEGoal\+State}} (const State\+Vars\+Type \&state\+\_\+vars, double dist\+\_\+thresh)
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_a9f17c7ed82071bdb601e905866d87fdc}\label{run__manipulation_8cpp_a9f17c7ed82071bdb601e905866d87fdc}} 
+bool {\bfseries is\+BFS3\+DGoal\+State} (const State\+Vars\+Type \&state\+\_\+vars, double dist\+\_\+thresh)
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_a3121ad7f62cb402d3e573c699effb3df}\label{run__manipulation_8cpp_a3121ad7f62cb402d3e573c699effb3df}} 
+size\+\_\+t {\bfseries State\+Key\+Generator} (const State\+Vars\+Type \&state\+\_\+vars)
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_acd8e95f28b21c49d745083ca160d8b5b}\label{run__manipulation_8cpp_acd8e95f28b21c49d745083ca160d8b5b}} 
+size\+\_\+t {\bfseries BFS3\+DState\+Key\+Generator} (const State\+Vars\+Type \&state\+\_\+vars)
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_a94c64dcb61e7b9e64fa25ee95a828a8b}\label{run__manipulation_8cpp_a94c64dcb61e7b9e64fa25ee95a828a8b}} 
+size\+\_\+t {\bfseries Edge\+Key\+Generator} (const \mbox{\hyperlink{classps_1_1Edge}{Edge\+Ptr\+Type}} \&edge\+\_\+ptr)
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_a562c5207929155af9c18b05e7aa94c5e}\label{run__manipulation_8cpp_a562c5207929155af9c18b05e7aa94c5e}} 
+double {\bfseries compute\+Heuristic\+State\+To\+State} (const State\+Vars\+Type \&state\+\_\+vars\+\_\+1, const State\+Vars\+Type \&state\+\_\+vars\+\_\+2)
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_aa8748d665b1e7bf353358295f17b94fc}\label{run__manipulation_8cpp_aa8748d665b1e7bf353358295f17b94fc}} 
+double {\bfseries zero\+Heuristic} (const State\+Vars\+Type \&state\+\_\+vars)
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_adcbd8489b143d07bb812397fb2c848b3}\label{run__manipulation_8cpp_adcbd8489b143d07bb812397fb2c848b3}} 
+double {\bfseries compute\+Heuristic} (const State\+Vars\+Type \&state\+\_\+vars)
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_abdf10b55376cc3decae989ebff2fe6fb}\label{run__manipulation_8cpp_abdf10b55376cc3decae989ebff2fe6fb}} 
+double {\bfseries compute\+EEHeuristic} (const State\+Vars\+Type \&state\+\_\+vars)
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_a0bfa8bf2aa70b5728737a03c23123957}\label{run__manipulation_8cpp_a0bfa8bf2aa70b5728737a03c23123957}} 
+double {\bfseries compute\+Lo\+SHeuristic} (const State\+Vars\+Type \&state\+\_\+vars)
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_af9271344ca1499a08b04a1596951c3a2}\label{run__manipulation_8cpp_af9271344ca1499a08b04a1596951c3a2}} 
+double {\bfseries compute\+Shield\+Heuristic} (const State\+Vars\+Type \&state\+\_\+vars)
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_a80205717e608e7dc3ef87bb680fe5201}\label{run__manipulation_8cpp_a80205717e608e7dc3ef87bb680fe5201}} 
+void {\bfseries initialize\+BFS} (int length, int width, int height, vector$<$ vector$<$ int $>$$>$ occupied\+\_\+cells)
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_ac4f526a785c1e9c878ea5f5975898750}\label{run__manipulation_8cpp_ac4f526a785c1e9c878ea5f5975898750}} 
+void {\bfseries setup\+Smpl\+BFS} ()
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_a586026835177c616c4bb42431127ef24}\label{run__manipulation_8cpp_a586026835177c616c4bb42431127ef24}} 
+void {\bfseries recompute\+BFS} ()
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_a24336e4c744cd46d50b9e0684f775cb4}\label{run__manipulation_8cpp_a24336e4c744cd46d50b9e0684f775cb4}} 
+double {\bfseries compute\+BFSHeuristic} (const State\+Vars\+Type \&state\+\_\+vars)
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_af43cbdbca403f41816c93e1817cad505}\label{run__manipulation_8cpp_af43cbdbca403f41816c93e1817cad505}} 
+void {\bfseries post\+Process} (std\+::vector$<$ \mbox{\hyperlink{structps_1_1PlanElement}{Plan\+Element}} $>$ \&path, double \&cost, double allowed\+\_\+time, const shared\+\_\+ptr$<$ \mbox{\hyperlink{classps_1_1Action}{Action}} $>$ \&act, \mbox{\hyperlink{classps_1_1BSplineOpt}{BSpline\+Opt}} \&opt)
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_aecdf3fb1d53f14e3764edb8bf692ef58}\label{run__manipulation_8cpp_aecdf3fb1d53f14e3764edb8bf692ef58}} 
+void {\bfseries post\+Process\+With\+Control\+Points} (std\+::vector$<$ \mbox{\hyperlink{structps_1_1PlanElement}{Plan\+Element}} $>$ \&path, double \&cost, double allowed\+\_\+time, const shared\+\_\+ptr$<$ \mbox{\hyperlink{classps_1_1Action}{Action}} $>$ \&act, \mbox{\hyperlink{classps_1_1BSplineOpt}{BSpline\+Opt}} \&opt)
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_ad77779a1ce11eba149e7f1558287f129}\label{run__manipulation_8cpp_ad77779a1ce11eba149e7f1558287f129}} 
+void {\bfseries setup\+Mujoco} (\mbox{\hyperlink{structmjModel__}{mj\+Model}} $\ast$$\ast$m, \mbox{\hyperlink{structmjData__}{mj\+Data}} $\ast$$\ast$d, std\+::string modelpath)
+\item 
+Mat\+Df \mbox{\hyperlink{run__manipulation_8cpp_a3a1b812fde936583419e64b9b338d5f1}{load\+MPrims}} (std\+::string mprim\+\_\+file)
+\item 
+void \mbox{\hyperlink{run__manipulation_8cpp_a6323eeccb07bfa94a211ecddd24d9d76}{construct\+Actions}} (vector$<$ shared\+\_\+ptr$<$ \mbox{\hyperlink{classps_1_1Action}{Action}} $>$$>$ \&action\+\_\+ptrs, Params\+Type \&action\+\_\+params, std\+::string \&mj\+\_\+modelpath, std\+::string \&mprimpath, Manipulation\+Action\+::\+Opt\+Vec\+Ptr\+Type \&opt, int num\+\_\+threads)
+\item 
+void \mbox{\hyperlink{run__manipulation_8cpp_a297732313fb66c835c5215d9d84f09ba}{construct\+BFSActions}} (vector$<$ shared\+\_\+ptr$<$ \mbox{\hyperlink{classps_1_1Action}{Action}} $>$$>$ \&action\+\_\+ptrs, Params\+Type \&action\+\_\+params, std\+::string \&mj\+\_\+modelpath, std\+::string \&mprimpath, int num\+\_\+threads)
+\item 
+void \mbox{\hyperlink{run__manipulation_8cpp_a1a33d0e06bb09ed71e8951af8d376a73}{construct\+Planner}} (string planner\+\_\+name, shared\+\_\+ptr$<$ \mbox{\hyperlink{classps_1_1Planner}{Planner}} $>$ \&planner\+\_\+ptr, vector$<$ shared\+\_\+ptr$<$ \mbox{\hyperlink{classps_1_1Action}{Action}} $>$$>$ \&action\+\_\+ptrs, Params\+Type \&planner\+\_\+params, Params\+Type \&action\+\_\+params, \mbox{\hyperlink{classps_1_1BSplineOpt}{BSpline\+Opt}} \&opt)
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_ab48259b0add772344c298de63ebb1bfa}\label{run__manipulation_8cpp_ab48259b0add772344c298de63ebb1bfa}} 
+void {\bfseries set\+BFSHeuristic} (State\+Vars\+Type \&start, std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classps_1_1Planner}{Planner}} $>$ \&bfs\+\_\+planner\+\_\+ptr, std\+::vector$<$ shared\+\_\+ptr$<$ \mbox{\hyperlink{classps_1_1Action}{Action}} $>$$>$ \&bfs\+\_\+action\+\_\+ptrs, Params\+Type \&planner\+\_\+params)
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_a3dff508f1a3c347b347c6477ec35832a}\label{run__manipulation_8cpp_a3dff508f1a3c347b347c6477ec35832a}} 
+std\+::mt19937 {\bfseries gen} (0)
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_a8cebfe739f492024685c3b089487b983}\label{run__manipulation_8cpp_a8cebfe739f492024685c3b089487b983}} 
+std\+::uniform\+\_\+real\+\_\+distribution$<$ float $>$ {\bfseries dis} (-\/1.\+0, 1.\+0)
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_a14b3a32027c5e161fc92288be5156cbc}\label{run__manipulation_8cpp_a14b3a32027c5e161fc92288be5156cbc}} 
+Vec\+Df {\bfseries gen\+Random\+Vector} (Vec\+Df \&low, Vec\+Df \&high, int size)
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_a3c42d52c2f2a6c10bcbb07b25f62f990}\label{run__manipulation_8cpp_a3c42d52c2f2a6c10bcbb07b25f62f990}} 
+void {\bfseries generate\+Starts\+And\+Goals} (vector$<$ vector$<$ double $>$$>$ \&starts, vector$<$ vector$<$ double $>$$>$ \&goals, int num\+\_\+runs, \mbox{\hyperlink{structmjModel__}{mj\+Model}} $\ast$m, \mbox{\hyperlink{structmjData__}{mj\+Data}} $\ast$d)
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_a4befd0d4b4544b398bd42053fac162fb}\label{run__manipulation_8cpp_a4befd0d4b4544b398bd42053fac162fb}} 
+void {\bfseries load\+Starts\+And\+Goals\+From\+File} (vector$<$ vector$<$ double $>$$>$ \&starts, vector$<$ vector$<$ double $>$$>$ \&goals, const string \&start\+\_\+path, const string \&goal\+\_\+path)
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_ae79a7c42adee9fcabc87739c67892d5b}\label{run__manipulation_8cpp_ae79a7c42adee9fcabc87739c67892d5b}} 
+Mat\+Df {\bfseries sample\+Trajectory} (const drake\+::trajectories\+::\+Bspline\+Trajectory$<$ double $>$ \&traj, double dt=1e-\/1)
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_ad2f8e0950ddd409d7c00ea3488b508db}\label{run__manipulation_8cpp_ad2f8e0950ddd409d7c00ea3488b508db}} 
+Mat\+Df {\bfseries sample\+Trajectory} (const drake\+::trajectories\+::\+Bspline\+Trajectory$<$ double $>$ \&traj, int num\+\_\+deriv, double dt=1e-\/1)
+\item 
+int \mbox{\hyperlink{run__manipulation_8cpp_a0ddf1224851353fc92bfbff6f499fa97}{main}} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_a4da1344e34000a34bea4916cb63f4c7e}\label{run__manipulation_8cpp_a4da1344e34000a34bea4916cb63f4c7e}} 
+vector$<$ double $>$ {\bfseries rm\+::goal}
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_a319f62c949efc7428a936770d3a6dadd}\label{run__manipulation_8cpp_a319f62c949efc7428a936770d3a6dadd}} 
+Vec3f {\bfseries rm\+::goal\+\_\+ee\+\_\+pos}
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_a2e0a81660b6313dae459d8c1add943c3}\label{run__manipulation_8cpp_a2e0a81660b6313dae459d8c1add943c3}} 
+int {\bfseries rm\+::dof}
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_a77559a55c26378e7707966fd4c09be5c}\label{run__manipulation_8cpp_a77559a55c26378e7707966fd4c09be5c}} 
+Vec\+Df {\bfseries rm\+::discretization}
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_a8b94d73ffb5d8191cc54db41be023fe5}\label{run__manipulation_8cpp_a8b94d73ffb5d8191cc54db41be023fe5}} 
+\mbox{\hyperlink{structmjModel__}{mj\+Model}} $\ast$ {\bfseries rm\+::global\+\_\+m} = nullptr
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_a5fe26bfd06189ab9505a051c025dd589}\label{run__manipulation_8cpp_a5fe26bfd06189ab9505a051c025dd589}} 
+\mbox{\hyperlink{structmjData__}{mj\+Data}} $\ast$ {\bfseries rm\+::global\+\_\+d} = nullptr
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_a0bd71a8e6d97cb4935d2c3149c0316be}\label{run__manipulation_8cpp_a0bd71a8e6d97cb4935d2c3149c0316be}} 
+std\+::unordered\+\_\+map$<$ size\+\_\+t, double $>$ \mbox{\hyperlink{run__manipulation_8cpp_a0bd71a8e6d97cb4935d2c3149c0316be}{rm\+::heuristic\+\_\+cache}}
+\begin{DoxyCompactList}\small\item\em LoS heuristic. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_a125a6ae7ca5ddaa297a65330f6089378}\label{run__manipulation_8cpp_a125a6ae7ca5ddaa297a65330f6089378}} 
+Vec\+Df \mbox{\hyperlink{run__manipulation_8cpp_a125a6ae7ca5ddaa297a65330f6089378}{rm\+::shield\+\_\+h\+\_\+w}}
+\begin{DoxyCompactList}\small\item\em shield heuristic weight \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_ab797f98189982e9adceb0596d064c0c9}\label{run__manipulation_8cpp_ab797f98189982e9adceb0596d064c0c9}} 
+\mbox{\hyperlink{structmjModel__}{mj\+Model}} $\ast$ \mbox{\hyperlink{run__manipulation_8cpp_ab797f98189982e9adceb0596d064c0c9}{rm\+::global\+\_\+bfs\+\_\+m}} = nullptr
+\begin{DoxyCompactList}\small\item\em BFS model Mj Handles. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_ad6b474e0bdcedace414eff146bfb1bac}\label{run__manipulation_8cpp_ad6b474e0bdcedace414eff146bfb1bac}} 
+\mbox{\hyperlink{structmjData__}{mj\+Data}} $\ast$ {\bfseries rm\+::global\+\_\+bfs\+\_\+d} = nullptr
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_a84e3a5f6ef3e21aca1fdda6e1cd7f6dd}\label{run__manipulation_8cpp_a84e3a5f6ef3e21aca1fdda6e1cd7f6dd}} 
+ps\+::\+Planner\+::\+State\+Ptr\+Map\+Type \mbox{\hyperlink{run__manipulation_8cpp_a84e3a5f6ef3e21aca1fdda6e1cd7f6dd}{rm\+::bfs\+\_\+state\+\_\+map}}
+\begin{DoxyCompactList}\small\item\em State Map for BFS heuristic. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_a5c76047591b20a87db0ed5616a90a252}\label{run__manipulation_8cpp_a5c76047591b20a87db0ed5616a90a252}} 
+shared\+\_\+ptr$<$ \mbox{\hyperlink{classsmpl_1_1BFS__3D}{smpl\+::\+BFS\+\_\+3D}} $>$ {\bfseries rm\+::bfs3d}
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_a541fda67e956e1b6399002cf22b6c32c}\label{run__manipulation_8cpp_a541fda67e956e1b6399002cf22b6c32c}} 
+Heuristic\+Mode {\bfseries rm\+::h\+\_\+mode} = Heuristic\+Mode\+::\+LOS
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_afdcaab3ced7a9093c4ee9c840d5d4d07}\label{run__manipulation_8cpp_afdcaab3ced7a9093c4ee9c840d5d4d07}} 
+Goal\+Checker\+Mode {\bfseries rm\+::goal\+\_\+mode} = Goal\+Checker\+Mode\+::\+CSPACE
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_a1cb0e3a9c4d782a5a375f0aef2e37af9}\label{run__manipulation_8cpp_a1cb0e3a9c4d782a5a375f0aef2e37af9}} 
+PPMode {\bfseries rm\+::pp\+\_\+mode} = PPMode\+::\+WAYPT
+\item 
+\mbox{\Hypertarget{run__manipulation_8cpp_a7071b0092ad8c5b57d6cc40c5f803df5}\label{run__manipulation_8cpp_a7071b0092ad8c5b57d6cc40c5f803df5}} 
+std\+::random\+\_\+device {\bfseries rd}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+Ramkumar Natarajan (\href{mailto:rnataraj@cs.cmu.edu}{\texttt{ rnataraj@cs.\+cmu.\+edu}}) 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2/21/23 
+\end{DoxyDate}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{run__manipulation_8cpp_a6323eeccb07bfa94a211ecddd24d9d76}\label{run__manipulation_8cpp_a6323eeccb07bfa94a211ecddd24d9d76}} 
+\index{run\_manipulation.cpp@{run\_manipulation.cpp}!constructActions@{constructActions}}
+\index{constructActions@{constructActions}!run\_manipulation.cpp@{run\_manipulation.cpp}}
+\doxysubsubsection{\texorpdfstring{constructActions()}{constructActions()}}
+{\footnotesize\ttfamily void construct\+Actions (\begin{DoxyParamCaption}\item[{vector$<$ shared\+\_\+ptr$<$ \mbox{\hyperlink{classps_1_1Action}{Action}} $>$$>$ \&}]{action\+\_\+ptrs,  }\item[{Params\+Type \&}]{action\+\_\+params,  }\item[{std\+::string \&}]{mj\+\_\+modelpath,  }\item[{std\+::string \&}]{mprimpath,  }\item[{Manipulation\+Action\+::\+Opt\+Vec\+Ptr\+Type \&}]{opt,  }\item[{int}]{num\+\_\+threads }\end{DoxyParamCaption})}
+
+Vectorize simulator handle
+
+Load mprims
+
+Input is in degrees. Convert to radians\mbox{\Hypertarget{run__manipulation_8cpp_a297732313fb66c835c5215d9d84f09ba}\label{run__manipulation_8cpp_a297732313fb66c835c5215d9d84f09ba}} 
+\index{run\_manipulation.cpp@{run\_manipulation.cpp}!constructBFSActions@{constructBFSActions}}
+\index{constructBFSActions@{constructBFSActions}!run\_manipulation.cpp@{run\_manipulation.cpp}}
+\doxysubsubsection{\texorpdfstring{constructBFSActions()}{constructBFSActions()}}
+{\footnotesize\ttfamily void construct\+BFSActions (\begin{DoxyParamCaption}\item[{vector$<$ shared\+\_\+ptr$<$ \mbox{\hyperlink{classps_1_1Action}{Action}} $>$$>$ \&}]{action\+\_\+ptrs,  }\item[{Params\+Type \&}]{action\+\_\+params,  }\item[{std\+::string \&}]{mj\+\_\+modelpath,  }\item[{std\+::string \&}]{mprimpath,  }\item[{int}]{num\+\_\+threads }\end{DoxyParamCaption})}
+
+Vectorize simulator handle
+
+Load mprims\mbox{\Hypertarget{run__manipulation_8cpp_a1a33d0e06bb09ed71e8951af8d376a73}\label{run__manipulation_8cpp_a1a33d0e06bb09ed71e8951af8d376a73}} 
+\index{run\_manipulation.cpp@{run\_manipulation.cpp}!constructPlanner@{constructPlanner}}
+\index{constructPlanner@{constructPlanner}!run\_manipulation.cpp@{run\_manipulation.cpp}}
+\doxysubsubsection{\texorpdfstring{constructPlanner()}{constructPlanner()}}
+{\footnotesize\ttfamily void construct\+Planner (\begin{DoxyParamCaption}\item[{string}]{planner\+\_\+name,  }\item[{shared\+\_\+ptr$<$ \mbox{\hyperlink{classps_1_1Planner}{Planner}} $>$ \&}]{planner\+\_\+ptr,  }\item[{vector$<$ shared\+\_\+ptr$<$ \mbox{\hyperlink{classps_1_1Action}{Action}} $>$$>$ \&}]{action\+\_\+ptrs,  }\item[{Params\+Type \&}]{planner\+\_\+params,  }\item[{Params\+Type \&}]{action\+\_\+params,  }\item[{\mbox{\hyperlink{classps_1_1BSplineOpt}{BSpline\+Opt}} \&}]{opt }\end{DoxyParamCaption})}
+
+Heuristic
+
+Goal checker
+
+PP\mbox{\Hypertarget{run__manipulation_8cpp_a51fa09b37dd5d8d3a19101a2c89f03b1}\label{run__manipulation_8cpp_a51fa09b37dd5d8d3a19101a2c89f03b1}} 
+\index{run\_manipulation.cpp@{run\_manipulation.cpp}!isEEGoalState@{isEEGoalState}}
+\index{isEEGoalState@{isEEGoalState}!run\_manipulation.cpp@{run\_manipulation.cpp}}
+\doxysubsubsection{\texorpdfstring{isEEGoalState()}{isEEGoalState()}}
+{\footnotesize\ttfamily bool is\+EEGoal\+State (\begin{DoxyParamCaption}\item[{const State\+Vars\+Type \&}]{state\+\_\+vars,  }\item[{double}]{dist\+\_\+thresh }\end{DoxyParamCaption})}
+
+Joint-\/wise threshold\mbox{\Hypertarget{run__manipulation_8cpp_a6f785979c9763a48df9a7a91e9e606dd}\label{run__manipulation_8cpp_a6f785979c9763a48df9a7a91e9e606dd}} 
+\index{run\_manipulation.cpp@{run\_manipulation.cpp}!isGoalState@{isGoalState}}
+\index{isGoalState@{isGoalState}!run\_manipulation.cpp@{run\_manipulation.cpp}}
+\doxysubsubsection{\texorpdfstring{isGoalState()}{isGoalState()}}
+{\footnotesize\ttfamily bool is\+Goal\+State (\begin{DoxyParamCaption}\item[{const State\+Vars\+Type \&}]{state\+\_\+vars,  }\item[{double}]{dist\+\_\+thresh }\end{DoxyParamCaption})}
+
+Joint-\/wise threshold
+
+Euclidean threshold\mbox{\Hypertarget{run__manipulation_8cpp_a3a1b812fde936583419e64b9b338d5f1}\label{run__manipulation_8cpp_a3a1b812fde936583419e64b9b338d5f1}} 
+\index{run\_manipulation.cpp@{run\_manipulation.cpp}!loadMPrims@{loadMPrims}}
+\index{loadMPrims@{loadMPrims}!run\_manipulation.cpp@{run\_manipulation.cpp}}
+\doxysubsubsection{\texorpdfstring{loadMPrims()}{loadMPrims()}}
+{\footnotesize\ttfamily Mat\+Df load\+MPrims (\begin{DoxyParamCaption}\item[{std\+::string}]{mprim\+\_\+file }\end{DoxyParamCaption})}
+
+Load input prims
+
+Input prims contain only one direction. Flip the sign for adding prims in the other direction\mbox{\Hypertarget{run__manipulation_8cpp_a0ddf1224851353fc92bfbff6f499fa97}\label{run__manipulation_8cpp_a0ddf1224851353fc92bfbff6f499fa97}} 
+\index{run\_manipulation.cpp@{run\_manipulation.cpp}!main@{main}}
+\index{main@{main}!run\_manipulation.cpp@{run\_manipulation.cpp}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+Load Mu\+Jo\+Co model
+
+save logs
+
+SMPL bfs3d
+
+Call SMPL bfs3d after updating ee goal
+
+Clear heuristic cache
+
+Set BFS heuristic
+
+track logs
+
+Saving sampled trajectory (position, vel, acc)
+
+Save control points
+
+Write paths\+\_\+library as generated path\+\_\+$<$path\+\_\+id$>$ file
+
+path\+\_\+execution\+\_\+times file
+
+line\+\_\+segment\+\_\+to\+\_\+path\+\_\+id file
+
+Dump traj to file
+
+Dump control points to file
+
+Write paths\+\_\+library path\+\_\+$<$path\+\_\+id$>$ file
+
+path\+\_\+execution\+\_\+times file
+
+line\+\_\+segment\+\_\+to\+\_\+path\+\_\+id file

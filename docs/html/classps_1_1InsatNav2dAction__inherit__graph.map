@@ -1,0 +1,13 @@
+<map id="ps::InsatNav2dAction" name="ps::InsatNav2dAction">
+<area shape="rect" id="node1" title=" " alt="" coords="293,183,441,209"/>
+<area shape="rect" id="node4" href="$classps_1_1IMoveDownAction.html" title=" " alt="" coords="505,5,656,32"/>
+<area shape="rect" id="node5" href="$classps_1_1IMoveDownLeftAction.html" title=" " alt="" coords="494,56,667,83"/>
+<area shape="rect" id="node6" href="$classps_1_1IMoveLeftAction.html" title=" " alt="" coords="511,107,650,133"/>
+<area shape="rect" id="node7" href="$classps_1_1IMoveLeftUpAction.html" title=" " alt="" coords="503,157,659,184"/>
+<area shape="rect" id="node8" href="$classps_1_1IMoveRightAction.html" title=" " alt="" coords="507,208,655,235"/>
+<area shape="rect" id="node9" href="$classps_1_1IMoveRightDownAction.html" title=" " alt="" coords="489,259,672,285"/>
+<area shape="rect" id="node10" href="$classps_1_1IMoveUpAction.html" title=" " alt="" coords="513,309,648,336"/>
+<area shape="rect" id="node11" href="$classps_1_1IMoveUpRightAction.html" title=" " alt="" coords="498,360,663,387"/>
+<area shape="rect" id="node2" href="$classps_1_1InsatAction.html" title=" " alt="" coords="135,183,245,209"/>
+<area shape="rect" id="node3" href="$classps_1_1Action.html" title=" " alt="" coords="5,183,87,209"/>
+</map>
