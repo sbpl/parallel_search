@@ -11,10 +11,10 @@ planner_params_(planner_params)
     heuristic_w_ = planner_params_["heuristic_weight"];
 }
 
-Planner::~Planner()
-{
-    cleanUp();
-}
+// Planner::~Planner()
+// {
+//     cleanUp();
+// }
 
 void Planner::SetActions(vector<shared_ptr<Action>> actions_ptrs)
 {
@@ -34,6 +34,11 @@ void Planner::SetGoalState(const StateVarsType& state_vars)
 void Planner::SetGoalChecker(function<bool(const StateVarsType&)> callback)
 {
     goal_checker_ = callback;
+}
+
+void Planner::SetStartChecker(function<bool(const StateVarsType&)> callback)
+{
+    start_checker_ = callback;
 }
 
 void Planner::SetStateMapKeyGenerator(function<size_t(const StateVarsType&)> callback)
@@ -160,8 +165,23 @@ bool Planner::isGoalState(const StatePtrType& state_ptr)
     return goal_checker_(state_ptr->GetStateVars());
 }
 
+bool Planner::isStartState(const StatePtrType& state_ptr)
+{
+    return start_checker_(state_ptr->GetStateVars());
+}
+
 void Planner::constructPlan(StatePtrType& state_ptr)
 {
+    // // If state is at start/goal, create minimal plan with proper timing
+    // if (isStartState(state_ptr)){
+    //     plan_.clear();
+    //     plan_.insert(plan_.begin(), PlanElement(state_ptr->GetStateVars(), NULL, 0));
+    //     plan_.insert(plan_.begin(), PlanElement(state_ptr->GetStateVars(), NULL, 0));
+    //     planner_stats_.path_cost_ = 0;
+    //     planner_stats_.path_length_ = 2;
+    //     return;
+    // }
+
     double cost = 0;
     while(state_ptr)
     {

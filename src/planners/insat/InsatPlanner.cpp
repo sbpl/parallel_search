@@ -73,6 +73,7 @@ namespace ps
                 return true;
             }
 
+            state_ptrs_all_.push_back(state_ptr);
             expandState(state_ptr);
 
         }

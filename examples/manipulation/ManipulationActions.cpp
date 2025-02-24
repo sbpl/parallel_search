@@ -164,6 +164,8 @@ namespace ps
   /// MuJoCo
   VecDf ManipulationAction::GetSuccessor(const VecDf &state, int thread_id)
   {
+    setGoalFromList(state);
+    // std::cout << "goal set from " << state[0] << "to " << goal_[0] << std::endl;
     int prim_id = std::stoi(Action::type_);
     if (mprim_mode_ == Mode::CSPACE)
     {
@@ -211,16 +213,25 @@ namespace ps
         /// Direct edge to goal
         /// If successor is the same as the state. This will happen if the joint angle is close its limit.
         /// if expanded state is too close to goal
-        if (state.isApprox(goal_, 1e-3) || params_["planner_type"]==1) /// assuming discretization is never finer than 1e-3.
+        // IF GOAL THING GOES HERE
+        if (state.isApprox(goal_, 1e-3)) /// assuming discretization is never finer than 1e-3.   || params_["planner_type"]==1 // why does this planner params line even exist?
         {
           return goal_;
         }
         /// if goal is in LoS then return it
         VecDf free_state(m_[thread_id]->nq);
+
         if (isCollisionFree(state, goal_, free_state, thread_id))
         {
           return goal_;
         }
+        // HEAVY MODIFICATION: LOOPING THROUGH ALL GOALS IN LIST INSTEAD, also pushing goal snapping to inside goal list to make sure it's correct
+        // for (auto goal_cand : goals_list_){
+        //   setGoal(goal_cand);
+          
+          
+        // }
+        
       }
     }
     else if (mprim_mode_ == Mode::TASKSPACE3D)
@@ -505,8 +516,50 @@ namespace ps
     {
         goal_.resize(m_[0]->nq);
         for (int i=0; i<goal.size(); ++i) { goal_(i) = goal[i]; }
-//        goal_ = contToDisc(goal_, 0);
+        // std::cout << "here!" << std::endl;
+    }
+
+    void ManipulationAction::setGoalFromList(const VecDf& curr_state) {
+      // Ensure that goals_list_ is not empty
+      if (goals_list_.empty()) {
+          throw std::runtime_error("goals_list_ is empty. Cannot select a goal.");
+      }
+
+      // Variables to track the closest goal
+      double min_distance = std::numeric_limits<double>::max(); // Initialize to a very large value
+      StateVarsType closest_goal;
+
+      // Iterate through all goals in the goals list
+      for (const auto& goal : goals_list_) {
+          // Compute the Euclidean distance between curr_state and the current goal
+          double distance = 0.0;
+          for (size_t i = 0; i < curr_state.size(); ++i) {
+              double diff = curr_state[i] - goal[i];
+              distance += diff * diff;
+          }
+          // Update the closest goal if this one is closer
+          if (distance < min_distance) {
+              min_distance = distance;
+              closest_goal = goal;
+          }
+      }
+
+      // Set the closest goal as the new goal_
+      goal_.resize(m_[0]->nq);
+      for (size_t i = 0; i < closest_goal.size(); ++i) {
+          goal_(i) = closest_goal[i];
+      }
     }
 
 
+    void ManipulationAction::setGoalsList(const std::vector<std::vector<double>>& goals_list)
+    {
+      goals_list_.resize(goals_list.size());
+      for (size_t i = 0; i < goals_list.size(); ++i) {
+        if (goals_list[i].size() != 6) {
+            throw std::runtime_error("Each point in the nx6 goal vector must have exactly 6 dimensions.");
+        }
+        goals_list_[i] = goals_list[i];
+      }
+    }
 }

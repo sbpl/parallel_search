@@ -1,0 +1,1909 @@
+/*
+ * Copyright (c) 2023, Ramkumar Natarajan
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the Carnegie Mellon University nor the names of its
+ *       contributors may be used to endorse or promote products derived from
+ *       this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+/*!
+ * \file   run_manipulation.cpp
+ * \author Ramkumar Natarajan (rnataraj@cs.cmu.edu)
+ * \date   2/21/23
+ */
+
+#include <cmath>
+#include <cstdlib>
+#include <iostream>
+#include <fstream>
+#include <numeric>
+#include <filesystem>
+#include <algorithm> 
+#include <boost/functional/hash.hpp>
+#include <drake/math/matrix_util.h>
+#include <planners/insat/InsatPlanner.hpp>
+#include <planners/insat/PinsatPlanner.hpp>
+#include <planners/insat/InsatPlannerMH.hpp>
+#include <planners/RrtPlanner.hpp>
+#include <planners/RrtConnectPlanner.hpp>
+#include <planners/EpasePlanner.hpp>
+#include <planners/GepasePlanner.hpp>
+#include <planners/WastarPlanner.hpp>
+#include <planners/BFSPlanner.hpp>
+#include "ManipulationActions.hpp"
+#include <mujoco/mujoco.h>
+#include "bfs3d.h"
+#include <planners/insat/opt/BSplineOpt.hpp>
+#include <unordered_map>
+#include <utility>
+#include <iomanip>  // for std::setw
+#include <mutex>
+
+
+using namespace std;
+using namespace ps;
+
+#define TERMINATION_DIST 1
+#define BFS_DISCRETIZATION 0.01
+#define DISCRETIZATION 0.05
+
+// Global mutex for MuJoCo operations
+static thread_local mjData* thread_local_d = nullptr;
+static std::mutex mujoco_mutex;
+static std::mutex init_mutex;
+
+
+std::string root_dir = "/home/shield/code/shield_min_ws/src/parallel_search";
+std::string computed_goalpt_dir = root_dir + "/examples/manipulation/resources/line_seg_mha/ls_index_to_goalpt_map.txt";
+std::string tol_dir = root_dir + "/examples/manipulation/resources/line_seg_mha/pt_tol_map.txt";
+std::ofstream tol_outfile(tol_dir, std::ios::app);  // Open in append mode
+
+bool is_start_state = false;
+ 
+
+enum class HeuristicMode
+{
+  EUCLIDEAN = 0,
+  LOS,
+  SHIELD,
+  SMPL_BFS,
+  EE,
+  EELine,
+  EEMin
+};
+
+enum class GoalCheckerMode
+{
+  CSPACE = 0,
+  EE,
+  EELine,
+  EETol
+};
+
+enum class PPMode
+{
+  NONE = 0,
+  CONTROLPT,
+  WAYPT
+};
+
+namespace rm
+{
+  vector<double> goal;
+  vector<double> start;
+  Vec3f goal_ee_pos;
+  Vec4f goal_quat_pos;
+
+  Vec3f outerpt_ts;
+  Vec3f innerpt_ts;
+
+  std::vector<std::vector<double>> all_goal_points_line;
+
+  int dof;
+  VecDf discretization;
+
+  Eigen::Matrix4d T_world_to_base = Eigen::Matrix4d::Identity();
+
+  // Mujoco
+  mjModel* global_m = nullptr;
+  mjData* global_d = nullptr;
+  /// LoS heuristic
+  std::unordered_map<size_t, double> heuristic_cache;
+  /// shield heuristic weight
+  VecDf shield_h_w;
+
+  // BFS
+  /// BFS model Mj Handles
+  mjModel* global_bfs_m = nullptr;
+  mjData* global_bfs_d = nullptr;
+  /// State Map for BFS heuristic
+  ps::Planner::StatePtrMapType bfs_state_map;
+  shared_ptr<smpl::BFS_3D> bfs3d;
+
+  // Modes
+  HeuristicMode h_mode = HeuristicMode::EEMin;
+  GoalCheckerMode goal_mode = GoalCheckerMode::EELine;
+  PPMode pp_mode = PPMode::WAYPT;
+}
+
+// other helper functions
+double roundOff(double value, unsigned char prec)
+{
+    double pow_10 = pow(10.0, (double)prec);
+    return round(value * pow_10) / pow_10;
+}
+
+// Function to compute the cross product of two vectors
+Vec3f crossProduct(const Vec3f &v1, const Vec3f &v2) {
+    Vec3f result;
+    result[0] = v1[1] * v2[2] - v1[2] * v2[1];
+    result[1] = v1[2] * v2[0] - v1[0] * v2[2];
+    result[2] = v1[0] * v2[1] - v1[1] * v2[0];
+    return result;
+}
+
+// Function to compute the magnitude of a vector
+double magnitude(const Vec3f &p) {
+    return std::sqrt(p[0] * p[0] + p[1] * p[1] + p[2] * p[2]);
+}
+
+// Function to compute the perpendicular distance from point P to the line defined by points A and B
+double perpendicularDistance(const Vec3f &A, const Vec3f &B, const Vec3f &P) {
+    // Compute the direction vector of the line (B - A)
+    Vec3f d = {B[0] - A[0], B[1] - A[1], B[2] - A[2]};
+
+    // Compute the vector from A to P (P - A)
+    Vec3f v = {P[0] - A[0], P[1] - A[1], P[2] - A[2]};
+
+    // Compute the cross product of v and d
+    Vec3f crossProd = crossProduct(v, d);
+
+    // Compute the magnitude of the cross product
+    double crossProdMagnitude = magnitude(crossProd);
+
+    // Compute the magnitude of the direction vector d
+    double dMagnitude = magnitude(d);
+
+    // Return the perpendicular distance
+    return crossProdMagnitude / dMagnitude;
+}
+
+void print_states(const std::string& filename, shared_ptr<Planner>& planner_ptr) {
+  // Open the file for writing
+  std::ofstream outFile(filename);
+
+  // Check if the file is successfully opened
+  if (!outFile.is_open()) {
+      std::cerr << "Error: Could not open file " << filename << " for writing.\n";
+      return;
+  }
+
+  // Write each timestep's data to the file
+  for (const auto& state : planner_ptr->state_ptrs_all_) {
+    for (auto var : state->GetStateVars()){
+      outFile << var;
+      // if (i != timestep.size() - 1) {
+          outFile << " "; // Separate values by space
+      // }
+    }
+    outFile << "\n"; // New line for each timestep
+  }
+
+  // Close the file
+  outFile.close();
+
+  std::cout << "Agent counts successfully written to " << filename << "\n";
+}
+
+// Helper function to get thread-safe MuJoCo data
+mjData* getThreadSafeMujocoData() {
+    if (!thread_local_d) {
+        std::lock_guard<std::mutex> init_lock(init_mutex);
+        if (!thread_local_d) {  // Double-check pattern
+            thread_local_d = mj_makeData(rm::global_m);
+        }
+    }
+    return thread_local_d;
+}
+
+Vec3f getEEPosition(const VecDf& state)
+{
+    // FINDS EE PSN RELATIVE TO BASE FRAME
+    // Update positions and compute forward kinematics
+    mjData* d = getThreadSafeMujocoData();
+    std::scoped_lock lock(mujoco_mutex);
+    
+    // Use thread-local data for computations
+    mju_copy(d->qpos, state.data(), rm::global_m->nq);
+    mj_fwdPosition(rm::global_m, d);
+
+    // Get end-effector position
+    int ee_id = rm::global_m->nbody-1;  // last body (link_6)
+    double* ee_pos = d->xpos + 3*ee_id;
+
+    // Convert ee_pos to homogeneous coordinates
+    Eigen::Vector4d ee_pos_homog;
+    ee_pos_homog << ee_pos[0], ee_pos[1], ee_pos[2], 1.0;
+
+    // Transform ee position from world frame to base frame
+    Eigen::Vector4d ee_pos_base = rm::T_world_to_base.inverse() * ee_pos_homog;
+
+    // Return the 3D position
+    return Vec3f(ee_pos_base[0], ee_pos_base[1], ee_pos_base[2]);
+}
+
+Vec3f getEEPosition(const StateVarsType& state_vars)
+{
+  Eigen::Map<const VecDf> state(&state_vars[0], state_vars.size());
+  return getEEPosition(state);
+}
+
+Vec4f getEERotation(const VecDf& state)
+{
+    // Update positions and compute forward kinematics
+    mjData* d = getThreadSafeMujocoData();
+    std::scoped_lock lock(mujoco_mutex);
+    
+    // Use thread-local data for computations
+    mju_copy(d->qpos, state.data(), rm::global_m->nq);
+    mj_fwdPosition(rm::global_m, d);
+
+    // Get end-effector quaternion using thread-local data
+    int ee_id = rm::global_m->nbody-1;
+    double* ee_quat = d->xquat + 4*ee_id;
+    // Convert to Eigen quaternion (w,x,y,z format)
+    Eigen::Quaterniond q_world(ee_quat[0], ee_quat[1], ee_quat[2], ee_quat[3]);
+    
+    // Extract rotation from world-to-base transform
+    Eigen::Matrix3d R_world_to_base = rm::T_world_to_base.block<3,3>(0,0);
+    Eigen::Quaterniond q_world_to_base(R_world_to_base);
+
+    // Transform to base frame
+    Eigen::Quaterniond q_base = q_world_to_base.conjugate() * q_world;
+
+    return Vec4f(q_base.w(), q_base.x(), q_base.y(), q_base.z());
+}
+
+Vec4f getEERotation(const StateVarsType& state_vars)
+{
+  Eigen::Map<const VecDf> state(&state_vars[0], state_vars.size());
+  return getEERotation(state);
+}
+
+bool isGoalState(const StateVarsType& state_vars, double dist_thresh)
+{
+    /// Joint-wise threshold
+    for (int i=0; i < rm::dof; ++i)
+    {
+        if (fabs(rm::goal[i] - state_vars[i]) > dist_thresh)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool isStartState(const StateVarsType& state_vars, double dist_thresh)
+{
+    /// Joint-wise threshold
+    for (int i=0; i < rm::dof; ++i)
+    {
+        if (fabs(rm::start[i] - state_vars[i]) > dist_thresh*0.1)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool isEEGoalState(const StateVarsType& state_vars, double dist_thresh)
+{
+  Vec3f ee_pos = getEEPosition(state_vars);
+
+  /// Joint-wise threshold
+  for (int i=0; i < 3; ++i)
+  {
+    if (fabs(rm::goal_ee_pos[i] - ee_pos[i]) > dist_thresh)
+    {
+      return false;
+    }
+  }
+  return true;
+}
+
+// Eigen::Vector3d getAngleBWQuats(const Vec4f& q1, const Vec4f& q2) {
+//     // Convert to Eigen quaternions (w,x,y,z format)
+//     Eigen::Quaterniond qe1(q1[3], q1[0], q1[1], q1[2]);
+//     Eigen::Quaterniond qe2(q2[3], q2[0], q2[1], q2[2]);
+    
+//     // Normalize quaternions
+//     qe1.normalize();
+//     qe2.normalize();
+    
+//     // Get relative rotation
+//     Eigen::Quaterniond q_diff = qe2 * qe1.inverse();
+    
+//     // Convert to rotation matrix and then to euler angles
+//     Eigen::Matrix3d R_diff = q_diff.toRotationMatrix();
+    
+//     // Get euler angles with bounds checking
+//     Eigen::Vector3d euler = R_diff.eulerAngles(0, 1, 2);
+    
+//     // Normalize angles to [-pi, pi]
+//     for(int i = 0; i < 3; ++i) {
+//         while(euler[i] > M_PI) euler[i] -= 2*M_PI;
+//         while(euler[i] < -M_PI) euler[i] += 2*M_PI;
+//     }
+    
+//     return euler;
+// }
+
+Eigen::Vector3d getAngleBWQuats(const Vec4f& q1, const Vec4f& q2) {
+
+    // Convert to Eigen quaternions (w,x,y,z format)
+    Eigen::Quaterniond qe1(q1[0], q1[1], q1[2], q1[3]);
+    Eigen::Quaterniond qe2(q2[0], q2[1], q2[2], q2[3]);
+    
+    // Normalize quaternions
+    qe1.normalize();
+    qe2.normalize();
+    
+    // Get relative rotation
+    Eigen::Quaterniond q_diff = qe2 * qe1.inverse();
+    
+    // Convert to rotation matrix and then to euler angles
+    Eigen::Matrix3d R_diff = q_diff.toRotationMatrix();
+    
+    // Get euler angles
+    Eigen::Vector3d euler = R_diff.eulerAngles(0, 1, 2);
+    
+    // Convert to sin values
+    Eigen::Vector3d sin_angles;
+    for(int i = 0; i < 3; ++i) {
+        sin_angles[i] = abs(std::sin(euler[i]));
+    }
+    
+    return sin_angles;
+}
+
+bool isEELineGoalState(const StateVarsType& state_vars, double dist_thresh)
+{
+  // add scaling
+  double quat_scale = 0.3;
+  double xyz_scale = 0.05;
+
+  Vec3f ee_pos = getEEPosition(state_vars);
+  Vec4f ee_rot = getEERotation(state_vars);   //gets EE rot in base frame, in quats
+  // Joint-wise threshold
+  double perp_dist = perpendicularDistance(rm::outerpt_ts, rm::innerpt_ts, ee_pos);
+
+  if (perp_dist > dist_thresh*xyz_scale){
+    return false;
+  }
+
+  auto angle = getAngleBWQuats(rm::goal_quat_pos, ee_rot);
+  for (int i=1; i < 3; ++i)     //skipping roll because wc
+  {
+    if (fabs(angle[i]) > dist_thresh*quat_scale)
+    {
+      return false;
+    }
+  }
+
+  // save the angle and ee differences for each point- assuming that ls id and run id are already saved
+  tol_outfile << fabs(rm::goal_ee_pos[0] - ee_pos[0]) << ","
+              << fabs(rm::goal_ee_pos[1] - ee_pos[1]) << ","
+              << fabs(rm::goal_ee_pos[2] - ee_pos[2]) << ","
+              << angle[0] << "," 
+              << angle[1] << "," 
+              << angle[2] << "," ;
+  tol_outfile.flush();  // Forces write to disk
+
+  if (isStartState(state_vars, dist_thresh)){
+    is_start_state = true;
+  }
+
+
+  return true;
+}
+
+bool isEETolGoalState(const StateVarsType& state_vars, double dist_thresh)
+{
+  // add scaling
+  double quat_scale = 0.3;
+  double xyz_scale = 0.05;
+
+  // Add minimum distance threshold check
+  if ((rm::goal_ee_pos - getEEPosition(rm::start)).norm() < dist_thresh*xyz_scale) {
+      // Handle trivial case separately
+      is_start_state = true;
+      return true;
+  }
+  // generic function for EE based goal state, currently for orientation
+  Vec4f ee_rot = getEERotation(state_vars);   //gets EE rot in base frame, in quats
+  Vec3f ee_pos = getEEPosition(state_vars);
+
+  // implement a distance
+  for (int i=0; i < 3; ++i)
+  {
+    if (fabs(rm::goal_ee_pos[i] - ee_pos[i]) > dist_thresh*xyz_scale)
+    {
+      return false;
+    }
+  }
+
+  // find quaternion difference
+  
+  auto angle = getAngleBWQuats(rm::goal_quat_pos, ee_rot);
+  for (int i=1; i < 3; ++i)     //skipping roll because wc
+  {
+    if (fabs(angle[i]) > dist_thresh*quat_scale)
+    {
+      return false;
+    }
+  }
+  
+  // save the angle and ee differences for each point- assuming that ls id and run id are already saved
+  tol_outfile << fabs(rm::goal_ee_pos[0] - ee_pos[0]) << ","
+              << fabs(rm::goal_ee_pos[1] - ee_pos[1]) << ","
+              << fabs(rm::goal_ee_pos[2] - ee_pos[2]) << ","
+              << angle[0] << "," 
+              << angle[1] << "," 
+              << angle[2] << "," ;
+  tol_outfile.flush();  // Forces write to disk
+
+  if (isStartState(state_vars, dist_thresh)){
+    is_start_state = true;
+  }
+
+  return true;
+}
+
+
+bool isBFS3DGoalState(const StateVarsType& state_vars, double dist_thresh)
+{
+  return false;
+}
+
+size_t StateKeyGenerator(const StateVarsType& state_vars)
+{
+    size_t seed = 0;
+    for (int i=0; i < rm::dof; ++i)
+    {
+        boost::hash_combine(seed, state_vars[i]);
+    }
+    return seed;
+}
+
+size_t BFS3DStateKeyGenerator(const StateVarsType& state_vars)
+{
+  size_t seed = 0;
+  for (int i=0; i < 3; ++i)
+  {
+    boost::hash_combine(seed, state_vars[i]);
+  }
+  return seed;
+}
+
+size_t EdgeKeyGenerator(const EdgePtrType& edge_ptr)
+{
+    int controller_id;
+    auto action_ptr = edge_ptr->action_ptr_;
+
+    controller_id = std::stoi(action_ptr->GetType());
+
+    size_t seed = 0;
+    boost::hash_combine(seed, edge_ptr->parent_state_ptr_->GetStateID());
+    boost::hash_combine(seed, controller_id);
+
+    return seed;
+}
+
+double computeHeuristicStateToState(const StateVarsType& state_vars_1, const StateVarsType& state_vars_2)
+{
+  double dist = 0.0;
+  for (int i=0; i < rm::dof; ++i)
+  {
+    dist += pow(state_vars_2[i]-state_vars_1[i], 2);
+  }
+  return std::sqrt(dist);
+}
+
+double zeroHeuristic(const StateVarsType& state_vars)
+{
+  return 0.0;
+}
+
+double computeHeuristic(const StateVarsType& state_vars)
+{
+  return computeHeuristicStateToState(state_vars, rm::goal);
+}
+
+double computeEEHeuristic(const StateVarsType& state_vars)
+{
+  Eigen::Map<const VecDf> state(&state_vars[0], state_vars.size());
+  Vec3f ee_pos = getEEPosition(state);
+
+  return (rm::goal_ee_pos - ee_pos).norm();
+}
+
+double computeEEMinHeuristic(const StateVarsType& state_vars)
+{
+  Eigen::Map<const VecDf> state(&state_vars[0], state_vars.size());
+  Vec3f ee_pos = getEEPosition(state);
+  double min_distance = std::numeric_limits<double>::max();
+
+  // Iterate through all goals in the goals list
+  for (const auto& cgoal : rm::all_goal_points_line) {
+    Vec3f goal = getEEPosition(cgoal);  //need to confirm if this datatype works
+    // Compute the Euclidean distance between curr_state and the current goal
+    double distance = 0.0;
+    for (size_t i = 0; i < ee_pos.size(); ++i) {
+        double diff = ee_pos[i] - goal[i];
+        distance += diff * diff;
+    }
+    // Update the closest goal if this one is closer
+    if (distance < min_distance) {
+        min_distance = distance;
+    }
+  }
+
+  return min_distance;
+}
+
+double computeEELineHeuristic(const StateVarsType& state_vars)
+{
+  Eigen::Map<const VecDf> state(&state_vars[0], state_vars.size());
+  Vec3f ee_pos = getEEPosition(state);
+  std:swap(ee_pos[0], ee_pos[1]);
+
+  double perp_dist = perpendicularDistance(rm::outerpt_ts, rm::innerpt_ts, ee_pos);
+
+  return perp_dist;
+}
+
+double computeLoSHeuristic(const StateVarsType& state_vars)
+{
+    mjData* d = getThreadSafeMujocoData();
+    std::scoped_lock lock(mujoco_mutex);
+
+    size_t state_key = StateKeyGenerator(state_vars);
+    if (rm::heuristic_cache.find(state_key) != rm::heuristic_cache.end())
+    {
+        return rm::heuristic_cache[state_key];
+    }
+
+    double h = computeHeuristic(state_vars);
+    rm::heuristic_cache[state_key] = h;
+    int N = static_cast<int>(h)/9e-1;
+    Eigen::Map<const VecDf> p1(&state_vars[0], state_vars.size());
+    Eigen::Map<const VecDf> p2(&rm::goal[0], rm::goal.size());
+
+    for (int i=0; i<N; ++i)
+    {
+        double j = i/static_cast<double>(N);
+        VecDf intp_pt = p1*(1-j) + p2*j;
+
+        // Use thread-local data for computations
+        mju_copy(d->qpos, intp_pt.data(), rm::global_m->nq);
+        mj_fwdPosition(rm::global_m, d);
+
+        if (rm::global_d->ncon > 0)
+        {
+            rm::heuristic_cache[state_key] = 100;
+            break;
+        }
+    }
+
+    return rm::heuristic_cache[state_key];
+}
+
+double computeShieldHeuristic(const StateVarsType& state_vars)
+{
+
+    double cost = rm::shield_h_w(0) * pow((rm::goal[0] - state_vars[0]), 2) +
+                  rm::shield_h_w(1) * pow((state_vars[1]), 2) +
+                  rm::shield_h_w(2) * pow((-M_PI / 2 - state_vars[2]), 2);
+    return std::sqrt(cost);
+}
+
+void initializeBFS(int length, int width, int height, vector<vector<int>> occupied_cells)
+{
+    rm::bfs3d = make_shared<smpl::BFS_3D>(length, width, height);
+    for (auto& c : occupied_cells)
+    {
+        rm::bfs3d->setWall(c[0], c[1], c[2]);
+    }
+}
+
+void setupSmplBFS()
+{
+  Vec3f lwh;
+  lwh << rm::global_bfs_m->numeric_data[3] - rm::global_bfs_m->numeric_data[0],
+      rm::global_bfs_m->numeric_data[4] - rm::global_bfs_m->numeric_data[1],
+      rm::global_bfs_m->numeric_data[5] - rm::global_bfs_m->numeric_data[2];
+
+  int length = static_cast<int>(lwh(0)/BFS_DISCRETIZATION)+1;
+  int width = static_cast<int>(lwh(1)/BFS_DISCRETIZATION)+1;
+  int height = static_cast<int>(lwh(2)/BFS_DISCRETIZATION)+1;
+
+  mjData* d = getThreadSafeMujocoData();
+  std::scoped_lock lock(mujoco_mutex);
+
+  std::vector<std::vector<int>> occupied_cells;
+  for (int i=0; i<length; ++i)
+  {
+    for (int j=0; j<width; ++j)
+    {
+      for (int k=0; k<height; ++k)
+      {
+        Vec3f xyz;
+        xyz << i*BFS_DISCRETIZATION + rm::global_bfs_m->numeric_data[0],
+            j*BFS_DISCRETIZATION + rm::global_bfs_m->numeric_data[1],
+            k*BFS_DISCRETIZATION + rm::global_bfs_m->numeric_data[2];
+
+        VecDf fullstate(7);
+        fullstate << xyz(0), xyz(1), xyz(2), 1, 0, 0, 0;
+
+        // Use thread-local data for computations
+        mju_copy(d->qpos, fullstate.data(), rm::global_bfs_m->nq);
+        mj_fwdPosition(rm::global_m, d);
+
+        if (rm::global_bfs_d->ncon>0)
+        {
+          std::vector<int> occupied_cell;
+          occupied_cell.emplace_back(i);
+          occupied_cell.emplace_back(j);
+          occupied_cell.emplace_back(k);
+
+          occupied_cells.push_back(occupied_cell);
+        }
+      }
+    }
+  }
+
+  initializeBFS(length, width, height, occupied_cells);
+
+  std::cout << "Finished setting up SMPL bfs3d environment of size " <<  length << "x" << width << "x" << height
+      << " cells containing " << occupied_cells.size() << " occupied cells." << std::endl;
+}
+
+void recomputeBFS()
+{
+    int x = static_cast<int>((rm::goal_ee_pos(0)-rm::global_bfs_m->numeric_data[0])/BFS_DISCRETIZATION);
+    int y = static_cast<int>((rm::goal_ee_pos(1)-rm::global_bfs_m->numeric_data[1])/BFS_DISCRETIZATION);
+    int z = static_cast<int>((rm::goal_ee_pos(2)-rm::global_bfs_m->numeric_data[2])/BFS_DISCRETIZATION);
+
+    rm::bfs3d->run(x, y, z);
+}
+
+double computeBFSHeuristic(const StateVarsType& state_vars)
+{
+    Vec3f ee_pos = getEEPosition(state_vars);
+
+    int x = static_cast<int>((ee_pos(0)-rm::global_bfs_m->numeric_data[0])/BFS_DISCRETIZATION);
+    int y = static_cast<int>((ee_pos(1)-rm::global_bfs_m->numeric_data[1])/BFS_DISCRETIZATION);
+    int z = static_cast<int>((ee_pos(2)-rm::global_bfs_m->numeric_data[2])/BFS_DISCRETIZATION);
+    double cost_per_cell = 1;
+
+    if (!rm::bfs3d->inBounds(x, y, z)) {
+        return DINF;
+    }
+    else if (rm::bfs3d->getDistance(x, y, z) == smpl::BFS_3D::WALL) {
+        return DINF;
+    }
+    else {
+        return cost_per_cell * rm::bfs3d->getDistance(x, y, z);
+    }
+}
+
+void postProcess(std::vector<PlanElement>& path, double& cost, double allowed_time, const shared_ptr<Action>& act, BSplineOpt& opt)
+{
+    cout << "Post processing with timeout: " << allowed_time << endl;
+    std::shared_ptr<InsatAction> ins_act = std::dynamic_pointer_cast<InsatAction>(act);
+    opt.postProcess(path, cost, allowed_time, ins_act.get());
+}
+
+void postProcessWithControlPoints(std::vector<PlanElement>& path, double& cost, double allowed_time, const shared_ptr<Action>& act, BSplineOpt& opt)
+{
+    cout << "Post processing with timeout: " << allowed_time << endl;
+    std::shared_ptr<InsatAction> ins_act = std::dynamic_pointer_cast<InsatAction>(act);
+    opt.postProcessWithControlPoints(path, cost, allowed_time, ins_act.get());
+}
+
+void setupMujoco(mjModel **m, mjData **d, std::string modelpath)
+{
+  *m = nullptr;
+  if (std::strlen(modelpath.c_str()) > 4 && !strcmp(modelpath.c_str() + std::strlen(modelpath.c_str()) - 4, ".mjb"))
+  {
+    *m = mj_loadModel(modelpath.c_str(), nullptr);
+  }
+  else
+  {
+    *m = mj_loadXML(modelpath.c_str(), nullptr, nullptr, 0);
+  }
+  if (!m)
+  {
+    mju_error("Cannot load the model");
+  }
+  std::cout << modelpath << std::endl;
+  *d = mj_makeData(*m);
+}
+
+MatDf loadMPrims(std::string mprim_file)
+{
+  if (!rm::global_m)
+  {
+    std::runtime_error("Attempting to load motion primitives before Mujoco model. ERROR!");
+  }
+
+  /// Load input prims
+  MatDf mprims = loadEigenFromFile<MatDf>(mprim_file, ' ');
+
+  /// Input prims contain only one direction. Flip the sign for adding prims in the other direction
+  int num_input_prim = mprims.rows();
+  mprims.conservativeResize(2*mprims.rows(), mprims.cols());
+  mprims.block(num_input_prim, 0, num_input_prim, mprims.cols()) =
+      -1*mprims.block(0, 0, num_input_prim, mprims.cols());
+
+  return mprims;
+}
+
+void constructActions(vector<shared_ptr<Action>>& action_ptrs,
+                      ParamsType& action_params,
+                      std::string& mj_modelpath, std::string& mprimpath,
+                      ManipulationAction::OptVecPtrType& opt,
+                      int num_threads)
+{
+    /// Vectorize simulator handle
+    ManipulationAction::MjModelVecType m_vec;
+    ManipulationAction::MjDataVecType d_vec;
+    for (int i=0; i<num_threads; ++i)
+    {
+      mjModel* act_m= nullptr;
+      mjData * act_d= nullptr;
+      setupMujoco(&act_m, &act_d, mj_modelpath);
+      m_vec.push_back(act_m);
+      d_vec.push_back(act_d);
+    }
+
+    /// Load mprims
+    auto mprims = loadMPrims(mprimpath);
+    mprims *= (M_PI/180.0); /// Input is in degrees. Convert to radians
+    action_params["length"] = mprims.rows();
+
+    for (int i=0; i<=action_params["length"]; ++i)
+    {
+        if (i == action_params["length"])
+        {
+            auto one_joint_action = std::make_shared<OneJointAtATime>(std::to_string(i), action_params,
+                                                                      DISCRETIZATION, mprims,
+                                                                      opt, m_vec, d_vec, num_threads, 1);
+            action_ptrs.emplace_back(one_joint_action);
+        }
+        else
+        {
+            bool is_expensive = (action_params["planner_type"] == 1) ? 1 : 0;
+            auto one_joint_action = std::make_shared<OneJointAtATime>(std::to_string(i), action_params,
+                                                                      DISCRETIZATION, mprims,
+                                                                      opt, m_vec, d_vec, num_threads, is_expensive);
+            action_ptrs.emplace_back(one_joint_action);
+        }
+    }
+
+    // So that the adaptive primitive is tried first
+    reverse(action_ptrs.begin(), action_ptrs.end());
+}
+
+
+void constructBFSActions(vector<shared_ptr<Action>>& action_ptrs,
+                         ParamsType& action_params,
+                         std::string& mj_modelpath, std::string& mprimpath,
+                         int num_threads)
+{
+  /// Vectorize simulator handle
+  ManipulationAction::MjModelVecType m_vec;
+  ManipulationAction::MjDataVecType d_vec;
+  for (int i=0; i<num_threads; ++i)
+  {
+    mjModel* act_m= nullptr;
+    mjData * act_d= nullptr;
+    setupMujoco(&act_m, &act_d, mj_modelpath);
+    m_vec.push_back(act_m);
+    d_vec.push_back(act_d);
+  }
+
+  /// Load mprims
+  auto mprims = loadMPrims(mprimpath);
+  action_params["length"] = mprims.rows();
+
+  for (int i=0; i<action_params["length"]; ++i)
+  {
+    auto one_joint_action = std::make_shared<TaskSpaceAction>(std::to_string(i), action_params,
+                                                              BFS_DISCRETIZATION, mprims,
+                                                              m_vec, d_vec, num_threads, 0);
+    action_ptrs.emplace_back(one_joint_action);
+  }
+}
+
+
+void constructPlanner(string planner_name, shared_ptr<Planner>& planner_ptr, vector<shared_ptr<Action>>& action_ptrs, ParamsType& planner_params, ParamsType& action_params, BSplineOpt& opt)
+{
+    if (planner_name == "epase")
+       planner_ptr = std::make_shared<EpasePlanner>(planner_params);    
+    else if (planner_name == "gepase")
+       planner_ptr = std::make_shared<GepasePlanner>(planner_params);    
+    else if (planner_name == "insat")
+        planner_ptr = std::make_shared<InsatPlanner>(planner_params);
+    else if (planner_name == "insat_mh")
+        planner_ptr = std::make_shared<InsatPlannerMH>(planner_params);
+    else if (planner_name == "pinsat")
+        planner_ptr = std::make_shared<PinsatPlanner>(planner_params);
+    else if (planner_name == "rrt")
+        planner_ptr = std::make_shared<RrtPlanner>(planner_params);
+    else if (planner_name == "rrtconnect")
+        planner_ptr = std::make_shared<RrtConnectPlanner>(planner_params);
+    else if (planner_name == "wastar")
+        planner_ptr = std::make_shared<WastarPlanner>(planner_params);
+    else
+        throw runtime_error("Planner type not identified!");
+
+    /// Heuristic
+    if (rm::h_mode == HeuristicMode::EUCLIDEAN)
+    {
+      planner_ptr->SetHeuristicGenerator(bind(computeHeuristic, placeholders::_1));
+    }
+    else if (rm::h_mode == HeuristicMode::LOS)
+    {
+      planner_ptr->SetHeuristicGenerator(bind(computeLoSHeuristic, placeholders::_1));
+    }
+    else if (rm::h_mode == HeuristicMode::SHIELD)
+    {
+      planner_ptr->SetHeuristicGenerator(bind(computeShieldHeuristic, placeholders::_1));
+    }
+    else if (rm::h_mode == HeuristicMode::SMPL_BFS)
+    {
+       planner_ptr->SetHeuristicGenerator(bind(computeBFSHeuristic, placeholders::_1));
+    }
+    else if (rm::h_mode == HeuristicMode::EE)
+    {
+      planner_ptr->SetHeuristicGenerator(bind(computeEEHeuristic, placeholders::_1));
+    }
+    else if (rm::h_mode == HeuristicMode::EELine)
+    {
+      planner_ptr->SetHeuristicGenerator(bind(computeEELineHeuristic, placeholders::_1));
+    }
+    else if (rm::h_mode == HeuristicMode::EEMin)
+    {
+      planner_ptr->SetHeuristicGenerator(bind(computeEEMinHeuristic, placeholders::_1));
+    }
+
+
+    planner_ptr->SetActions(action_ptrs);
+    planner_ptr->SetStateMapKeyGenerator(bind(StateKeyGenerator, placeholders::_1));
+    planner_ptr->SetEdgeKeyGenerator(bind(EdgeKeyGenerator, placeholders::_1));
+    planner_ptr->SetStateToStateHeuristicGenerator(bind(computeHeuristicStateToState, placeholders::_1, placeholders::_2));
+
+    // start checker
+    planner_ptr->SetStartChecker(bind(isStartState, placeholders::_1, TERMINATION_DIST*0.01));
+    
+    /// Goal checker
+    if (rm::goal_mode == GoalCheckerMode::CSPACE)
+    {
+      planner_ptr->SetGoalChecker(bind(isGoalState, placeholders::_1, TERMINATION_DIST));
+    }
+    else if (rm::goal_mode == GoalCheckerMode::EE)
+    {
+       planner_ptr->SetGoalChecker(bind(isEEGoalState, placeholders::_1, TERMINATION_DIST));
+    }
+    else if (rm::goal_mode == GoalCheckerMode::EELine)
+    {
+       planner_ptr->SetGoalChecker(bind(isEELineGoalState, placeholders::_1, TERMINATION_DIST));
+    }
+    else if (rm::goal_mode == GoalCheckerMode::EETol)
+    {
+       planner_ptr->SetGoalChecker(bind(isEETolGoalState, placeholders::_1, TERMINATION_DIST));
+    }
+
+    /// PP
+    if ((planner_name != "pinsat") && (planner_name != "insat"))
+    {
+        if (rm::pp_mode == PPMode::WAYPT)
+        {
+          planner_ptr->SetPostProcessor(bind(postProcess, placeholders::_1, placeholders::_2, placeholders::_3, action_ptrs[0], opt));
+        }
+        else if (rm::pp_mode == PPMode::CONTROLPT)
+        {
+          planner_ptr->SetPostProcessor(bind(postProcessWithControlPoints, placeholders::_1, placeholders::_2, placeholders::_3, action_ptrs[0], opt));
+        }        
+    }
+}
+
+void setBFSHeuristic(StateVarsType& start, std::shared_ptr<Planner>& bfs_planner_ptr,
+                     std::vector<shared_ptr<Action>>& bfs_action_ptrs, ParamsType& planner_params)
+{
+  bfs_planner_ptr->SetActions(bfs_action_ptrs);
+  bfs_planner_ptr->SetStateMapKeyGenerator(bind(BFS3DStateKeyGenerator, placeholders::_1));
+  bfs_planner_ptr->SetEdgeKeyGenerator(bind(EdgeKeyGenerator, placeholders::_1));
+  bfs_planner_ptr->SetGoalChecker(bind(isBFS3DGoalState, placeholders::_1, TERMINATION_DIST));
+  bfs_planner_ptr->SetHeuristicGenerator(bind(zeroHeuristic, placeholders::_1));
+
+  mju_copy(rm::global_d->qpos, start.data(), rm::global_m->nq);
+  mju_zero(rm::global_d->qvel, rm::global_m->nv);
+  mju_zero(rm::global_d->qacc, rm::global_m->nv);
+  mj_kinematics(rm::global_m, rm::global_d);
+  // ee pose
+  std::vector<double> ee_pos(3, 0.0);
+  double xpos[rm::global_m->nbody*3];
+  mju_copy(xpos, rm::global_d->xpos, rm::global_m->nbody*3);
+  ee_pos[0] = xpos[3*(rm::global_m->nbody-1)];
+  ee_pos[1] = xpos[3*(rm::global_m->nbody-1) + 1];
+  ee_pos[2] = xpos[3*(rm::global_m->nbody-1) + 2];
+
+  bfs_planner_ptr->SetStartState(ee_pos);
+  bfs_planner_ptr->Plan();
+
+  rm::bfs_state_map = bfs_planner_ptr->GetStateMap();
+}
+
+std::random_device rd;
+std::mt19937 gen(0);  //here you could set the seed, but std::random_device already does that
+std::uniform_real_distribution<float> dis(-1.0, 1.0);
+VecDf genRandomVector(VecDf& low, VecDf& high, int size)
+{
+    VecDf range = high-low;
+//    VecDf randvec = VecDf::Random(size);
+    VecDf randvec = VecDf::NullaryExpr(size,1,[&](){return dis(gen);});
+    randvec += VecDf::Constant(size, 1, 1.0);
+    randvec /= 2.0;
+    randvec = randvec.cwiseProduct(range);
+    randvec += low;
+
+    return randvec;
+}
+
+void generateStartsAndGoals(vector<vector<double>>& starts, vector<vector<double>>& goals, int num_runs, mjModel* m, mjData* d)
+{
+    bool valid = true;
+    VecDf hi(rm::dof), lo(rm::dof);
+    hi.setZero(); lo.setZero();
+    for (int i=0; i<m->njnt; ++i)
+    {
+        lo(i) = m->jnt_range[2*i];
+        hi(i) = m->jnt_range[2*i+1];
+    }
+
+    for (int i=0; i<num_runs; ++i)
+    {
+        VecDf st = genRandomVector(lo, hi, rm::dof);
+        VecDf go = genRandomVector(lo, hi, rm::dof);
+        for (int i=0; i < rm::dof; ++i)
+        {
+            if (i==3 || i==5) { st(i) = go(i) = 0.0;}
+        }
+
+        std::vector<double> v_st, v_go;
+        v_st.resize(rm::dof);
+        v_go.resize(rm::dof);
+        VecDf::Map(&v_st[0], st.size()) = st;
+        VecDf::Map(&v_go[0], go.size()) = go;
+
+        starts.emplace_back(v_st);
+        goals.emplace_back(v_go);
+    }
+}
+
+
+// Function to save checkpoint
+void save_checkpoint(const std::map<int, std::pair<double, double>>& map, int last_processed_index, int checkpoint_iteration) {
+    std::ofstream outfile(computed_goalpt_dir, std::ios::app);
+    
+    if (outfile.is_open()) {
+      int count = last_processed_index+1;
+        for (const auto& entry : map) {
+            if (entry.first > last_processed_index) {
+                if (count > checkpoint_iteration) break;
+                outfile << entry.first << " " << entry.second.first << " " << entry.second.second << "\n";
+                count++;
+            }
+        }
+        outfile.close();
+        std::cout << "Checkpoint saved!" << std::endl;
+    } else {
+        std::cerr << "Unable to open file for saving checkpoint" << std::endl;
+    }
+}
+
+int load_checkpoint(const std::string& filename) {
+    int last_index = -1;
+
+    std::ifstream infile(filename);
+    if (infile.is_open()) {
+        std::string line;
+        while (std::getline(infile, line)) {
+            std::istringstream iss(line);
+            int key;
+            double value1, value2;
+            if (iss >> key >> value1 >> value2) {
+                last_index = key;  // Update last_index with each successful read
+            }
+        }
+        infile.close();
+        std::cout << "Checkpoint loaded from " << last_index << std::endl;
+    } else {
+        std::cout << "No checkpoint file found. Starting fresh." << std::endl;
+    }
+
+    return last_index;
+}
+
+// CREATING A MAP TO STORE THE ID OF EACH GOAL POINT
+std::map<int, std::pair<double, double>> ls_index_to_goalpt_map;
+void loadStartsAndGoalsFromFile(vector<vector<double>>& starts,
+                                vector<vector<double>>& goals,
+                                vector<vector<double>>& goals_cspace,
+                                const string& start_path, const string& goal_path, const string& goal_cspace_path)
+{
+    MatDf start_mat = loadEigenFromFile<MatDf>(start_path);
+    MatDf goal_mat = loadEigenFromFile<MatDf>(goal_path);
+    MatDf goal_cspace_mat = loadEigenFromFile<MatDf>(goal_cspace_path);
+
+    for (int i=0; i<goal_mat.rows(); ++i)
+    {
+
+        std::vector<double> v_st, v_go, v_goc;
+        v_st.resize(rm::dof);
+        v_goc.resize(rm::dof);
+        v_go.resize(10);     //for xyz outer, and quat angle
+        VecDf::Map(&v_st[0], start_mat.cols()) = start_mat.row(1);   //replacing with just one row right now to deal with discrepancy between start and goal dimension dif
+        VecDf::Map(&v_go[0], goal_mat.cols() - 1) = goal_mat.row(i).tail(goal_mat.cols() - 1);   //modifying to exclude 1st column
+        VecDf::Map(&v_goc[0], goal_cspace_mat.cols()-1) = goal_cspace_mat.row(i).tail(goal_cspace_mat.cols() - 1); 
+        // VecDf::Map(&v_goc[0], goal_cspace_mat.cols()) = start_mat.row(1);
+
+        ls_index_to_goalpt_map[i] =  std::make_pair(goal_mat(i, 0), 0.0); 
+
+        starts.emplace_back(v_st);
+        goals.emplace_back(v_go);
+        goals_cspace.emplace_back(v_goc);
+    }
+}
+
+std::map<int, std::vector<std::vector<double>>> loadGoalsMapCspaceLine(const std::string& goal_cspace_path) {
+    // Load the goal c-space matrix from the file
+    MatDf goal_cspace_mat = loadEigenFromFile<MatDf>(goal_cspace_path);
+
+    // Map to store line segment ID -> list of 6D points
+    std::map<int, std::vector<std::vector<double>>> goals_map_cspace_line;
+
+    // Iterate through each row in the goal_cspace_mat
+    for (int i = 0; i < goal_cspace_mat.rows(); ++i) {
+        // Extract the line segment ID (first column)
+        int line_segment_id = static_cast<int>(goal_cspace_mat(i, 0));
+
+        // Extract the remaining columns as a 6D point using VecDf::Map
+        std::vector<double> point(6);
+        VecDf::Map(&point[0], 6) = goal_cspace_mat.row(i).segment(1, 6); // Columns 1 to 6 are the 6D coordinates
+
+        // Add the point to the corresponding line segment in the map
+        goals_map_cspace_line[line_segment_id].emplace_back(point);
+    }
+
+    return goals_map_cspace_line;
+}
+
+
+
+
+MatDf sampleTrajectory(const drake::trajectories::BsplineTrajectory<double>& traj, double dt=1e-1)
+{
+    MatDf sampled_traj;
+    int i=0;
+    for (double t=0.0; t<=traj.end_time(); t+=dt)
+    {
+        sampled_traj.conservativeResize(rm::dof, sampled_traj.cols() + 1);
+        sampled_traj.col(i) = traj.value(t);
+        ++i;
+    }
+    return sampled_traj;
+}
+
+MatDf sampleTrajectory(const drake::trajectories::BsplineTrajectory<double>& traj, int num_deriv, double dt=1e-1)
+{
+    MatDf sampled_traj;
+    int i=0;
+    for (double t=0.0; t<=traj.end_time(); t+=dt)
+    {
+        sampled_traj.conservativeResize(rm::dof*(num_deriv+1), sampled_traj.cols() + 1);
+        for (int j=0; j<=num_deriv; ++j) 
+        {
+          sampled_traj.block(j*rm::dof,i,rm::dof,1) = traj.EvalDerivative(t, j);
+        }
+        ++i;
+    }
+    return sampled_traj;
+}
+
+void calculateWorstCaseTolerances(const mjModel* m, mjData* d, int ee_body_id, double joint_tolerance) {
+    // Allocate memory for Jacobians (3 x nv matrices)
+    std::vector<mjtNum> jacp(3 * m->nv, 0);  // translational Jacobian
+    std::vector<mjtNum> jacr(3 * m->nv, 0);  // rotational Jacobian
+    
+    // Forward kinematics
+    mj_kinematics(m, d);
+    mj_comPos(m, d);
+    
+    // Get end-effector position
+    mjtNum* point = d->xpos + 3 * ee_body_id;
+    
+    // Compute both Jacobians
+    mj_jac(m, d, jacp.data(), jacr.data(), point, ee_body_id);
+
+     // Print Jacobian matrices
+    std::cout << "Translational Jacobian (3x6):" << std::endl;
+    for(int i = 0; i < 3; i++) {
+        std::cout << "[ ";
+        for(int j = 0; j < m->nv; j++) {
+            std::cout << std::setw(10) << jacp[i * m->nv + j] << " ";
+        }
+        std::cout << "]" << std::endl;
+    }
+    
+    std::cout << "\nRotational Jacobian (3x6):" << std::endl;
+    for(int i = 0; i < 3; i++) {
+        std::cout << "[ ";
+        for(int j = 0; j < m->nv; j++) {
+            std::cout << std::setw(10) << jacr[i * m->nv + j] << " ";
+        }
+        std::cout << "]" << std::endl;
+    }
+
+    
+    // Create delta_theta vector (all joints at tolerance)
+    std::vector<double> delta_theta(m->nv, joint_tolerance);
+    
+    // Calculate delta_x = J * delta_theta for position
+    std::vector<double> delta_x(3, 0.0);
+    for(int i = 0; i < 3; i++) {
+        for(int j = 0; j < m->nv; j++) {
+            delta_x[i] += abs(jacp[i * m->nv + j]) * delta_theta[j];   //abs for worst case tol stackup
+        }
+    }
+    
+    // Calculate delta_r = J * delta_theta for rotation
+    std::vector<double> delta_r(3, 0.0);
+    for(int i = 0; i < 3; i++) {
+        for(int j = 0; j < m->nv; j++) {
+            delta_r[i] += abs(jacr[i * m->nv + j]) * delta_theta[j];
+        }
+    }
+    
+    std::cout << "Position tolerances (cm):" << std::endl;
+    std::cout << "X: " << std::abs(delta_x[0]) * 100.0 << std::endl;
+    std::cout << "Y: " << std::abs(delta_x[1]) * 100.0 << std::endl;
+    std::cout << "Z: " << std::abs(delta_x[2]) * 100.0 << std::endl;
+    
+    std::cout << "\nRotational tolerances (rad):" << std::endl;
+    std::cout << "Roll: " << std::abs(delta_r[0]) << std::endl;
+    std::cout << "Pitch: " << std::abs(delta_r[1]) << std::endl;
+    std::cout << "Yaw: " << std::abs(delta_r[2]) << std::endl;
+}
+
+
+int main(int argc, char* argv[])
+{
+    int num_threads;
+    int num_lines = 4700;
+    int path_id = 0;
+    // get rid of all this also if possible
+    std::unordered_map<int, bool> ppid_to_done;
+    std::unordered_map<int, double> ppid_to_duration;
+    std::unordered_map<int, MatDf> ppid_to_traj;
+    std::unordered_map<int, int> line_segment_to_path_id;
+    // get rid of this because we don't care right now
+    auto duration_file = root_dir + "/logs/paths_library/" + "path_execution_times.txt";
+    auto lstpi_file = root_dir + "/logs/paths_library/" + "line_segment_to_path_id_map.txt";
+
+    if (!tol_outfile.is_open()) {
+        std::cerr << "Failed to open file" << std::endl;
+        return -1;  // or handle error appropriately
+    }
+
+
+    if (!strcmp(argv[1], "insat") || !strcmp(argv[1], "wastar") || !strcmp(argv[1], "insat_mh"))
+    {
+      if (argc != 2) throw runtime_error("Format: run_robot_nav_2d insat");
+      num_threads = 1;
+    }
+    else if (!strcmp(argv[1], "pinsat") || !strcmp(argv[1], "rrt") || !strcmp(argv[1], "rrtconnect") || !strcmp(argv[1], "epase") || !strcmp(argv[1], "gepase"))
+    {
+      if (argc != 3) throw runtime_error("Format: run_robot_nav_2d pinsat [num_threads]");
+      num_threads = atoi(argv[2]);
+    }
+    else
+    {
+      throw runtime_error("Planner " + string(argv[1]) + " not identified");
+    }
+
+    string planner_name = argv[1];
+
+
+    /// Load MuJoCo model
+    std::string modelpath = root_dir + "/third_party/mujoco-2.3.2/model/abb/irb_1600/irb1600_6_12_realshield_obs.xml";
+    // std::string modelpath = root_dir + "/third_party/mujoco-2.3.2/model/abb/irb_1600/irb1600_6_12_realshield.xml";
+    mjModel *m = nullptr;
+    mjData *d = nullptr;
+
+    setupMujoco(&m,&d,modelpath);
+    setupMujoco(&rm::global_m, &rm::global_d, modelpath);
+    rm::dof = m->nq;
+    rm::shield_h_w.resize(rm::dof);
+    rm::shield_h_w << 0, 10, 7, 0.1, 1, 0.1;   //shield heur weight jt wise
+
+    
+
+    // Experiment parameters
+    int num_runs;
+    vector<int> scale_vec = {5, 5, 5, 10, 5};
+    bool visualize_plan = true;
+    bool load_starts_goals_from_file = true;     //based on start and goal files (which we will provide based on preprocess_ik)
+
+    // Define planner parameters
+    ParamsType planner_params;
+    planner_params["num_threads"] = num_threads;
+    planner_params["heuristic_weight"] = 10;
+    planner_params["timeout"] = 65;
+    planner_params["adaptive_opt"] = 0;
+    planner_params["smart_opt"] = 1;
+    planner_params["min_exec_duration"] = 0.1;
+    planner_params["max_exec_duration"] = 0.5;    //0.5
+    planner_params["preferred_exec_duration"] = 0.25;   //0.25
+    planner_params["num_ctrl_points"] = 7;
+    planner_params["min_ctrl_points"] = 4;
+    planner_params["max_ctrl_points"] = 7;     //7
+    planner_params["spline_order"] = 4;
+    planner_params["sampling_dt"] = 4e-3;
+
+    ofstream log_file;
+
+    if ((planner_params["smart_opt"] == 1) && ((planner_name == "insat") || (planner_name == "pinsat")))
+    {
+        log_file.open(root_dir + "/logs/" + planner_name + "_smart_" + to_string(num_threads) + ".txt");
+    }
+    else if ((planner_params["adaptive_opt"] == 1) && ((planner_name == "insat") || (planner_name == "pinsat")))
+    {
+       log_file.open(root_dir + "/logs/" + planner_name + "_adaptive_" + to_string(num_threads) + ".txt"); 
+    }
+    else
+    {
+        log_file.open(root_dir + "/logs/" + planner_name + "_" + to_string(num_threads) + ".txt");    
+    }
+
+    if ((planner_name == "rrt") || (planner_name == "rrtconnect"))
+    {
+        planner_params["eps"] = 1.0;
+        planner_params["goal_bias_probability"] = 0.05;
+        planner_params["termination_distance"] = TERMINATION_DIST;  
+    }
+
+    // Generate random starts and goals
+    //replace this section to sequentially walk through all goal points
+    std::vector<vector<double>> starts, goals, goals_cspace;
+    std::map<int, std::vector<std::vector<double>>> line_map_mn6;
+    VecDi ppid;
+    if (load_starts_goals_from_file)
+    {
+        std::string starts_path = root_dir + "/examples/manipulation/resources/realshield_1obs/starts.txt";
+        std::string goals_path = root_dir + "/examples/manipulation/resources/line_seg_mha/goals_map_lines.txt";
+        std::string goals_cspace_path = root_dir + "/examples/manipulation/resources/line_seg_mha/goals_map_cspace.txt";
+        loadStartsAndGoalsFromFile(starts, goals, goals_cspace, starts_path, goals_path, goals_cspace_path);
+        line_map_mn6 = loadGoalsMapCspaceLine(goals_cspace_path);
+        std::string ppid_file = root_dir + "/examples/manipulation/resources/shield_1obs_wide/ppid.txt";
+        MatDf ppid_dump = loadEigenFromFile<MatDf>(ppid_file);
+        ppid = ppid_dump.cast<int>();
+        ppid = ppid.reshaped();
+
+        for (int i=0; i<num_lines; ++i) {  //resetting line segments
+          line_segment_to_path_id[i] = -1;
+        }
+    }
+    else
+    {
+        generateStartsAndGoals(starts, goals, num_runs, m, d);
+    }
+
+    // Robot Params
+    IRB1600 robot_params;
+    // Insat Params
+    InsatParams insat_params(rm::dof, 2 * rm::dof, rm::dof);
+    // spline params
+    BSplineOpt::BSplineOptParams spline_params(rm::dof,
+                                               planner_params["num_ctrl_points"],
+                                               planner_params["spline_order"],
+                                               planner_params["min_exec_duration"],
+                                               planner_params["max_exec_duration"],
+                                               BSplineOpt::BSplineOptParams::ConstraintMode::CONTROLPT);
+    spline_params.setAdaptiveParams(planner_params["min_ctrl_points"], planner_params["max_ctrl_points"]);
+    // discretization- set to 0.05 per joint right now?
+    rm::discretization.resize(rm::dof);
+    rm::discretization.setOnes();
+    rm::discretization *= DISCRETIZATION;
+    // discretization = (robot_params.max_q_ - robot_params.min_q_)/50.0;
+
+    vector<double> all_maps_time_vec, all_maps_cost_vec;
+    vector<int> all_maps_num_edges_vec;
+    unordered_map<string, vector<double>> all_action_eval_times;
+    vector<double> all_execution_time;
+
+    /// save logs
+    MatDf start_log, goal_log, traj_log, ctrl_pt_log;
+    std::string traj_path =root_dir + "/logs/" + planner_name +"_abb_traj.txt";
+    std::string ctrl_pt_path =root_dir + "/logs/" + planner_name +"_abb_ctrlpt.txt";
+    std::string starts_path =root_dir + "/logs/" + planner_name + "_abb_starts.txt";
+    std::string goals_path =root_dir + "/logs/" + planner_name +"_abb_goals.txt";
+
+    // create opt
+    auto opt = BSplineOpt(insat_params, robot_params, spline_params, planner_params);
+    opt.SetGoalChecker(bind(isEELineGoalState, placeholders::_1, TERMINATION_DIST));
+    auto opt_vec_ptr = std::make_shared<ManipulationAction::OptVecType>(num_threads, opt);
+
+    // Construct actions
+    ParamsType action_params;
+    action_params["planner_type"] = (planner_name=="insat_mh"|| planner_name=="insat" || planner_name=="pinsat")? 1: -1;
+    std::string mprimpath = root_dir + "/examples/manipulation/resources/shield/irb1600_6_12.mprim";
+    vector<shared_ptr<Action>> action_ptrs;
+    constructActions(action_ptrs, action_params,
+                     modelpath,
+                     mprimpath,
+                     opt_vec_ptr, num_threads);
+
+    // Construct BFS actions
+    std::string bfsmodelpath = root_dir + "/third_party/mujoco-2.3.2/model/abb/irb_1600/realshield_obs_bfs_heuristic.xml";
+    // std::string bfsmodelpath = root_dir + "/third_party/mujoco-2.3.2/model/abb/irb_1600/realshield_bfs_heuristic.xml";
+    setupMujoco(&rm::global_bfs_m, &rm::global_bfs_d, bfsmodelpath);
+    std::string bfsmprimpath = root_dir + "/examples/manipulation/resources/shield/bfs3d.mprim";
+    vector<shared_ptr<Action>> bfs_action_ptrs;
+    // constructBFSActions(bfs_action_ptrs, action_params,
+    //                    bfsmodelpath, bfsmprimpath, num_threads);
+    
+    /// SMPL bfs3d
+    if (rm::h_mode == HeuristicMode::SMPL_BFS)
+    {
+       setupSmplBFS();
+    }
+
+    std::vector<std::shared_ptr<ManipulationAction>> manip_action_ptrs;
+    for (auto& a : action_ptrs)
+    {
+        std::shared_ptr<ManipulationAction> manip_action_ptr = std::dynamic_pointer_cast<ManipulationAction>(a);
+        manip_action_ptrs.emplace_back(manip_action_ptr);
+    }
+
+
+    int num_success = 0;
+    vector<vector<PlanElement>> plan_vec;
+
+    num_runs = goals.size();
+
+    // transformation things
+    // Get base position and orientation
+    // Initialize MuJoCo first
+    mj_fwdPosition(rm::global_m, rm::global_d);
+    int base_id = mj_name2id(rm::global_m, mjOBJ_BODY, "link_1");
+    double* base_pos = rm::global_d->xpos + 3*base_id;
+    double* base_mat = rm::global_d->xmat + 9*base_id;
+
+    // Fill rotation part
+    rm::T_world_to_base.block<3,3>(0,0) << base_mat[0], base_mat[1], base_mat[2],
+                                      base_mat[3], base_mat[4], base_mat[5],
+                                      base_mat[6], base_mat[7], base_mat[8];
+    // Fill translation part
+    rm::T_world_to_base.block<3,1>(0,3) << base_pos[0], base_pos[1], base_pos[2];
+
+    auto T_temp = rm::T_world_to_base;
+
+    // transformation things
+
+    // finding tolerance things
+    // Get end-effector position
+    int ee_id = rm::global_m->nbody-1;  // last body (link_6)
+    // calculateWorstCaseTolerances(rm::global_m, rm::global_d, ee_id, 0.1);
+
+
+
+    // new logging things
+    // Try to load the checkpoint
+    int last_processed_index = load_checkpoint(computed_goalpt_dir);
+    
+    if (last_processed_index >= 0) {
+        std::cout << "Resuming from index " << last_processed_index + 1 << std::endl;
+    } else {
+        std::cout << "Starting new process " << num_runs << std::endl;
+    }
+
+    int run_offset = last_processed_index+1;
+    // int run_offset = 4;
+    int num_heuristics = 1;
+    for (int run = run_offset; run < num_runs + run_offset; ++run)
+    {
+
+        // setting goals
+        rm::goal = goals_cspace[run];     
+        rm::start = starts[run];
+        is_start_state = false;
+
+        if (rm::goal_mode == GoalCheckerMode::EETol){
+            for (int i = 0; i < 3; i ++){
+              rm::goal_ee_pos[i] = goals[run][i];
+            }
+
+            for (int i = 0; i < 4; i ++){
+              rm::goal_quat_pos[i] = goals[run][i+3];
+            }
+        }
+        if (rm::goal_mode == GoalCheckerMode::EELine){
+          int lsid = ls_index_to_goalpt_map[run].first;
+          for (int i = 0; i < 3; i ++){
+            rm::outerpt_ts[i] = goals[run][i];
+            rm::innerpt_ts[i] = goals[run][i+3];
+          } 
+          for (int i = 0; i < 4; i ++){
+            rm::goal_quat_pos[i] = goals[run][i+6];
+          }
+          rm::all_goal_points_line = line_map_mn6[lsid];
+          num_heuristics = rm::all_goal_points_line.size();
+          for (auto& m : manip_action_ptrs)
+          {
+            m->setGoalsList(rm::all_goal_points_line);
+          }
+        }
+
+        
+        
+        /// Call SMPL bfs3d after updating ee goal
+        if (rm::h_mode == HeuristicMode::SMPL_BFS)
+        {
+           recomputeBFS();
+        }
+
+        auto start = starts[run]; 
+
+        for (auto& op : *opt_vec_ptr)  //this doesn't affect results (i think)
+        {
+            op.updateStartAndGoal(start, rm::goal);
+        }
+
+        for (auto& m : manip_action_ptrs)
+        {
+            m->setGoal(rm::goal);
+        }
+
+        /// Clear heuristic cache
+        if (rm::h_mode == HeuristicMode::LOS)
+        {
+          rm::heuristic_cache.clear();
+        }
+
+
+        /// Set BFS heuristic
+        std::shared_ptr<Planner> bfs_planner_ptr = std::make_shared<BFSPlanner>(planner_params);
+        //setBFSHeuristic(goals[run], bfs_planner_ptr, bfs_action_ptrs, planner_params);
+
+        // Construct planner
+        shared_ptr<Planner> planner_ptr;
+        constructPlanner(planner_name, planner_ptr, action_ptrs, planner_params, action_params, opt_vec_ptr->at(0));
+        planner_ptr->num_heuristics_ = num_heuristics;
+
+        // Run experiments
+        vector<double> time_vec, cost_vec;
+        vector<int> num_edges_vec, threads_used_vec;
+        vector<int> jobs_per_thread(planner_params["num_threads"], 0);
+        unordered_map<string, vector<double>> action_eval_times;
+
+        cout << " | Planner: " << planner_name
+             << " | Heuristic weight: " << planner_params["heuristic_weight"]
+             << " | Number of threads: " << planner_params["num_threads"]
+             << " | Number of runs: " << num_runs
+             << endl;
+        cout <<  "---------------------------------------------------" << endl;
+
+        cout << "Experiment: " << run << endl;
+        // print start and goal
+        std::cout << "start: ";
+        for (double i: starts[run])
+            std::cout << i << ' ';
+        std::cout << std::endl;
+        std::cout << "goal: ";
+        for (double i: goals[run])
+            std::cout << i << ' ';
+        std::cout << std::endl;
+
+
+        // Set start state
+        planner_ptr->SetStartState(start);
+        
+        if ((planner_name == "rrt") || (planner_name == "rrtconnect"))
+        {
+            planner_ptr->SetGoalState(rm::goal);
+        }
+        if (planner_name == "insat" || planner_name == "pinsat" || planner_name == "insat_mh"){
+            planner_ptr->goals_list_ = rm::all_goal_points_line;
+        }
+
+
+        double t=0, cost=0;
+        int num_edges=0;
+
+        bool plan_found = planner_ptr->Plan();
+        auto planner_stats = planner_ptr->GetStats();
+    
+        cout << " | Time (s): " << planner_stats.total_time_
+             << " | Cost: " << planner_stats.path_cost_
+             << " | Length: " << planner_stats.path_length_
+             << " | State expansions: " << planner_stats.num_state_expansions_
+             << " | State expansions rate: " << planner_stats.num_state_expansions_/planner_stats.total_time_
+             << " | Lock time: " <<  planner_stats.lock_time_
+             << " | Expand time: " << planner_stats.cumulative_expansions_time_
+             << " | Threads: " << planner_stats.num_threads_spawned_ << "/" << planner_params["num_threads"] << endl;
+        
+        // save state ptrs in a txt file so we can read them 
+        print_states(root_dir + "/examples/manipulation/resources/line_seg_mha/states.txt", planner_ptr);
+
+        for (auto& [action, times] : planner_stats.action_eval_times_)
+        {
+            auto total_time = accumulate(times.begin(), times.end(), 0.0);
+            cout << action << " mean time: " << total_time/times.size()  
+            << " | total: " << total_time 
+            << " | num: " << times.size()
+            << endl;
+        }
+
+        double exec_duration = -1;
+        if (plan_found)
+        {
+
+            time_vec.emplace_back(planner_stats.total_time_);
+            all_maps_time_vec.emplace_back(planner_stats.total_time_);
+            cost_vec.emplace_back(planner_stats.path_cost_);
+            all_maps_cost_vec.emplace_back(planner_stats.path_cost_);
+            num_edges_vec.emplace_back(planner_stats.num_evaluated_edges_);
+            all_maps_num_edges_vec.emplace_back(planner_stats.num_evaluated_edges_);
+
+            for (auto& [action, times] : planner_stats.action_eval_times_)
+            {
+                action_eval_times[action].insert(action_eval_times[action].end(), times.begin(), times.end());
+                all_action_eval_times[action].insert(all_action_eval_times[action].end(), times.begin(), times.end());
+            }
+
+            threads_used_vec.emplace_back(planner_stats.num_threads_spawned_);
+            for (int tidx = 0; tidx < planner_params["num_threads"]; ++tidx)
+                jobs_per_thread[tidx] += planner_stats.num_jobs_per_thread_[tidx];
+
+            num_success++;
+            ls_index_to_goalpt_map[run].second += 1;
+    
+            cout << endl << "************************" << endl;
+            cout << "Number of runs: " << num_runs << endl;
+            cout << "Mean time: " << accumulate(time_vec.begin(), time_vec.end(), 0.0)/time_vec.size() << endl;
+            cout << "Mean cost: " << accumulate(cost_vec.begin(), cost_vec.end(), 0.0)/cost_vec.size() << endl;
+            cout << "Mean threads used: " << accumulate(threads_used_vec.begin(), threads_used_vec.end(), 0.0)/threads_used_vec.size() << "/" << planner_params["num_threads"] << endl;
+            cout << "Mean evaluated edges: " << roundOff(accumulate(num_edges_vec.begin(), num_edges_vec.end(), 0.0)/double(num_edges_vec.size()), 2) << endl;
+
+            /// track logs
+            start_log.conservativeResize(start_log.rows()+1, insat_params.lowD_dims_);
+            goal_log.conservativeResize(goal_log.rows()+1, insat_params.lowD_dims_);
+            for (int i=0; i < rm::dof; ++i)
+            {
+                Eigen::Map<const VecDf> svec(&starts[run][0], rm::dof);
+                Eigen::Map<const VecDf> gvec(&goals[run][0], rm::dof);
+                start_log.bottomRows(1) = svec.transpose();
+                goal_log.bottomRows(1) = gvec.transpose();
+            }
+
+            if (((planner_name == "insat") || (planner_name == "pinsat")) && !is_start_state)
+            {
+                std::shared_ptr<InsatPlanner> insat_planner = std::dynamic_pointer_cast<InsatPlanner>(planner_ptr);
+                auto soln_traj = insat_planner->getSolutionTraj();
+
+                /// Saving sampled trajectory (position, vel, acc)
+                int num_deriv = 2; // up to acc
+                std::cout<< "soln traj is" << soln_traj.traj_.end_time() << std::endl;
+                auto samp_traj = sampleTrajectory(soln_traj.traj_, num_deriv, planner_params["sampling_dt"]);
+                traj_log.conservativeResize((num_deriv+1)*insat_params.lowD_dims_, traj_log.cols()+samp_traj.cols());
+                traj_log.rightCols(samp_traj.cols()) = samp_traj;
+                traj_log.conservativeResize((num_deriv+1)*insat_params.lowD_dims_, traj_log.cols()+1);
+                traj_log.rightCols(1) = -1*VecDf::Ones((num_deriv+1)*insat_params.lowD_dims_);
+
+                /// Save control points
+                auto soln_ctrl_pts =  drake::math::StdVectorToEigen(soln_traj.traj_.control_points());
+                ctrl_pt_log.conservativeResize(insat_params.lowD_dims_, ctrl_pt_log.cols()+soln_ctrl_pts.cols());
+                ctrl_pt_log.rightCols(soln_ctrl_pts.cols()) = soln_ctrl_pts;
+                ctrl_pt_log.conservativeResize(insat_params.lowD_dims_, ctrl_pt_log.cols()+1);
+                ctrl_pt_log.rightCols(1) = -1*VecDf::Ones(insat_params.lowD_dims_);
+
+                all_execution_time.push_back(soln_traj.traj_.end_time());
+                cout << "Execution time: " << soln_traj.traj_.end_time() << endl;
+                cout << "Traj converged in: " << soln_traj.story_ << endl;
+                exec_duration = soln_traj.traj_.end_time();
+
+                auto plan = planner_ptr->GetPlan();
+                plan_vec.emplace_back(plan);
+
+                //////////////////////////////////////////////////////////////////////
+                if (soln_traj.traj_.end_time() < planner_params["preferred_exec_duration"]) {
+                  std::cout << "soln_traj.traj_.end_time() < planner_params[preferred_exec_duration]" << std::endl;
+
+                  ppid_to_traj[run] = samp_traj.transpose();
+                  ppid_to_done[run] = true;
+                  ppid_to_duration[run] = soln_traj.traj_.end_time();
+                } else if (ppid_to_traj.find(run) == ppid_to_traj.end()) {
+                  std::cout << "ppid_to_traj.find(ppid(run)) == ppid_to_traj.end()" << std::endl;
+
+                  ppid_to_traj[run] = samp_traj.transpose();
+                  ppid_to_duration[run] = soln_traj.traj_.end_time();
+                } else if (soln_traj.traj_.end_time() < ppid_to_duration[run]) {
+                  std::cout << "soln_traj.traj_.end_time() < ppid_to_duration[ppid(run)]" << std::endl;
+
+                  ppid_to_traj[run] = samp_traj.transpose();
+                  ppid_to_duration[run] = soln_traj.traj_.end_time();
+                }
+
+                /// Write paths_library as generated
+                /// path_<path_id> file
+                int max_path_size = 0;
+                // save path with label of line number
+                auto paths_file = root_dir + "/logs/paths_library/" + "path_" + std::to_string(run) + "_" + std::to_string(ls_index_to_goalpt_map[run].first);
+                // std::cout << "Writing to " << paths_file << std::endl;
+                tol_outfile << run << "," << ls_index_to_goalpt_map[run].first << "\n";
+                tol_outfile.flush();
+
+                writeEigenToFile(paths_file, ppid_to_traj[run]);
+                max_path_size = std::max(max_path_size, static_cast<int>(ppid_to_traj[run].rows()));
+                /// path_execution_times file
+                ofstream duration_fout(duration_file);
+                for (int i=0; i<ppid.tail(1).value(); ++i) {
+                  if (ppid_to_duration.find(i) != ppid_to_duration.end()) {
+                    duration_fout << ppid_to_duration[i] << std::endl;
+                  }
+                }
+                duration_fout.close();
+            }
+            else if ((planner_name == "insat_mh") && !is_start_state)
+            {
+                std::shared_ptr<InsatPlannerMH> insat_planner = std::dynamic_pointer_cast<InsatPlannerMH>(planner_ptr);
+                // if ((planner_name == "insat_mh")){
+                //   insat_planner = std::dynamic_pointer_cast<InsatPlannerMH>(insat_planner)
+                // }
+                auto soln_traj = insat_planner->getSolutionTraj();
+
+                /// Saving sampled trajectory (position, vel, acc)
+                int num_deriv = 2; // up to acc
+                std::cout<< "soln traj is" << soln_traj.traj_.end_time() << std::endl;
+                auto samp_traj = sampleTrajectory(soln_traj.traj_, num_deriv, planner_params["sampling_dt"]);
+                traj_log.conservativeResize((num_deriv+1)*insat_params.lowD_dims_, traj_log.cols()+samp_traj.cols());
+                traj_log.rightCols(samp_traj.cols()) = samp_traj;
+                traj_log.conservativeResize((num_deriv+1)*insat_params.lowD_dims_, traj_log.cols()+1);
+                traj_log.rightCols(1) = -1*VecDf::Ones((num_deriv+1)*insat_params.lowD_dims_);
+
+                /// Save control points
+                auto soln_ctrl_pts =  drake::math::StdVectorToEigen(soln_traj.traj_.control_points());
+                ctrl_pt_log.conservativeResize(insat_params.lowD_dims_, ctrl_pt_log.cols()+soln_ctrl_pts.cols());
+                ctrl_pt_log.rightCols(soln_ctrl_pts.cols()) = soln_ctrl_pts;
+                ctrl_pt_log.conservativeResize(insat_params.lowD_dims_, ctrl_pt_log.cols()+1);
+                ctrl_pt_log.rightCols(1) = -1*VecDf::Ones(insat_params.lowD_dims_);
+
+                all_execution_time.push_back(soln_traj.traj_.end_time());
+                cout << "Execution time: " << soln_traj.traj_.end_time() << endl;
+                cout << "Traj converged in: " << soln_traj.story_ << endl;
+                exec_duration = soln_traj.traj_.end_time();
+
+                auto plan = planner_ptr->GetPlan();
+                plan_vec.emplace_back(plan);
+
+                //////////////////////////////////////////////////////////////////////
+                if (soln_traj.traj_.end_time() < planner_params["preferred_exec_duration"]) {
+                  std::cout << "soln_traj.traj_.end_time() < planner_params[preferred_exec_duration]" << std::endl;
+
+                  ppid_to_traj[run] = samp_traj.transpose();
+                  ppid_to_done[run] = true;
+                  ppid_to_duration[run] = soln_traj.traj_.end_time();
+                } else if (ppid_to_traj.find(run) == ppid_to_traj.end()) {
+                  std::cout << "ppid_to_traj.find(ppid(run)) == ppid_to_traj.end()" << std::endl;
+
+                  ppid_to_traj[run] = samp_traj.transpose();
+                  ppid_to_duration[run] = soln_traj.traj_.end_time();
+                } else if (soln_traj.traj_.end_time() < ppid_to_duration[run]) {
+                  std::cout << "soln_traj.traj_.end_time() < ppid_to_duration[ppid(run)]" << std::endl;
+
+                  ppid_to_traj[run] = samp_traj.transpose();
+                  ppid_to_duration[run] = soln_traj.traj_.end_time();
+                }
+
+                /// Write paths_library as generated
+                /// path_<path_id> file
+                int max_path_size = 0;
+                // save path with label of line number
+                auto paths_file = root_dir + "/logs/paths_library/" + "path_" + std::to_string(run) + "_" + std::to_string(ls_index_to_goalpt_map[run].first);
+                // std::cout << "Writing to " << paths_file << std::endl;
+                tol_outfile << run << "," << ls_index_to_goalpt_map[run].first << "\n";
+                tol_outfile.flush();
+
+                writeEigenToFile(paths_file, ppid_to_traj[run]);
+                max_path_size = std::max(max_path_size, static_cast<int>(ppid_to_traj[run].rows()));
+                /// path_execution_times file
+                ofstream duration_fout(duration_file);
+                for (int i=0; i<ppid.tail(1).value(); ++i) {
+                  if (ppid_to_duration.find(i) != ppid_to_duration.end()) {
+                    duration_fout << ppid_to_duration[i] << std::endl;
+                  }
+                }
+                duration_fout.close();
+            }
+            else
+            {
+                auto plan = planner_ptr->GetPlan();
+                plan_vec.emplace_back(plan);
+                exec_duration = plan_vec.size()*planner_params["sampling_dt"];
+            }
+    
+        }
+        else
+        {
+            cout << " | Plan not found!" << endl;
+        }
+
+        // Save checkpoint periodically (e.g., every 100 iterations)- this is a replacement of this log file stuff
+        if (run % 20 == 0) {
+            save_checkpoint(ls_index_to_goalpt_map, last_processed_index, run);
+            last_processed_index = run;
+            tol_outfile.close();
+            tol_outfile.open(tol_dir, std::ios::app | std::ios::out);
+            std::cout << "last index is" << last_processed_index << std::endl;
+        }
+        else if (run ==num_runs-1){
+            save_checkpoint(ls_index_to_goalpt_map, last_processed_index, run);
+            tol_outfile.close();
+            last_processed_index = run;
+            std::cout << "last index is" << last_processed_index << std::endl;
+        }
+
+
+        log_file << run << " " 
+        << planner_stats.total_time_ << " " 
+        << planner_stats.path_cost_<< " " 
+        << planner_stats.path_length_<< " " 
+        << planner_stats.num_state_expansions_<< " " 
+        << planner_stats.num_evaluated_edges_<< " " 
+        << planner_stats.num_threads_spawned_<< " " 
+        << exec_duration<< " "
+        << endl;
+    }
+
+    StateVarsType dummy_wp(6, -1);
+    if ((planner_name == "insat") || (planner_name == "pinsat"))
+    {
+        /// Dump traj to file
+        traj_log.transposeInPlace();
+        writeEigenToFile(traj_path, traj_log);
+        /// Dump control points to file
+        ctrl_pt_log.transposeInPlace();
+        writeEigenToFile(ctrl_pt_path, ctrl_pt_log);
+
+        ofstream traj_fout(root_dir + "/logs/" + planner_name + "_abb_path.txt");
+
+        for (auto& p : plan_vec)
+        {
+          for (auto& wp : p)
+          {
+            for (auto& j : wp.state_)
+            {
+              traj_fout << j << " ";
+            }
+            traj_fout << endl;
+          }
+
+          for (auto& j : dummy_wp)
+          {
+            traj_fout << j << " ";
+          }
+          traj_fout << endl;
+        }
+
+        traj_fout.close();
+
+        /// Write paths_library
+        /// path_<path_id> file
+        int max_path_size = 0;
+        for (auto& it : ppid_to_traj) {
+          auto paths_file = root_dir + "/logs/paths_library/" + "path_" + std::to_string(line_segment_to_path_id[it.first]);
+          // std::cout << "Writing to " << paths_file << std::endl;
+
+          writeEigenToFile(paths_file, it.second);
+          max_path_size = std::max(max_path_size, static_cast<int>(it.second.rows()));
+        }
+        /// path_execution_times file
+        ofstream duration_fout(duration_file);
+        for (int i=0; i<ppid.tail(1).value(); ++i) {
+          if (ppid_to_duration.find(i) != ppid_to_duration.end()) {
+            duration_fout << ppid_to_duration[i] << std::endl;
+          }
+        }
+        duration_fout.close();
+        /// line_segment_to_path_id file
+        ofstream lstpi_fout(lstpi_file);
+        lstpi_fout << line_segment_to_path_id.size() << std::endl;
+        lstpi_fout << max_path_size << std::endl;
+        for (int i=0; i<num_lines; ++i) {
+          if (line_segment_to_path_id.find(i) != line_segment_to_path_id.end()) {
+            lstpi_fout << line_segment_to_path_id[i] << std::endl;
+          } else {
+            lstpi_fout << -1 << std::endl;
+          }
+        }
+        lstpi_fout.close();
+    }
+    else
+    {
+        ofstream traj_fout(root_dir + "/logs/" + planner_name + "_abb_traj.txt");
+
+        for (auto& p : plan_vec)
+        {
+            for (auto& wp : p)
+            {
+                for (auto& j : wp.state_)
+                {
+                    traj_fout << j << " ";
+                }
+                traj_fout << endl;
+            }
+
+            for (auto& j : dummy_wp)
+            {
+                traj_fout << j << " ";
+            }
+            traj_fout << endl;
+        }
+
+        traj_fout.close();
+    }
+
+    writeEigenToFile(starts_path, start_log);
+    writeEigenToFile(goals_path, goal_log);
+
+
+    cout << endl << "************ Global Stats ************" << endl;
+    cout << "Success rate: " << double(num_success)/num_runs << endl;
+    cout << "Mean time: " << accumulate(all_maps_time_vec.begin(), all_maps_time_vec.end(), 0.0)/all_maps_time_vec.size() << endl;
+    cout << "Mean cost: " << accumulate(all_maps_cost_vec.begin(), all_maps_cost_vec.end(), 0.0)/all_maps_cost_vec.size() << endl;
+    cout << "Mean evaluated edges: " << roundOff(accumulate(all_maps_num_edges_vec.begin(), all_maps_num_edges_vec.end(), 0.0)/double(all_maps_num_edges_vec.size()), 2) << endl;
+    cout << "Mean trajectory duration: " << roundOff(reduce(all_execution_time.begin(), all_execution_time.end())/double(all_execution_time.size()), 2) << endl;
+    cout << endl << "************************" << endl;
+
+    cout << endl << "------------- Mean action eval times -------------" << endl;
+    for (auto [action, times] : all_action_eval_times)
+    {
+        cout << action << ": " << accumulate(times.begin(), times.end(), 0.0)/times.size() << endl;
+    }
+    cout << "************************" << endl;
+
+}
+

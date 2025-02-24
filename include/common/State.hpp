@@ -18,6 +18,15 @@ public:
 	State(const StateVarsType& vars=StateVarsType());
 	~State() {};
 
+	struct HeapData : public smpl::heap_element
+    {
+      int32_t off;
+      double h;      // heuristic value
+	  double f;      // heuristic value
+    };
+
+	std::vector<HeapData> open_data; // overallocated for additional n heuristics
+
 	std::size_t GetStateID() const {return state_id_;};
 	static void ResetStateIDCounter() {id_counter_=0;};
 
@@ -36,9 +45,18 @@ public:
 	double GetFValue() const {return f_val_;}; 
 	void ResetFValue() {f_val_ = std::numeric_limits<double>::max();};
 
+	static double ComputeFVal(const State& state, const State::HeapData& heap_data) {
+		// Compute f = g + h
+		return state.GetGValue() + heap_data.h;
+	}
+
 	void SetVisited() {is_visited_ = true;};
 	void UnsetVisited() {is_visited_ = false;};
 	bool IsVisited() {return is_visited_;};
+	bool IsVisitedAnc() {return (is_visited_anc);};
+	bool IsVisitedInad() {return (is_visited_mh);};
+	bool IsNeverVisited() {return (!is_visited_anc && !is_visited_mh);};
+
 
     void SetBeingExpanded() {being_expanded_ = true;};
     void UnsetBeingExpanded() {being_expanded_ = false;};
@@ -52,6 +70,9 @@ public:
 
     std::atomic<int> num_successors_;
     std::atomic<int> num_expanded_successors_;
+
+	std::atomic<bool> is_visited_anc;
+	std::atomic<bool> is_visited_mh;
 
 protected:
 
@@ -73,6 +94,11 @@ class IsLesserState
 {
 public:
     bool operator() (const State& lhs, const State& rhs);
+};
+
+class IsLesserHeapData {
+public:
+    bool operator()(const State::HeapData& lhs, const State::HeapData& rhs);
 };
 
 }

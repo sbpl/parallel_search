@@ -107,7 +107,7 @@ namespace rm
   shared_ptr<smpl::BFS_3D> bfs3d;
 
   // Modes
-  HeuristicMode h_mode = HeuristicMode::LOS;
+  HeuristicMode h_mode = HeuristicMode::SMPL_BFS;
   GoalCheckerMode goal_mode = GoalCheckerMode::CSPACE;
   PPMode pp_mode = PPMode::WAYPT;
 }
@@ -725,7 +725,7 @@ int main(int argc, char* argv[])
 {
     int num_threads;
     int num_lines = 5760;
-    int path_id = 2866;
+    int path_id = 0;
     std::string root_dir = "/home/shield/code/shield_obs_ws/src/parallel_search";
     std::unordered_map<int, bool> ppid_to_done;
     std::unordered_map<int, double> ppid_to_duration;
@@ -884,8 +884,8 @@ int main(int argc, char* argv[])
     setupMujoco(&rm::global_bfs_m, &rm::global_bfs_d, bfsmodelpath);
     std::string bfsmprimpath = root_dir + "/examples/manipulation/resources/shield/bfs3d.mprim";
     vector<shared_ptr<Action>> bfs_action_ptrs;
-    // constructBFSActions(bfs_action_ptrs, action_params,
-    //                    bfsmodelpath, bfsmprimpath, num_threads);
+    constructBFSActions(bfs_action_ptrs, action_params,
+                       bfsmodelpath, bfsmprimpath, num_threads);
     
     /// SMPL bfs3d
     if (rm::h_mode == HeuristicMode::SMPL_BFS)
@@ -929,7 +929,7 @@ int main(int argc, char* argv[])
     //   }
     // }
 
-    int run_offset = 10266;
+    int run_offset = 0;
     num_runs = starts.size();
     // num_runs = 500;
     for (int run = run_offset; run < run_offset+num_runs; ++run)
@@ -968,7 +968,7 @@ int main(int argc, char* argv[])
 
         /// Set BFS heuristic
         std::shared_ptr<Planner> bfs_planner_ptr = std::make_shared<BFSPlanner>(planner_params);
-//        setBFSHeuristic(goals[run], bfs_planner_ptr, bfs_action_ptrs, planner_params);
+        setBFSHeuristic(goals[run], bfs_planner_ptr, bfs_action_ptrs, planner_params);
 
         // Construct planner
         shared_ptr<Planner> planner_ptr;

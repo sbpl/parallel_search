@@ -117,11 +117,15 @@ namespace ps
 
     /// goal
     void setGoal(StateVarsType& goal);
+    void setGoalFromList(const VecDf & curr_state);
+    void setGoalsList(const std::vector<std::vector<double>>& goals_list);
+
 
   protected:
     LockType lock_;
 
     VecDf goal_;
+    std::vector<std::vector<double>> goals_list_;
 
     /// Discretization stuff
     MatDf mprims_;

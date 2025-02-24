@@ -271,7 +271,7 @@ namespace ps {
                moveit_msgs::MotionPlanRequest& req,
                moveit_msgs::MotionPlanResponse& res) {
               
-      return false;
+      // return false;
 
       planner_params_["timeout"] = req.allowed_planning_time;
 

@@ -1,7 +1,15 @@
 cmake_minimum_required(VERSION 3.2)
+# set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project (parallel_search)
+# add_compile_options(-std=c++17)\
 add_compile_options(-std=c++17)
+# set(CMAKE_CXX_FLAGS "-std=c++17 ${CMAKE_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS "-std=c++17 ${CMAKE_CXX_FLAGS}")
+
+set(CMAKE_CXX_FLAGS "-DTBB_ALLOCATOR_TRAITS_BROKEN ${CMAKE_CXX_FLAGS}")
 
 list(APPEND CMAKE_PREFIX_PATH /opt/drake)
 # list(APPEND CMAKE_PREFIX_PATH /opt/ros/noetic)  
@@ -62,6 +70,7 @@ set(SOURCES
     src/planners/RrtConnectPlanner.cpp
     src/planners/insat/PinsatPlanner.cpp
     src/planners/insat/InsatPlanner.cpp
+    src/planners/insat/InsatPlannerMH.cpp
     src/planners/insat/opt/DummyOpt.cpp
     src/planners/insat/opt/BSplineOpt.cpp
 )
@@ -78,7 +87,6 @@ target_link_libraries(manip_moveit_interface
         ${drake_LIBRARIES}
         mujoco
         pthread)
-
 
 # EXECUTABLES
 add_executable(run_robot_nav_2d
@@ -109,7 +117,18 @@ add_executable(run_manipulation
         examples/manipulation/bfs3d.cpp
         ${SOURCES})
 
+add_executable(run_manipulation_ts
+        examples/manipulation/run_manipulation_ts.cpp
+        examples/manipulation/ManipulationActions.cpp
+        examples/manipulation/bfs3d.cpp
+        ${SOURCES})
+
 target_link_libraries(run_manipulation
+        mujoco
+        ${drake_LIBRARIES}
+        pthread)
+
+target_link_libraries(run_manipulation_ts
         mujoco
         ${drake_LIBRARIES}
         pthread)

@@ -20,12 +20,14 @@ g_val_(DINF),
 f_val_(DINF),
 h_val_(-1),
 is_visited_(false),
+is_visited_anc(false),
+is_visited_mh(false),
 being_expanded_(false),
 num_successors_(0),
 num_expanded_successors_(0),
 incoming_edge_ptr_(NULL)
 {
-    state_id_ = id_counter_++;
+    // state_id_ = id_counter_++;
 }
 
 void State::Print(string str)
@@ -53,3 +55,11 @@ bool IsLesserState::operator()(const State& lhs, const State& rhs)
 		return lhs.GetFValue() < rhs.GetFValue();
 }
 
+bool IsLesserHeapData::operator()(const State::HeapData& lhs, const State::HeapData& rhs) {
+    // Compare f-values; break ties using heuristic
+    if (lhs.f == rhs.f) {
+        return lhs.h < rhs.h; // Tie-breaking by min heuristic
+    } else {
+        return lhs.f < rhs.f; // Min-heap: smaller f-value has higher priority
+    }
+}

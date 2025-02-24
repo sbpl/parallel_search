@@ -7,6 +7,7 @@
 #include <future>
 #include <common/Types.hpp>
 #include <common/Edge.hpp>
+#include <common/insat/InsatState.hpp>
 
 namespace ps
 {
@@ -14,7 +15,8 @@ namespace ps
 class Planner
 {
     public:
-
+        int num_heuristics_;
+        std::vector<std::vector<double>> goals_list_;
         // Typedefs
         typedef std::unordered_map<size_t, StatePtrType> StatePtrMapType; 
         // Lower priority states will be in the front
@@ -27,7 +29,7 @@ class Planner
 
         Planner()=delete;
         Planner(ParamsType planner_params);
-        virtual ~Planner();
+        virtual ~Planner() = default;
         
         virtual bool Plan() = 0;
         std::vector<PlanElement> GetPlan() const;
@@ -37,6 +39,7 @@ class Planner
         virtual void SetStartState(const StateVarsType& state_vars);
         virtual void SetGoalState(const StateVarsType& state_vars);
         void SetGoalChecker(std::function<bool(const StateVarsType&)> callback);
+        void SetStartChecker(std::function<bool(const StateVarsType&)> callback);
 
         void SetStateMapKeyGenerator(std::function<std::size_t(const StateVarsType&)> callback);
         void SetEdgeKeyGenerator(std::function<std::size_t(const EdgePtrType&)> callback);
@@ -45,6 +48,8 @@ class Planner
         void SetPostProcessor(std::function<void(std::vector<PlanElement>&, double&, double)> callback);
 
         StatePtrMapType GetStateMap() {return state_map_;}
+        std::vector<InsatState*> state_ptrs_all_;
+
 
     protected:
         
@@ -57,6 +62,7 @@ class Planner
         double computeHeuristic(const StatePtrType& state_ptr);
         double computeHeuristic(const StatePtrType& state_ptr_1, const StatePtrType& state_ptr_2);
         bool isGoalState(const StatePtrType& state_ptr);
+        bool isStartState(const StatePtrType& state_ptr);
         void constructPlan(StatePtrType& state_ptr);
 
         // Utilities
@@ -79,6 +85,7 @@ class Planner
         std::function<double(const StateVarsType&)> unary_heuristic_generator_;
         std::function<double(const StateVarsType&, const StateVarsType&)> binary_heuristic_generator_;
         std::function<double(const StateVarsType&)> goal_checker_;
+        std::function<double(const StateVarsType&)> start_checker_;
         std::function<void(std::vector<PlanElement>&, double&, double)> post_processor_;
 
         // Statistics
