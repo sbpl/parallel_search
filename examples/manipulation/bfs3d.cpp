@@ -126,6 +126,7 @@ BFS_3D::~BFS_3D()
 {
     if (m_search_thread.joinable()) {
         m_search_thread.join();
+        m_running = false;
     }
 
     if (m_distance_grid) {
@@ -547,6 +548,7 @@ void BFS_3D::search(
         EXPAND_NEIGHBOR(width-1-planeSize);
     }
     m_running = false;
+
 }
 
 #undef EXPAND_NEIGHBOR

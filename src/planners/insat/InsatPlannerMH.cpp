@@ -56,7 +56,18 @@ namespace ps
         
     }
 
-    // NEW FUNCTIONS
+   // NEW HELPER FUNCTIONS
+    double InsatPlannerMH::ComputeEuclideanDistance(const InsatStatePtrType &state1, const InsatStatePtrType &state2) {
+        auto state_ptrs1 = state1->GetStateVars();
+        auto state_ptrs2 = state2->GetStateVars();
+
+        double dist = 0.0;
+        for (int i=0; i < 5; ++i)   //EXCLUDING LAST DOF
+        {
+            dist += pow(state_ptrs1[i]-state_ptrs2[i], 2);
+        }
+        return std::sqrt(dist);
+    }
 
     InsatState* GetInsatStateFromHeapData(const State::HeapData* d)
     {
@@ -79,16 +90,34 @@ namespace ps
         }
     }
 
+    bool InsatPlannerMH::InLocalMinima()
+    {
+        for (size_t i = 0; i < num_heuristics_+1; ++i) {
+            auto open_i_min = insat_open_lists_[i].min();
+            if (last_expanded_list.count(i) > 0) {
+                auto last_open_min = last_expanded_list[i];
+                if (last_open_min->h - open_i_min->h> 0.01){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    void InsatPlannerMH::SampleAttractor(){
+        return ;
+    }
+
     bool InsatPlannerMH::Plan() {
         initialize();
         startTimer();
+        int num_states = 0;
+        InsatState* state_ptr;
         while (!insat_open_lists_[0].empty() && !checkTimeout())
         {
             // instead of popping min, pop based on heuristic value  
             hidx_ %= num_heuristics_;
             hidx_ ++;
-
-            InsatState* state_ptr;
 
             auto anc_min = insat_open_lists_[0].min();
             if (!insat_open_lists_[hidx_].empty()){
@@ -98,12 +127,14 @@ namespace ps
                     // pick state from open list
                     state_ptr = GetInsatStateFromHeapData(insat_open_lists_[hidx_].min());
                     state_ptr->is_visited_mh = true;
+                    last_expanded_list[hidx_] = open_min;
                     RemoveFromAllInadOpenLists(state_ptr);
                 }
                 else{
                     // pick state from anchor list
                     state_ptr = GetInsatStateFromHeapData(insat_open_lists_[0].min());
                     state_ptr->is_visited_anc = true;
+                    last_expanded_list[0] = anc_min;
                     RemoveFromAncOpenList(state_ptr);
                 }
             }
@@ -113,10 +144,9 @@ namespace ps
                 state_ptr->is_visited_anc = true;
                 RemoveFromAncOpenList(state_ptr);
             }
-            // auto state_ptr = insat_open_lists[hidx].min();
-            // insat_state_open_list_.pop();
             // save state ptr
             state_ptrs_all_.push_back(state_ptr);
+            num_states++;
 
             // Return solution if goal state is expanded
             if (isGoalState(state_ptr))
@@ -128,18 +158,35 @@ namespace ps
                 // Reconstruct and return path
                 constructPlan(state_ptr);
                 planner_stats_.total_time_ = 1e-9*t_elapsed;
+                if (log_file_pst && log_file_pst->is_open()) {
+                    (*log_file_pst) << "IMG Totalplan(): " <<  1e-9*t_elapsed 
+                    << "IMG total_states: " <<  num_states
+                    << " IMG post_optim_cost: " << state_ptr->GetGValue()
+                            << "\n";
+                    log_file_pst->flush();
+                }
                 exit();
                 return true;
             }
 
             // set closed in all lists 
             expandState(state_ptr);
+            // now that the state ptr has been saved and checked, check if in lminima
+            if (InLocalMinima()){
+                std::cout << "In Local Minima" << std::endl;
+            }
 
         }
 
         auto t_end = std::chrono::steady_clock::now();
         double t_elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(t_end-t_start_).count();
         planner_stats_.total_time_ = 1e-9*t_elapsed;
+        if (log_file_pst && log_file_pst->is_open()) {
+            (*log_file_pst) << "IMG Totalplan(): " <<  1e-9*t_elapsed 
+            << "IMG total_states: " <<  num_states
+                    << "\n";
+            log_file_pst->flush();
+        }
         return false;
     }
 
@@ -161,8 +208,10 @@ namespace ps
 
         plan_.clear();
         hidx_ = 0;
-        w2_ = 1.3;
-        insat_open_lists_.resize(num_heuristics_+1);
+        w2_ = 2.0;
+        // one for dynamic list, one for anchor heuristic 
+        insat_open_lists_.resize(num_heuristics_+2);  
+    
 
         // Initialize planner stats
         planner_stats_ = PlannerStats();
@@ -173,7 +222,9 @@ namespace ps
 
         double h_val = computeAncHeuristic(start_state_ptr_); // Compute heuristic for each index
         start_state_ptr_->open_data[0].h = h_val;
+        start_state_ptr_->open_data[0].f = start_state_ptr_->GetGValue() + heuristic_w_*h_val;
         insat_open_lists_[0].push(&start_state_ptr_->open_data[0]);
+        // insat_open_lists_.back().push_back(&start_state_ptr_->open_data[0]); //insert start state into dyn list
 
         // std::cout << "GOALS LIST IS" << goals_list_.size() << std::endl;
 
@@ -181,7 +232,7 @@ namespace ps
             // need to convert this goal into a state pointer type to feed into compute heuristic
             StatePtrType goal_state_ptr = new InsatState(goals_list_[i]);
 
-            double h_val = computeHeuristic(start_state_ptr_, goal_state_ptr);
+            h_val = computeHeuristic(start_state_ptr_, goal_state_ptr);
 
             // std::cout << "After computing heuristic:" << std::endl;
             // start_state_ptr_->Print("DEBUG: ");
@@ -195,15 +246,6 @@ namespace ps
 
             insat_open_lists_[i+1].push(&start_state_ptr_->open_data[i]);
         }
-        // for (size_t hidx = 0; hidx < NumHeuristics(search); ++hidx) {
-        //     search.open_lists_[hidx].push(&search.start_state_->open_data[hidx]);
-        //     SMPL_DEBUG("Inserted start state %d into search %zu with f = %d",
-        //             start_id,
-        //             hidx,
-        //             ComputeFVal(search, search.start_state_->open_data[hidx]));
-        // }
-
-        // anchor_list_ = insat_open_lists_[0];
 
         // Reset goal state
         goal_state_ptr_ = NULL;
@@ -215,9 +257,6 @@ namespace ps
         h_val_min_ = DINF;
 
         planner_stats_.num_jobs_per_thread_.resize(1, 0);
-        // Initialize open list
-        // start_state_ptr_->SetFValue(start_state_ptr_->GetGValue() + heuristic_w_*start_state_ptr_->GetHValue());
-        // insat_state_open_list_.push(start_state_ptr_);
 
         constructInsatActions();
     }
@@ -276,134 +315,138 @@ namespace ps
                 double cost = 0;
                 double inc_cost = 0;
 
-                if (planner_params_["smart_opt"] == true)
-                {
-                    std::vector<StateVarsType> anc_states;
-                    for (auto& anc: ancestors)
-                    {
-                        anc_states.emplace_back(anc->GetStateVars());
-                    }
+                if (isGoalState(successor_state_ptr)){
 
-                    if (state_ptr->GetIncomingInsatEdgePtr()) /// When anc is not start
+                    if (planner_params_["smart_opt"] == true)
                     {
-                        traj = action_ptr->optimize(state_ptr->GetIncomingInsatEdgePtr()->GetTraj(),
-                                                    anc_states,
-                                                    successor_state_ptr->GetStateVars());
-                        inc_cost = action_ptr->getCost(traj) - action_ptr->getCost(state_ptr->GetIncomingInsatEdgePtr()->GetTraj());
-                    }
-                    else
-                    {
-                        traj = action_ptr->optimize(TrajType(),
-                                                    anc_states,
-                                                    successor_state_ptr->GetStateVars());
-                        inc_cost = action_ptr->getCost(traj);
-                    }
-                    if (traj.isValid())
-                    {
-                        best_anc = start_state_ptr_;
-                    }
-                }
-                else
-                {
-                    for (auto& anc: ancestors)
-                    {
-                        if (planner_params_["adaptive_opt"] == true)
+                        std::vector<StateVarsType> anc_states;
+                        for (auto& anc: ancestors)
                         {
-                            if (anc->GetIncomingInsatEdgePtr()) /// When anc is not start
-                            {
-                                traj = action_ptr->optimize(anc->GetIncomingInsatEdgePtr()->GetTraj(),
-                                                            anc->GetStateVars(),
-                                                            successor_state_ptr->GetStateVars());
-                                inc_cost = action_ptr->getCost(traj) - action_ptr->getCost(
-                                    anc->GetIncomingInsatEdgePtr()->GetTraj());
-                            }
-                            else
-                            {
-                                traj = action_ptr->optimize(TrajType(),
-                                                            anc->GetStateVars(),
-                                                            successor_state_ptr->GetStateVars());
-                                inc_cost = action_ptr->getCost(traj);
-                            }
+                            anc_states.emplace_back(anc->GetStateVars());
+                        }
+
+                        if (state_ptr->GetIncomingInsatEdgePtr()) /// When anc is not start
+                        {
+                            auto start6 = std::chrono::system_clock::now();
+                            // traj = action_ptr->optimize(state_ptr->GetIncomingInsatEdgePtr()->GetTraj(),
+                            //                             anc_states,
+                            //                             successor_state_ptr->GetStateVars());
+                            traj = action_ptr->optimize(TrajType(),
+                                                        anc_states,
+                                                        successor_state_ptr->GetStateVars());
+                            auto end_time6 = std::chrono::high_resolution_clock::now();
+                            auto duration6 = std::chrono::duration<double, std::milli>(end_time6 - start6).count();
+
+                            // if (log_file_pst && log_file_pst->is_open()) {
+                            //     (*log_file_pst) << "IMG  optimize1: " << duration6; 
+                            //             // << "\n";
+                            //     log_file_pst->flush();
+                            // }
+                            
+                            // auto start7 = std::chrono::system_clock::now();
+                            inc_cost = action_ptr->getCost(traj) - action_ptr->getCost(state_ptr->GetIncomingInsatEdgePtr()->GetTraj());
+                            // auto end_time7 = std::chrono::high_resolution_clock::now();
+                            // auto duration7 = std::chrono::duration<double, std::milli>(end_time7 - start7).count();
+                            // // note euclidean distance cost before and after optimize 
+
+
+                            // if (log_file_pst && log_file_pst->is_open()) {
+                            //     (*log_file_pst) << " IMG  getcost1: " << duration7;
+                            //     // << " IMG  cost_value1: " << inc_cost;
+                            //             // << "\n";
+                            //     log_file_pst->flush();
+                            // }
                         }
                         else
                         {
-                            TrajType inc_traj = action_ptr->optimize(anc->GetStateVars(), successor_state_ptr->GetStateVars());
-                            if (inc_traj.size() > 0)
+                            auto start8 = std::chrono::system_clock::now();
+                            traj = action_ptr->optimize(TrajType(),
+                                                        anc_states,
+                                                        successor_state_ptr->GetStateVars());
+                            auto end_time8 = std::chrono::high_resolution_clock::now();
+                            auto duration8 = std::chrono::duration<double, std::milli>(end_time8 - start8).count();
+
+                            inc_cost = action_ptr->getCost(traj);
+                            // note euclidean distance cost before and after optimize 
+
+                            // if (log_file_pst && log_file_pst->is_open()) {
+                            //     (*log_file_pst) << "IMG  optim_start: " << duration8;
+                            //     // << " IMG  os_cost_value: " << inc_cost;
+                            //     log_file_pst->flush();
+                            // }
+                        }
+                        bool traj_valid = traj.isValid();
+
+                        if (traj_valid)
+                        {
+                            best_anc = start_state_ptr_;
+                        }
+                    }
+                    else
+                    {
+                        for (auto& anc: ancestors)
+                        {
+                            if (planner_params_["adaptive_opt"] == true)
                             {
-                                inc_cost = action_ptr->getCost(inc_traj);
                                 if (anc->GetIncomingInsatEdgePtr()) /// When anc is not start
                                 {
-                                    traj = action_ptr->warmOptimize(anc->GetIncomingInsatEdgePtr()->GetTraj(), inc_traj);
+                                    traj = action_ptr->optimize(anc->GetIncomingInsatEdgePtr()->GetTraj(),
+                                                                anc->GetStateVars(),
+                                                                successor_state_ptr->GetStateVars());
+                                    inc_cost = action_ptr->getCost(traj) - action_ptr->getCost(
+                                        anc->GetIncomingInsatEdgePtr()->GetTraj());
                                 }
                                 else
                                 {
-                                    traj = action_ptr->warmOptimize(inc_traj);
+                                    traj = action_ptr->optimize(TrajType(),
+                                                                anc->GetStateVars(),
+                                                                successor_state_ptr->GetStateVars());
+                                    inc_cost = action_ptr->getCost(traj);
                                 }
                             }
                             else
                             {
-                                continue;
-                            }
+                                TrajType inc_traj = action_ptr->optimize(anc->GetStateVars(), successor_state_ptr->GetStateVars());
+                                if (inc_traj.size() > 0)
+                                {
+                                    inc_cost = action_ptr->getCost(inc_traj);
+                                    if (anc->GetIncomingInsatEdgePtr()) /// When anc is not start
+                                    {
+                                        traj = action_ptr->warmOptimize(anc->GetIncomingInsatEdgePtr()->GetTraj(), inc_traj);
+                                    }
+                                    else
+                                    {
+                                        traj = action_ptr->warmOptimize(inc_traj);
+                                    }
+                                }
+                                else
+                                {
+                                    continue;
+                                }
 
-                        }
-                        if (traj.isValid())
-                        {
-                            best_anc = anc;
+                            }
+                            if (traj.isValid())
+                            {
+                                best_anc = anc;
+                            }
                         }
                     }
+
+                    if (traj.disc_traj_.cols()<=2)
+                    {
+                        return;
+                    }
+                    cost = action_ptr->getCost(traj); 
+                } else {
+                    // use heuristic g value to decide next best action
+                    cost = state_ptr->pre_optim_cost + ComputeEuclideanDistance(state_ptr, successor_state_ptr);
                 }
 
-                if (traj.disc_traj_.cols()<=2)
-                {
-                    return;
-                }
-
-                cost = action_ptr->getCost(traj);
                 double new_g_val = cost;
 
-                if (successor_state_ptr->GetGValue() - new_g_val > 0.01)
+                if (successor_state_ptr->GetGValue() - new_g_val > 0.04)
                 {
-
-                    // double h_val = successor_state_ptr->GetHValue(); //replace with getting ith h value
-                    // if (h_val == -1)
-                    // {
-                    //     h_val = computeHeuristic(successor_state_ptr);  // change to computing distance to i'th goal
-                    //     successor_state_ptr->SetHValue(h_val); // i'th
-                    // }
-
-                    // if (h_val != DINF)
-                    // {
-                    //     h_val_min_ = h_val < h_val_min_ ? h_val : h_val_min_;   // where is this coming from?
-                    //     successor_state_ptr->SetGValue(new_g_val); //
-                    //     successor_state_ptr->SetFValue(new_g_val + heuristic_w_*h_val); //
-
-                    //     auto edge_ptr = new Edge(state_ptr, action_ptr, successor_state_ptr);
-                    //     edge_ptr->SetCost(inc_cost);
-                    //     successor_state_ptr->SetIncomingEdgePtr(edge_ptr);
-
-                    //     auto insat_edge_ptr = new InsatEdge(state_ptr, action_ptr, best_anc, successor_state_ptr);
-                    //     insat_edge_ptr->SetTraj(traj);
-                    //     insat_edge_ptr->SetTrajCost(cost);
-                    //     insat_edge_ptr->SetCost(cost);
-                    //     if (isGoalState(successor_state_ptr))
-                    //     {
-                    //         insat_edge_ptr->SetTrajCost(0);
-                    //         insat_edge_ptr->SetCost(0);
-                    //         successor_state_ptr->SetFValue(0.0);
-                    //     }
-                    //     edge_map_.insert(std::make_pair(getEdgeKey(insat_edge_ptr), insat_edge_ptr));
-                    //     successor_state_ptr->SetIncomingInsatEdgePtr(insat_edge_ptr); //
-
-                    //     if (insat_state_open_list_.contains(successor_state_ptr))  //how to deal with this in a multi-heuristic case? 
-                    //     {
-                    //         insat_state_open_list_.decrease(successor_state_ptr);
-                    //     }
-                    //     else
-                    //     {
-                    //         insat_state_open_list_.push(successor_state_ptr);
-                    //     }
-                    // }
-
+                    successor_state_ptr->pre_optim_cost = state_ptr->pre_optim_cost + ComputeEuclideanDistance(state_ptr, successor_state_ptr);
                     auto edge_ptr = new Edge(state_ptr, action_ptr, successor_state_ptr);
                     edge_ptr->SetCost(inc_cost);
                     successor_state_ptr->SetIncomingEdgePtr(edge_ptr);
@@ -416,7 +459,9 @@ namespace ps
                     {
                         insat_edge_ptr->SetTrajCost(0);
                         insat_edge_ptr->SetCost(0);
-                        successor_state_ptr->SetFValue(0.0);
+                        for (size_t i = 0; i < num_heuristics_+1; ++i) {
+                            successor_state_ptr->open_data[i].f = 0.0;
+                        }
                     }
                     edge_map_.insert(std::make_pair(getEdgeKey(insat_edge_ptr), insat_edge_ptr));
                     successor_state_ptr->SetIncomingInsatEdgePtr(insat_edge_ptr); //
@@ -436,23 +481,8 @@ namespace ps
                             h_val = computeHeuristic(successor_state_ptr, goal_state_ptr); // Compute heuristic for each index
                             successor_state_ptr->open_data[i+1].h = h_val;
                             successor_state_ptr->open_data[i+1].f = new_g_val + heuristic_w_*h_val; //
-                            // start_state_ptr_->SetFValue(f_val);  heuristic_weights_[i] * (weights?)
-
-                            // insat_open_lists_[i+1].push(&successor_state_ptr->open_data[i+1]);
                         }
                     }
-
-                    
-
-                //     if (insat_state_open_list_.contains(successor_state_ptr->open_data))  //how to deal with this in a multi-heuristic case? 
-                //     {
-                //         insat_state_open_list_.decrease(successor_state_ptr);
-                //     }
-                //     else
-                //     {
-                //         insat_state_open_list_.push(successor_state_ptr);
-                //     }
-                // }
                     for (size_t i = 0; i < num_heuristics_+1; ++i) {
                         if (insat_open_lists_[i].contains(&successor_state_ptr->open_data[i])) {
                             // Decrease key for the specific heuristic's queue.

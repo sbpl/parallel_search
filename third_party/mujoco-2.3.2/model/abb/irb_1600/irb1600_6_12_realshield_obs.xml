@@ -1,7 +1,7 @@
 <mujoco model="abb_irb1600_6_12">
     <compiler angle="radian" />
     <size njmax="500" nconmax="100" />
-    <option collision="dynamic"/>
+    <!-- <option collision="dynamic"/> -->
     <visual>
         <scale framewidth="0.01"/>
     </visual>
@@ -38,7 +38,8 @@
         <!-- Floor -->
         <geom name="floor" pos="0 0 0" size="5 5 .125" type="plane" material="MatPlane" condim="3"  contype="0" conaffinity="0"/>
 
-        <include file="realshield_obstacles.xml"/>
+        <!-- <include file="realshield_obstacles.xml"/> -->
+        <!-- <include file="shield_obstacles_solar.xml"/> -->
 
         <!-- <site name="world"/> -->
         <body name="obstacle" pos="0.0 0.0 0.4041">
@@ -47,6 +48,7 @@
 
             <body name="base" pos="0.0 0.0 0.07847612194" euler="0 0 2.0944">
                 <include file="shield_dome.xml"/>
+                <include file="shield_obstacles_solar.xml"/>
                 <site name="base"/>
                 <geom type="mesh" rgba="0.9 0.9 0.9 1" mesh="base_link" contype="2" conaffinity="2"/>
                 <body name="link_1" pos="0 0 0">

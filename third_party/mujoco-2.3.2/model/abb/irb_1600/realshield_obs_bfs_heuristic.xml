@@ -12,29 +12,30 @@
         <mesh name="lidar_w_bracket" file="bracket_w_lidar.stl"/>
     </asset>
 
-    <!-- <custom>
-        <numeric name="env_size" size="6" data="-0.95 -2.2 0 2.05 0.8 2"/>
-    </custom> -->
     <custom>
-        <numeric name="env_size" size="6" data="-2.0 -2.0 0.0 2.0 2.0 4.0"/>
+        <numeric name="env_size" size="6" data="-0.95 -2.2 0 2.05 0.8 2"/>
     </custom>
 
     <worldbody>
         <!-- obstacles -->
-        <include file="realshield_obstacles.xml"/>
+        <!-- <include file="realshield_obstacles.xml"/> -->
+        <!-- <include file="shield_obstacles_solar.xml"/> -->
 
         <body name="assembly" pos="0.0 0.0 0.4041">
             <include file="realshield_assembly.xml"/>
+            <body name="base" pos="0.0 0.0 0.07847612194" euler="0 0 2.0944">
+                <include file="shield_obstacles_solar.xml"/>
+            </body>
         </body>
 
         <!-- env limits represented as with an outer dome -->
-         <body name="outer_dome" pos="0 0 0" quat="1 0 0 0">
-            <geom name="w1" size="0.05 2.0 2.0" pos="2.0 0.0 2.0" type="box" rgba="0.7 0.7 0.0 0.3" contype="3" conaffinity="3"/>
-            <geom name="w2" size="2.0 0.05 2.0" pos="0.0 2.0 2.0" type="box" rgba="0.7 0.7 0.0 0.3" contype="3" conaffinity="3"/>
-            <geom name="w3" size="0.05 2.0 2.0" pos="-2.0 0.0 2.0" type="box" rgba="0.7 0.7 0.0 0.3" contype="3" conaffinity="3"/>
-            <geom name="w4" size="2.0 0.05 2.0" pos="0.0 -2.0 2.0" type="box" rgba="0.7 0.7 0.0 0.3" contype="3" conaffinity="3"/>
-            <geom name="w5" size="2.0 2.0 0.05" pos="0 0 0" type="box" rgba="0.7 0.7 0.0 0.3" contype="3" conaffinity="3"/>
-            <geom name="w6" size="2.0 2.0 0.05" pos="0 0 4.0" type="box" rgba="0.7 0.7 0.0 0.3" contype="3" conaffinity="3"/>
+        <body name="outer_dome" pos="0 0 0" quat="1 0 0 0">
+            <geom name="w1" size="0.05 1.5 1" pos="1.5 0.0 1" type="box" rgba="0.7 0.7 0.0 0.3" contype="3" conaffinity="3"/>
+            <geom name="w2" size="1.5 0.05 1" pos="0.0 1.5 1" type="box" rgba="0.7 0.7 0.0 0.3" contype="3" conaffinity="3"/>
+            <geom name="w3" size="0.05 1.5 1" pos="-1.5 0.0 1" type="box" rgba="0.7 0.7 0.0 0.3" contype="3" conaffinity="3"/>
+            <geom name="w4" size="1.5 0.05 1" pos="0.0 -1.5 1" type="box" rgba="0.7 0.7 0.0 0.3" contype="3" conaffinity="3"/>
+            <geom name="w5" size="1.5 1.5 0.05" pos="0 0 0" type="box" rgba="0.7 0.7 0.0 0.3" contype="3" conaffinity="3"/>
+            <geom name="w6" size="1.5 1.5 0.05" pos="0 0 2" type="box" rgba="0.7 0.7 0.0 0.3" contype="3" conaffinity="3"/>
         </body>
 
         <!-- 3D  -->

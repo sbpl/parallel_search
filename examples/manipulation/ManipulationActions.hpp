@@ -40,6 +40,7 @@
 #include <common/insat/InsatAction.hpp>
 #include <common/robots/Abb.hpp>
 #include "planners/insat/opt/BSplineOpt.hpp"
+#include <chrono>
 
 // MuJoCo
 #include <mujoco/mujoco.h>
@@ -75,10 +76,16 @@ namespace ps
                      int num_threads=1,
                      bool is_expensive = true);
 
+
     virtual bool CheckPreconditions(const StateVarsType& state);
     ActionSuccessor GetSuccessor(const StateVarsType& state_vars, int thread_id);
     ActionSuccessor GetSuccessorLazy(const StateVarsType& state_vars, int thread_id);
     ActionSuccessor Evaluate(const StateVarsType& parent_state_vars, const StateVarsType& child_state_vars, int thread_id);
+
+    // log file for time
+    std::ofstream* log_file_pst;
+    void setLogFile(std::ofstream& log_file) {
+      log_file_pst = &log_file;} // Store the address of the log file
 
     /// Snap to Grid
     VecDf contToDisc(const VecDf & cont_state, int thread_id);

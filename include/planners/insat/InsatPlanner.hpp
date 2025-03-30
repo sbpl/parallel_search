@@ -6,6 +6,7 @@
 #include "planners/Planner.hpp"
 #include <common/insat/InsatState.hpp>
 #include <common/insat/InsatEdge.hpp>
+#include <iostream>
 
 namespace ps
 {
@@ -27,6 +28,8 @@ namespace ps
         bool Plan();
 
         TrajType getSolutionTraj();
+
+        double ComputeEuclideanDistance(const InsatStatePtrType &state1, const InsatStatePtrType &state2);
 
     protected:
         void initialize();

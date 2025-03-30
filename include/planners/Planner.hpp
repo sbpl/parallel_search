@@ -50,6 +50,10 @@ class Planner
         StatePtrMapType GetStateMap() {return state_map_;}
         std::vector<InsatState*> state_ptrs_all_;
 
+        std::ofstream* log_file_pst;
+        void setLogFile(std::ofstream& log_file) {
+            log_file_pst = &log_file;} // Store the address of the log file
+
 
     protected:
         

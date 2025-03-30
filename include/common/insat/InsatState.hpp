@@ -18,6 +18,8 @@ namespace ps
     void SetAncestors(const std::vector<InsatStatePtrType>& ancestors) {ancestors_ = ancestors;};
     std::vector<InsatStatePtrType> GetAncestors() const {return ancestors_;};
 
+    double pre_optim_cost;
+
   protected:
     InsatEdgePtrType incoming_edge_ptr_;
     std::vector<InsatStatePtrType> ancestors_;

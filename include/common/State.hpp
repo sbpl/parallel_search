@@ -74,13 +74,14 @@ public:
 	std::atomic<bool> is_visited_anc;
 	std::atomic<bool> is_visited_mh;
 
+	StateVarsType vars_;
+
 protected:
 
 //private:
 	static std::size_t id_counter_;
 
 	std::size_t state_id_;
-    StateVarsType vars_;
 	double g_val_;
     double h_val_;
 	double f_val_;

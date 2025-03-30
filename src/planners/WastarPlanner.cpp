@@ -18,7 +18,8 @@ WastarPlanner::~WastarPlanner()
 bool WastarPlanner::Plan()
 {
     initialize();
-    startTimer();   
+    startTimer(); 
+    int num_states = 0;  
     while (!state_open_list_.empty() && !checkTimeout())
     {
         auto state_ptr = state_open_list_.min();
@@ -34,17 +35,32 @@ bool WastarPlanner::Plan()
             // Reconstruct and return path
             constructPlan(state_ptr);   
             planner_stats_.total_time_ = 1e-9*t_elapsed;
+            if (log_file_pst && log_file_pst->is_open()) {
+                (*log_file_pst) << "IMG Totalplan(): " <<  1e-9*t_elapsed 
+                << "IMG total_states: " <<  num_states
+                // << "IMG  pre_optim_cost: " << state_ptr->pre_optim_cost
+                // << " IMG post_optim_cost: " << state_ptr->GetGValue()
+                        << "\n";
+                log_file_pst->flush();
+            }
             exit();
             return true;
         }
 
-        expandState(state_ptr);        
+        expandState(state_ptr);     
+        num_states++;   
         
     }
 
     auto t_end = chrono::steady_clock::now();
     double t_elapsed = chrono::duration_cast<chrono::nanoseconds>(t_end-t_start_).count();
     planner_stats_.total_time_ = 1e-9*t_elapsed;
+    if (log_file_pst && log_file_pst->is_open()) {
+        (*log_file_pst) << "IMG Totalplan(): " <<  1e-9*t_elapsed 
+        << "IMG total_states: " <<  num_states
+                << "\n";
+        log_file_pst->flush();
+    }
     return false;
 }
 

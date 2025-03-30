@@ -164,7 +164,7 @@ namespace ps
   /// MuJoCo
   VecDf ManipulationAction::GetSuccessor(const VecDf &state, int thread_id)
   {
-    setGoalFromList(state);
+    // setGoalFromList(state);
     // std::cout << "goal set from " << state[0] << "to " << goal_[0] << std::endl;
     int prim_id = std::stoi(Action::type_);
     if (mprim_mode_ == Mode::CSPACE)
@@ -213,23 +213,48 @@ namespace ps
         /// Direct edge to goal
         /// If successor is the same as the state. This will happen if the joint angle is close its limit.
         /// if expanded state is too close to goal
-        // IF GOAL THING GOES HERE
-        if (state.isApprox(goal_, 1e-3)) /// assuming discretization is never finer than 1e-3.   || params_["planner_type"]==1 // why does this planner params line even exist?
-        {
-          return goal_;
-        }
-        /// if goal is in LoS then return it
-        VecDf free_state(m_[thread_id]->nq);
-
-        if (isCollisionFree(state, goal_, free_state, thread_id))
-        {
-          return goal_;
-        }
+        VecDf free_state(m_[thread_id]->nq);   //change goal snapping behaviour
+        auto start_overall = std::chrono::system_clock::now();
+        // if (isCollisionFree(state, goal_, free_state, thread_id))
+        // {
+        //   return goal_;
+        // }
+        // // IF GOAL THING GOES HERE
+        
+        // /// if goal is in LoS then return it
+        
+        // if (state.isApprox(goal_, 1e-3)) /// assuming discretization is never finer than 1e-3.   || params_["planner_type"]==1 // why does this planner params line even exist?
+        // {
+        //   return goal_;
+        // }
+        // auto end_time2 = std::chrono::high_resolution_clock::now();
+        // auto duration_ms = std::chrono::duration<double, std::milli>(end_time2 - start_overall).count();
         // HEAVY MODIFICATION: LOOPING THROUGH ALL GOALS IN LIST INSTEAD, also pushing goal snapping to inside goal list to make sure it's correct
-        // for (auto goal_cand : goals_list_){
-        //   setGoal(goal_cand);
+        
+        // double duration_ms_cf = 0;
+        for (auto goal_cand : goals_list_){
+          setGoal(goal_cand);
+          // auto start_cf = std::chrono::system_clock::now();
+          if (state.isApprox(goal_, 1e-3)) /// assuming discretization is never finer than 1e-3.   || params_["planner_type"]==1 // why does this planner params line even exist?
+          {
+            return goal_;
+          }
+          if (isCollisionFree(state, goal_, free_state, thread_id))
+          {
+            return goal_;
+          }
+          // auto end_time = std::chrono::high_resolution_clock::now();
+          // duration_ms_cf += std::chrono::duration<double, std::milli>(end_time - start_cf).count();
           
-          
+        }
+        // auto end_time2 = std::chrono::high_resolution_clock::now();
+        // auto duration_ms = std::chrono::duration<double, std::milli>(end_time2 - start_overall).count();  
+         
+        // if (log_file_pst && log_file_pst->is_open()) {
+        //   (*log_file_pst) <<  "MTCF: " << duration_ms_cf
+        //   << " MTA: " << duration_ms 
+        //           << "\n";
+        //   log_file_pst->flush();
         // }
         
       }

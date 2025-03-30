@@ -33,6 +33,7 @@ namespace ps
 
         TrajType getSolutionTraj();
         double computeAncHeuristic(const StatePtrType& state_ptr);
+        double ComputeEuclideanDistance(const InsatStatePtrType &state1, const InsatStatePtrType &state2);
 
     protected:
         void initialize();
@@ -49,6 +50,8 @@ namespace ps
         void constructInsatActions();
         void RemoveFromAllInadOpenLists(InsatState* state);
         void RemoveFromAncOpenList(InsatState* state);
+        bool InLocalMinima();
+        void SampleAttractor();
 
         InsatStatePtrType constructInsatState(const StateVarsType& state);
 
@@ -67,6 +70,7 @@ namespace ps
         InsatStateQueueMinType insat_state_open_list_;
         // vector for multiple heuristics
         std::vector<InsatStateQueueMinType> insat_open_lists_;
+        std::map<int, InsatState::HeapData*> last_expanded_list;
         // InsatStateQueueMinType anchor_list_;
         InsatStatePtrMapType insat_state_map_;
         TrajType soln_traj_;
