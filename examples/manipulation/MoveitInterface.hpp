@@ -43,6 +43,7 @@
 #include <fstream>
 #include <numeric>
 #include <boost/functional/hash.hpp>
+#undef minor
 #include <drake/math/matrix_util.h>
 #include <planners/insat/InsatPlanner.hpp>
 #include <planners/insat/PinsatPlanner.hpp>
